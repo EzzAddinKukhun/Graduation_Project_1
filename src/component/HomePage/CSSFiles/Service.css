@@ -1,0 +1,71 @@
+.service{
+    height: 250px;
+
+}
+
+.service-icon{
+    height: 100%;
+    /* background-color: red; */
+    text-align: center;
+    padding-top: 15px;
+    width: 30%;
+    font-size: 40px;
+    color: white;
+    overflow: hidden;
+
+
+}
+
+.icon-frame{
+    width: 80%;
+    margin: auto;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #274584;
+    transition: 1s ease;
+    overflow: hidden;
+
+
+}
+
+.service-caption{
+    width: 70%; 
+    height: 100%;
+    padding: 15px;
+    /* background-color: green; */
+}
+
+
+.service-icon:hover .icon-frame{
+    background-color: white;
+    color: #274584;
+    border: #274584 2px solid;
+    transition: 1s ease;
+}
+.span-style{
+    color: #274584;
+}
+.service-caption p {
+    text-align: justify;
+}
+
+.service-header{
+    font-size: 32px;
+    color: #274584;
+}
+/* .service-icon:hover .icon-frame::after{
+
+    content:""; 
+    transform: translateX(200%);
+    animation-name: translateAnimation;
+    animation-duration: 2s;
+    transform: translateX(-200%); 
+     transform: rotateX(360deg);
+
+} */
+
+
+@keyframes translateAnimation {
+   
+    
+}

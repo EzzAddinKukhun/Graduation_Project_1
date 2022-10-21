@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;800&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+.header {
+    height: 100vh;
+    width: 100%;
+    /* background-color: red; */
+    overflow: hidden;
+    position: relative;
+
+}
+
+.img-pane {
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.test {
+    height: 100vh;
+    width: 100%;
+}
+
+.button-slider {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 30px;
+    font-size: 32px;
+    color: #272727;
+    background-color: transparent;
+    border: none;
+
+}
+
+#r_btn {
+    right: 0;
+
+}
+
+#l_btn {
+    left: 0;
+}
+
+.pane-1 {
+    position: relative;
+}
+
+.pane-caption {
+    position: absolute;
+    top: 0%;
+    transform: translateY(50%);
+    left: 11%;
+    font-size: 60px;
+    color: #274584
+}
+
+#pc2 {
+    left: 54%;
+    transform: translateY(90%);
+
+}
+
+#pc3 {
+    left: 8%;
+    transform: translateY(90%);
+}
+
+.pane-1 {
+    display: block;
+}
+
+.pane-2,
+.pane-3 {
+    display: none;
+}
+
+
+
+.read-more-btn {
+    width: 200px;
+    height: 70px;
+    font-size: 22px;
+    color: #274584;
+    border: 3px solid #274584;
+    transition: 0.5s ease;
+
+}
+
+
+
+.read-more-btn:hover {
+    background-color: #274584;
+    color: #fff;
+    transition: 0.5s ease;
+}
+
+@media all and (max-width:700px) {
+    .header {
+        height: 50vh;
+        width: 100%;
+        background-color: red;
+        overflow: hidden;
+        position: relative;
+
+    }
+
+    .img-pane {
+        /* background-size: cover; */
+        width: 100%;
+        /* height: 100vh; */
+        /* margin-top: 70px; */
+        background-color: green;
+    }
+}

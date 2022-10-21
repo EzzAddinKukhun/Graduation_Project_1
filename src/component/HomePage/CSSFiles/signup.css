@@ -1,0 +1,34 @@
+.signup-header{
+    width: 100%;
+    height: 60vh;
+    background-image: url(../../../imgs/signup.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+.icon-form{
+    width: 15%;
+    font-size: 32px;
+    padding-top: 27px;
+}
+
+.field-form{
+    width: 85%;
+}
+
+.state-option{
+    width: 100%;
+    padding-bottom: 5px;
+    border: 1px solid black;
+    border-radius: 20px;
+    padding-left: 10px;
+    padding-top: 2px;
+    padding-right: 10px;
+
+}
+
+
+.signUpBtn, .clearSignUpForm{
+    width: 10%;
+}

@@ -1,0 +1,119 @@
+
+.activites{
+    height: 570px;
+    /* background-color: red; */
+    margin-top: 40px;
+    margin-top: 100px;
+}
+
+.first-half-act{
+    width: 37%;
+    position: relative;
+    /* padding-top: 100px; */
+
+
+}
+
+.stick{
+    position: absolute;
+    width: 3px;
+    height: 63%;
+    background-color:#274584;
+    margin-top: 25px;
+    top: 155px;
+}
+
+.stick::before{
+    content: "";
+    width: 20px;
+    height: 20px;
+    display: block;
+    border-radius: 50%;
+    background-color: #274584;
+    margin-left: -8px;
+}
+
+.stick::after{
+    content: "";
+    width: 20px;
+    height: 20px;
+    display: block;
+    border-radius: 50%;
+    background-color: #274584;
+    margin-left: -8px;
+    margin-top: 320px;
+}
+
+
+.act{
+    width: 400px;
+    height: 300px;
+    padding-left: 40px;
+    padding-top: 20px;
+    padding-right: 25px;
+    text-align: justify;
+}
+
+.read-more-btn-act{
+    width: 150px;
+    height: 42px;
+    font-size: 18px;
+    color: #274584;
+    border: 3px solid #274584;
+    transition: 0.5s ease;
+    margin-top: 20px;
+}
+
+.read-more-btn-act:hover {
+    background-color: #274584;
+    color: #fff;
+    transition: 0.5s ease;
+}
+
+.second-half-act{
+    
+    height: 100%;
+    width: 75%;
+    /* background-color: red; */
+    padding-top: 20px;
+}
+
+.second-half-act div{
+    overflow: hidden;
+}
+
+.img-act{
+    width: 107%;
+    height: 254px;
+}
+
+.img-act + h4{
+    right:-60%;
+    text-align: right;
+    color:#274584; 
+    /* opacity: 0; */
+    transition: 1s ease;
+
+}
+
+
+.img-act{
+    transition: 1s ease;
+}
+
+.act-div:hover  h4{
+    right: 2%;
+    opacity: 1;
+    transition: 1s ease;
+
+}
+
+.act-div:hover .img-act{
+    opacity: 0.5;
+    transition: 1s ease;
+}
+
+.act-div{
+    margin-bottom: 20px;
+}
+

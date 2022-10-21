@@ -1,0 +1,17 @@
+.scroll-btn {
+    width: 70px;
+    height: 70px;
+    border: none;
+    color: white;
+    position: fixed;
+    right: 3%;
+    bottom: 4%;
+    border-radius: 50%;
+    display: none;
+    box-shadow: 1px 1px 15px  #888888;
+    color:white;
+    background-color: #274584;;
+    z-index: 100000;
+
+}
+

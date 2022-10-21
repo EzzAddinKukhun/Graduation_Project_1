@@ -1,0 +1,101 @@
+.reach{
+    height: 811px;
+    width: 100%;
+    background-color: black;
+    margin-top: 100px;
+    overflow: hidden;
+}
+
+.reach-img-container{
+    /* height: 100%; */
+}
+.reach-us-logo{
+    color: white
+}
+
+
+.reach-container{
+    width: 100%;
+}
+
+.reach-img{
+    width: 100%;
+    height: 100%;
+    /* background-attachment: fixed; */
+    /* background-size: cover; */
+    opacity: 0.3;
+}
+
+.reach-us-logo{
+   padding-top: 70px;
+}
+
+.buttons{
+    width: 60%;
+    margin: auto;
+    margin-bottom: -62px;
+    /* background-color: red; */
+}
+
+.inner-container{
+    margin-top: 300px;
+}
+
+
+.buttons button {
+    height: 70px;
+    width: 200px;
+    margin-right: 10px;
+    border: none;
+    font-size: 20px;
+    color:#274584; 
+
+}
+
+.buttons button:nth-child(1){
+    border-top: 3px #274584 solid;
+    background-color: white;
+    color: #274584
+}
+
+.buttons button:nth-child(2), .buttons button:nth-child(3){
+    border-top: 3px white solid;
+    background-color: #274584;
+    color: white;
+}
+
+.tab{
+    width: 100%;
+    height: 302px;
+    margin-top: 61px;
+    background-color: white;
+    color: black;
+    /* border-bottom: 1px solid none; */
+}
+
+
+.tab-thumb{
+    
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+}
+.img-tab{
+    width: 70%;
+    height: 70%;
+    display: block;
+}
+.tab-exp{
+
+    padding: 40px;
+    padding-left: 80px;
+    color: black;
+    height: 100%;
+
+}
+
+#tab2,#tab3{
+    display: none;
+}

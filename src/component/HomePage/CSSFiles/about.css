@@ -1,0 +1,147 @@
+.aboutthumb {
+    /* background-color: red; */
+    height: 270px;
+}
+
+.aboutthumb img {
+    width: 100%;
+    height: 100%;
+}
+
+
+
+.overlay-div {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    background-color: black;
+    opacity: 0.4;
+    z-index: 1;
+}
+
+.bookname {
+    z-index: 2;
+}
+
+
+.about-paragraph-1 {
+    text-align: justify;
+    font-size: 14px;
+    color: gray;
+
+}
+
+
+
+.about-para h3 {
+    font-size: 24px;
+}
+
+.time-line {
+    width: 100%;
+    height: 140vh;
+}
+
+.cont-time {
+    margin-top: 100px;
+}
+
+.line {
+    background-color: gray;
+    display: block;
+    height: 100%;
+    width: 3px;
+    margin: auto;
+}
+
+.line-circle-1,
+.line-circle-2,
+.line-circle-3,
+.line-circle-4 {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: gray;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.line-circle-1 {
+    top: 0
+}
+
+.line-circle-2 {
+    top: 25%
+}
+
+.line-circle-3 {
+    top: 50%
+}
+
+.line-circle-4 {
+    top: 75%
+}
+
+
+.line-div-1,
+.line-div-3 {
+    width: 400px;
+    height: 200px;
+    background: rgb(39, 39, 43);
+    background: linear-gradient(0deg, rgba(39, 39, 43, 1) 0%, rgba(0, 167, 255, 0.29933469970019255) 100%, rgba(79, 83, 89, 0.47300416748730745) 100%);
+    position: absolute;
+    border-top-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    left: 18%;
+    text-align: left;
+    padding: 20px;
+
+}
+
+.line-div-1 h3,
+.line-div-3 h3 {
+    text-align: left;
+}
+
+.line-div-2,
+.line-div-4 {
+    width: 400px;
+    height: 200px;
+    background: rgb(39, 39, 43);
+    background: linear-gradient(0deg, rgba(39, 39, 43, 1) 0%, rgba(0, 167, 255, 0.29933469970019255) 100%, rgba(79, 83, 89, 0.47300416748730745) 100%);
+    position: absolute;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    right: 18%;
+    padding: 20px;
+    text-align: left;
+
+
+}
+
+.line-div-1 {
+    top: 1%
+}
+
+.line-div-3 {
+    top: 51%
+}
+
+
+.line-div-2 {
+    top: 26%
+}
+
+.line-div-4 {
+    top: 76%
+}
+
+.our-time-line {
+    text-align: justify;
+    font-size: 15px;
+    color: white;
+}
