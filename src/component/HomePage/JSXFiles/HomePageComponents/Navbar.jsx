@@ -102,7 +102,26 @@ export default class Navbar extends Component {
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" className="btn btn-primary">Sign In</button>
+                                <button onClick={async () => {
+                                     var emailAddress = document.getElementById("exampleInputEmail1").value;
+                                     var password = document.getElementById("exampleInputPassword1").value;
+                                     var data = {
+                                        emailAddress,
+                                        password
+                                    }
+                                     var end_point = "logIn"; 
+                                     await fetch(`http://localhost:5000/${end_point}`, {
+                                        method: 'POST',
+                                        body: JSON.stringify(data),
+                                        headers: {
+                                            "Content-type": "application/json; charset=UTF-8"
+                                        }
+                                    }).then(response => response.json())
+                                    .then(json => {
+                                        console.log(json);
+                                    });
+                                }}
+                                    type="button" className="btn btn-primary">Sign In</button>
                             </div>
                         </div>
                     </div>

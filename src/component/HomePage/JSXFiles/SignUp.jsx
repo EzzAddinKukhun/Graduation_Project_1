@@ -407,7 +407,7 @@ export default function SignUp() {
 
                 <div className='w-100 mt-4 text-center'>
                     <button
-                        onClick={() => {
+                        onClick={async () => {
                             var counter = 0;
                             var bool = false;
 
@@ -494,18 +494,20 @@ export default function SignUp() {
 
                                             console.log("DONE")
                                             console.log(data);
-                                            // var end_point = "signUp"; 
-                                            // fetch (`http://localhost:5000/${end_point}`,{
-                                            //     method : "Post",
-                                            //     body : JSON.stringify(data),
-                                            //     headers : {
-                                            //         "Content-type" : "application/json; charset=UTF-8"
-                                            //     }
+                                            var end_point = "signUp"; 
+                                            
+                                            await fetch(`http://localhost:5000/${end_point}`, {
+                                                method: 'POST',
+                                                body: JSON.stringify(data),
+                                                headers: {
+                                                    "Content-type": "application/json; charset=UTF-8"
+                                                }
+                                            }).then(response => response.json())
+                                            .then(json => {
+                                                console.log(json);
+                                            });
 
-                                            // }).then(response => response.json())
-                                            // .then(json =>{
-                                            //     document.write(json.message)
-                                            // })
+
                                             swal({
                                                 title: "Good job!",
                                                 text: "You Signed Up Successfully!",
