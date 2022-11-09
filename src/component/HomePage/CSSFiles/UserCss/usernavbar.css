@@ -1,0 +1,103 @@
+.user-search-nav{
+    width: 85%;
+    /* background-color: red; */
+    height: 70px;
+}
+
+.search-field{
+    border-radius: 20px;
+    background-color: white;
+    box-shadow: 15px 7px 30px #888888;
+
+}
+
+.search-text-field{
+    border: none;
+    outline: none;
+    width: 90%;
+    margin-left: 20px;
+}
+
+.profile-photo img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: inline;
+
+}
+
+.notifications{
+    font-size: 18px;
+    padding-top: 5px;
+}
+
+.profile-photo a{
+    text-decoration: none;
+    color: black;
+}
+
+.choices{
+    width: 90%;
+    height: 90%;
+}
+
+.pop-up-profile{
+    border-radius: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 6px 7px 24px -8px #888888; 
+    opacity: 0;
+    transition: 1s all;
+    top:100px; 
+    background-color: white;
+}
+
+.pop-up-name h4{
+    font-size: 20px;
+}
+
+.photo-pop-up img{
+    width: 60px;
+    height: 60px;
+}
+
+.pop-up-name h6{
+    font-size: 12px;
+}
+
+.profile-photo{
+    width: 300px;
+}
+
+.profile-photo:hover .pop-up-profile{
+    opacity: 1;
+    transition: 1s all;
+    top: 50px;
+}
+
+
+.profile-nav{
+    width: 40%;
+    margin: auto;
+}
+
+.profile-nav button{
+    width: 100px;
+    height: 40px;
+    outline: none;
+    border-radius: 180px;
+    color: #2A4D69;
+    border: #2A4D69 2px solid;
+    font-size: 15px;
+}
+
+
+.profile-nav button:nth-child(1){
+    width: 100px;
+    height: 40px;
+    outline: none;
+    border-radius: 180px;
+    color: white;
+    background-color: #2A4D69;
+    
+}
