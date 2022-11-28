@@ -14,12 +14,11 @@ export default class App extends Component {
       <>
         <Navbar />
         <Routes>
-          <Route path='/' element={<User />}></Route>
+          <Route path='/' element={<Home />}></Route>
           <Route path='home' element={<Home />}></Route>
           <Route path='about' element={<About />}></Route>
           <Route path='contact' element={<Contact />}></Route>
           <Route path='signup' element={<SignUp />}></Route>
-          <Route path='settings' element={<Settings />}></Route>
         </Routes>
       </>
     )

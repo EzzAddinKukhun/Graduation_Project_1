@@ -262,3 +262,18 @@
     border: none;
     border-radius:30px ;
 }
+
+
+
+.profile-nav a{
+    text-decoration: none;
+    display: block;
+    width: 150px;
+    height: 40px;
+    border-radius: 30px;
+    background-color: #2A4D69;
+    color: white;
+    text-align: center;
+    padding-top: 8px;
+    margin-right: 10px;
+}

@@ -12,6 +12,10 @@ import Profile from '../../../../imgs/profile.jpg';
 export default function Settings() {
   let [stateItem, setStateItem] = useState([]);
   let [stateArrive, setIfStateArrive] = useState(false);
+  let [months, setMonths] = useState([]);
+  let [year, setYear] = useState([]);
+
+
 
   async function getStateItems() {
     var headers = new Headers();
@@ -41,6 +45,12 @@ export default function Settings() {
     }
   }
 
+
+  // function generateMonth() {
+  //   var monthsComboBox = document.getElementById("month_option");
+  //   console.log(monthsComboBox)
+
+  // }
 
   // here when the array brackets are blanks, it represents the componentDidMount
   // we can use useEffect for three functions (Mount,DidMount,Unmount)
@@ -150,16 +160,16 @@ export default function Settings() {
             <h6 className='text-muted'>Edit Or Add New Employment Position</h6>
           </div>
           <div onClick={function () {
-              var tabs = document.getElementsByClassName("settings-tab");
-              for (var i = 0; i < tabs.length; i++) {
-                if (i == 6) {
-                  tabs[6].style.display = "block";
-                }
-                else {
-                  tabs[i].style.display = "none";
-                }
+            var tabs = document.getElementsByClassName("settings-tab");
+            for (var i = 0; i < tabs.length; i++) {
+              if (i == 6) {
+                tabs[6].style.display = "block";
               }
-            }}
+              else {
+                tabs[i].style.display = "none";
+              }
+            }
+          }}
             className="setting-choice">
             <h4><b>Skills</b></h4>
             <h6 className='text-muted'>Add New Skill To Your Skills</h6>
@@ -177,10 +187,10 @@ export default function Settings() {
             </div>
             <button className="upload-btn ms-auto">
               <div>
-              <i class="fa-solid fa-cloud-arrow-up"></i> Update
+                <i class="fa-solid fa-cloud-arrow-up"></i> Update
               </div>
               <input type="file"></input>
-            
+
             </button>
 
           </div>
@@ -224,6 +234,18 @@ export default function Settings() {
           </div>
           <div class="form-group mb-3">
             <label className='mb-2' for="uploadFile">Upload Your CV</label>
+            <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
+          </div>
+          <div class="form-group mb-3">
+            <label className='mb-2' for="uploadFile">Upload Your Personal ID</label>
+            <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
+          </div>
+          <div class="form-group mb-3">
+            <label className='mb-2' for="uploadFile">Upload Your Personal Passport</label>
+            <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
+          </div>
+          <div class="form-group mb-3">
+            <label className='mb-2' for="uploadFile">Upload Your University Grades</label>
             <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
           </div>
           <div className="divv d-flex justify-content-end">
@@ -449,11 +471,67 @@ export default function Settings() {
           </div>
           <div class="form-group mb-3">
             <label className='mb-2' for="startDateStudy">Start Date</label>
-            <input type="date" class="form-control" id="startDateStudy" aria-describedby="startDateStudy" />
+            <div className='d-flex'>
+              <div className="select-div w-50 ">
+                <select id="month_option" className='state-option-settings'>
+                  <option selected disabled>Month</option>
+                  {(() => {
+                    let months = [];
+                    for (var i = 1; i < 13; i++) {
+                      months.push(<option>{i}</option>);
+                    }
+                    return months;
+                  })()}
+                </select>
+
+              </div>
+              <div className="select-div w-50 ">
+                <select id="state_option" className='state-option-settings'>
+                  <option selected disabled>Year</option>
+                  {(() => {
+                    let years = [];
+                    for (var i = 1990; i < 2023; i++) {
+                      years.push(<option>{i}</option>);
+                    }
+                    return years;
+                  })()}
+
+                </select>
+
+              </div>
+            </div>
           </div>
-          <div class="form-group mb-3">
+          <div className="form-group mb-3">
             <label className='mb-2' for="endDateStudy">End Date</label>
-            <input type="date" class="form-control" id="endDateStudy" aria-describedby="endDateStudy" />
+            <div className='d-flex'>
+              <div className="select-div w-50 ">
+                <select id="month_option" className='state-option-settings'>
+                  <option selected disabled>Month</option>
+                  {(() => {
+                    let months = [];
+                    for (var i = 1; i < 13; i++) {
+                      months.push(<option>{i}</option>);
+                    }
+                    return months;
+                  })()}
+                </select>
+
+              </div>
+              <div className="select-div w-50 ">
+                <select id="state_option" className='state-option-settings'>
+                  <option selected disabled>Year</option>
+                  {(() => {
+                    let years = [];
+                    for (var i = 1990; i < 2023; i++) {
+                      years.push(<option>{i}</option>);
+                    }
+                    return years;
+                  })()}
+
+                </select>
+
+              </div>
+            </div>
             <small id="emailHelp" class="form-text text-danger">If you still a student, select an expected date for your graduation</small>
 
           </div>
@@ -494,7 +572,35 @@ export default function Settings() {
           </div>
           <div class="form-group mb-3">
             <label className='mb-2' for="startDateExp">Start Date</label>
-            <input type="date" class="form-control" id="startDateExp" aria-describedby="startDateExp" />
+            <div className='d-flex'>
+              <div className="select-div w-50 ">
+                <select id="month_option" className='state-option-settings'>
+                  <option selected disabled>Month</option>
+                  {(() => {
+                    let months = [];
+                    for (var i = 1; i < 13; i++) {
+                      months.push(<option>{i}</option>);
+                    }
+                    return months;
+                  })()}
+                </select>
+
+              </div>
+              <div className="select-div w-50 ">
+                <select id="state_option" className='state-option-settings'>
+                  <option selected disabled>Year</option>
+                  {(() => {
+                    let years = [];
+                    for (var i = 1990; i < 2023; i++) {
+                      years.push(<option>{i}</option>);
+                    }
+                    return years;
+                  })()}
+
+                </select>
+
+              </div>
+            </div>
           </div>
           <div class="form-group mb-3">
             <label className='mb-2' for="PositionName">Position Name</label>

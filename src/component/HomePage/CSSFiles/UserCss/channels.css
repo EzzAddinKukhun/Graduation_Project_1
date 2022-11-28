@@ -1,0 +1,165 @@
+.w-70 {
+    width: 70%;
+    margin-left: 40px;
+    border-radius: 4px;
+    /* height: 570px;
+    overflow-y: scroll; */
+    border-bottom: 1px solid rgb(210, 210, 210);
+
+
+}
+
+.followed-channel {
+    height: 95px;
+    border-right: 1px solid rgb(210, 210, 210);
+    border-top: 1px solid rgb(210, 210, 210);
+    border-left: 1px solid rgb(210, 210, 210);
+
+
+}
+
+.channel-img {
+    width: 9%;
+}
+
+.channel-img img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.channel-info {
+    width: 59%;
+}
+
+
+
+.message-btn button,
+.unfollow-btn button {
+    border: none;
+    outline: none;
+    width: 90%;
+    height: 40px;
+    border-radius: 20px;
+    color: white;
+    font-size: 14px;
+    background-color: #2A4D69;
+}
+
+.channel-org {
+    font-size: 17px;
+}
+
+.channel-experts {
+    font-size: 14px;
+}
+
+
+.channel-info h4 {
+    font-size: 20px;
+
+}
+
+.container-slider {
+    width: 90%;
+
+}
+
+.card-cover-photo {
+    width: 100%;
+    height: 100%;
+}
+
+.card-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-channels {
+    height: 340px;
+    border-radius: 7px;
+    padding: 10px;
+    overflow: hidden;
+   
+}
+
+.channel-desc-card{
+    position: absolute;
+    bottom: 4%;
+    right: 7%;
+    color: white;
+    text-align: right;
+}
+.channel-desc-card h6{
+    font-size: 11px;
+}
+
+.card-cover-photo{
+    position: relative;
+    overflow: hidden;
+    border-radius: 7px;
+    transition: 1s ease;
+
+
+}
+
+.card-cover-photo img {
+    width: 100%;
+    height: 100%;
+    border-radius: 7px;
+    transition: 1s ease;
+    background-size: cover;
+
+   
+}
+
+.overlayy{
+    position: absolute;
+    top: 0;
+    border-radius: 7px;
+    width: 100%;
+    height: 100%;
+    background: rgb(2,0,36);
+    background: linear-gradient(180deg, rgba(2,0,36,0) 0%, rgba(9,98,121,0.1183823871345413) 0%, rgba(0,212,255,0.30885857761073177) 100%);
+}
+
+.card-choices{
+    width: 90%;
+    height: 30%;
+    margin: auto;
+    background-color: transparent;
+    transition: 1s ease;
+    opacity: 0;
+
+}
+
+.card-channels:hover .card-cover-photo img {
+  transform: scale(1.1);
+  transition: 1s ease;
+}
+
+.channel-desc-card {
+    transition: 1s ease;
+
+}
+
+
+.card-channels:hover .card-cover-photo .channel-desc-card {
+    transform: translateY(-100%);
+    transition: 1s ease;
+
+}
+
+.card-channels:hover .card-choices{
+    transform: translateY(-100%);
+    transition: 1s ease;
+    opacity: 1;
+
+}
+
+.search-field-channels{
+    height: 40px;
+    box-shadow: none;
+    border-radius: 0;
+}

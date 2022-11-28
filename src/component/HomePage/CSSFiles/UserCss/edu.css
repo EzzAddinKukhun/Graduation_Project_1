@@ -1,0 +1,47 @@
+.education{
+    height: 150px;
+    border-radius: 10px;
+    box-shadow: 10px 10px 29px -6px gray;
+    position: relative;
+
+}
+
+.year-icon{
+    padding: 15px;
+    border-radius: 30px;
+    color: white;
+    background-color: #2A4D69;
+}
+
+.edu-year{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 31%;
+    padding: 10px;
+}
+
+.edu-description{
+    width: 69%;
+}
+
+.edu-year i {
+    font-size: 50px;
+}
+
+.edit-edu-btn{
+    position: absolute;
+    right:1%;
+    top: 3%;
+    cursor: pointer;
+}
+
+.modal{
+    width: 80%;
+}
+
+
+.settings-tab-edit{
+    
+}
