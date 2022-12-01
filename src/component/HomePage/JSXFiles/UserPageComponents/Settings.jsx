@@ -16,7 +16,7 @@ export default function Settings() {
   let [year, setYear] = useState([]);
   const [fileData, setFileData] = useState();
 
-  
+
 
   async function getStateItems() {
     var headers = new Headers();
@@ -49,7 +49,12 @@ export default function Settings() {
 
   let [skill, setSkill] = useState([]);
   async function getSkills() {
-    fetch("http://localhost:5000/getSkills/637244067f8eb54bbde72295")
+    fetch("http://localhost:5000/getSkills/637244067f8eb54bbde72295", {
+      method: 'GET',
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+      }
+    })
 
       .then(response => response.json())
       .then(json => {
@@ -408,9 +413,9 @@ export default function Settings() {
             </div>
             <div class="form-group mb-3">
               <label className='mb-2' for="uploadFile">Upload File</label>
-              <input  onChange={(e)=>{
+              <input onChange={(e) => {
                 setFileData(e.target.files[0]);
-                console.log(fileData); 
+                console.log(fileData);
               }} type="file" class="form-control" id="uploadExpFile" aria-describedby="" />
             </div>
 
@@ -418,8 +423,8 @@ export default function Settings() {
               <button
                 onSubmit={function (e) {
 
-                  e.preventDefault();
-                  
+                  // e.preventDefault();
+
                   console.log(fileData)
                   const data = new FormData();
 
@@ -441,13 +446,13 @@ export default function Settings() {
                     body: data,
                   })
                     .then((result) => {
-                      console.log("File Sent Successful");
+                      console.log("New Experience had been added or updated successfully");
                     })
                     .catch((err) => {
                       console.log(err.message);
                     });
-                 
-                 
+
+
 
                   swal({
                     title: "Are you sure to save your edit?",
