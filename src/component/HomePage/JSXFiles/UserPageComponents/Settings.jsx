@@ -16,7 +16,7 @@ export default function Settings() {
   let [year, setYear] = useState([]);
   const [fileData, setFileData] = useState();
 
-
+  
 
   async function getStateItems() {
     var headers = new Headers();
@@ -408,63 +408,65 @@ export default function Settings() {
             </div>
             <div class="form-group mb-3">
               <label className='mb-2' for="uploadFile">Upload File</label>
-              <input type="file" class="form-control" id="uploadExpFile" aria-describedby="" />
+              <input  onChange={(e)=>{
+                setFileData(e.target.files[0]);
+                console.log(fileData); 
+              }} type="file" class="form-control" id="uploadExpFile" aria-describedby="" />
             </div>
 
             <div className="divv d-flex justify-content-end">
               <button
                 onSubmit={function (e) {
-                //   e.preventDefault();
-                //   const fileChangeHandler = (e) => {
-                //     setFileData(e.target.files[0]);
-                //   };
-                //   const data = new FormData();
 
-                //   data.append("CV", fileData);
-                //   data.append("_id", "637244067f8eb54bbde72295");
+                  e.preventDefault();
+                  
+                  console.log(fileData)
+                  const data = new FormData();
 
-                //   fetch("http://localhost:5000/uploadCV", {
-                //     method: "PUT",
-                //     body: data,
-                //   })
-                //     .then((result) => {
-                //       console.log("File Sent Successful");
-                //     })
-                //     .catch((err) => {
-                //       console.log(err.message);
-                //     });
-                //   var expBy = document.getElementById("expByName");
-                //   var expStartDate = document.getElementById("startDateExp");
-                //   var expEndDate = document.getElementById("endDateExp");
-                //   var expDetails = document.getElementById("experienceDetails")
-
-                //   var newExpObj = {
-                //     _id: "",
-                //     orginization: expBy,
-                //     startDate: expStartDate,
-                //     endDate: expEndDate,
-                //     details: expDetails
-                //   }
+                  var expBy = document.getElementById("expByName").value;
+                  var expStartDate = document.getElementById("startDateExp").value;
+                  var expEndDate = document.getElementById("endDateExp").value;
+                  var expDetails = document.getElementById("experienceDetails").value
 
 
-                //   swal({
-                //     title: "Are you sure to save your edit?",
-                //     icon: "warning",
-                //     buttons: true,
-                //     dangerMode: true,
-                //   })
-                //     .then((saveNewExp) => {
+                  data.append("orginization", expBy);
+                  data.append("startDate", expStartDate);
+                  data.append("endDate", expEndDate);
+                  data.append("details", expDetails);
+                  data.append("experienceFile", fileData);
+                  data.append("_id", "637244067f8eb54bbde72295");
 
-                //       if (saveNewExp) {
-                //         swal("Poof! Your edit has been success!", {
-                //           icon: "success",
-                //         });
-                //       } else {
-                //         swal("Your imaginary file is safe!");
-                //       }
-                //     });
-                // }
-                }}
+                  fetch("http://localhost:5000/addExperience/update", {
+                    method: "PUT",
+                    body: data,
+                  })
+                    .then((result) => {
+                      console.log("File Sent Successful");
+                    })
+                    .catch((err) => {
+                      console.log(err.message);
+                    });
+                 
+                 
+
+                  swal({
+                    title: "Are you sure to save your edit?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                  })
+                    .then((saveNewExp) => {
+
+                      if (saveNewExp) {
+                        swal("Poof! Your edit has been success!", {
+                          icon: "success",
+                        });
+                      } else {
+                        swal("Your imaginary file is safe!");
+                      }
+                    });
+                }
+                }
                 id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
 
             </div>
