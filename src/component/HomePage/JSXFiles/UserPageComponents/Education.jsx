@@ -33,7 +33,7 @@ export default function Education() {
         <div className="container">
           <div className="row justify-content-around">
             {edus.map((edu) => {
-             return <Fade delay={0}>
+             return (<Fade delay={0}>
                 <div className="education col-md-5 mb-4  d-flex">
                   <div className="edu-year">
                     <section className="year-icon">
@@ -53,7 +53,7 @@ export default function Education() {
                   </div>
                 </div>
 
-              </Fade>
+              </Fade>); 
             })}
 
 
