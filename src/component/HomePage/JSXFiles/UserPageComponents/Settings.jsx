@@ -80,6 +80,7 @@ export default function Settings() {
   }, []);
 
   return (
+    skill.length>0?
     <>
       <div className=' outlet ms-auto d-flex  mt-5 '>
         <section className='settings-bar ps-4'>
@@ -789,6 +790,6 @@ export default function Settings() {
         </section>
 
       </div>
-    </>
+    </>:""
   )
 }
