@@ -14,6 +14,7 @@ export default function Settings() {
   let [stateArrive, setIfStateArrive] = useState(false);
   let [months, setMonths] = useState([]);
   let [year, setYear] = useState([]);
+  const [fileData, setFileData] = useState();
 
 
 
@@ -46,6 +47,19 @@ export default function Settings() {
   }
 
 
+  let [skill, setSkill] = useState([]);
+  async function getSkills() {
+    fetch("http://localhost:5000/getSkills/637244067f8eb54bbde72295")
+
+      .then(response => response.json())
+      .then(json => {
+        setSkill(json.skills);
+
+      });
+
+  }
+
+
   // function generateMonth() {
   //   var monthsComboBox = document.getElementById("month_option");
   //   console.log(monthsComboBox)
@@ -56,6 +70,7 @@ export default function Settings() {
   // we can use useEffect for three functions (Mount,DidMount,Unmount)
   useEffect(() => {
     getStateItems();
+    getSkills();
 
   }, []);
 
@@ -172,7 +187,22 @@ export default function Settings() {
           }}
             className="setting-choice">
             <h4><b>Skills</b></h4>
-            <h6 className='text-muted'>Add New Skill To Your Skills</h6>
+            <h6 className='text-muted'>Basic Documents</h6>
+          </div>
+          <div onClick={function () {
+            var tabs = document.getElementsByClassName("settings-tab");
+            for (var i = 0; i < tabs.length; i++) {
+              if (i == 7) {
+                tabs[7].style.display = "block";
+              }
+              else {
+                tabs[i].style.display = "none";
+              }
+            }
+          }}
+            className="setting-choice">
+            <h4><b>Documents</b></h4>
+            <h6 className='text-muted'>Upload Basic Documents CV,ID,..</h6>
           </div>
         </section>
 
@@ -232,22 +262,7 @@ export default function Settings() {
             <label className='mb-2' for="firstNameEdit">Phone Number</label>
             <input type="text" class="form-control" id="firstNameEdit" aria-describedby="emailHelp" placeholder="Phone Number" />
           </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="uploadFile">Upload Your CV</label>
-            <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
-          </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="uploadFile">Upload Your Personal ID</label>
-            <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
-          </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="uploadFile">Upload Your Personal Passport</label>
-            <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
-          </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="uploadFile">Upload Your University Grades</label>
-            <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
-          </div>
+
           <div className="divv d-flex justify-content-end">
             <button
               onClick={function () {
@@ -295,7 +310,6 @@ export default function Settings() {
 
           </div>
         </section>
-
 
         {/* CHANGE YOUR PASSWORD EDITING */}
         <section className='settings-tab p-4'>
@@ -372,56 +386,90 @@ export default function Settings() {
           </div>
         </section>
 
-
         {/* ADD NEW EXPEIRENCE */}
         <section className='settings-tab p-4'>
           <h3 className='text-center'><b>New Experience</b></h3>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="userNameEdit">Expereinece By</label>
-            <input type="text" class="form-control" id="userNameEdit" aria-describedby="fname" placeholder="Expereinece By" />
-          </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="startDateExp">Start Date</label>
-            <input type="date" class="form-control" id="startDateExp" aria-describedby="startDateExp" />
-          </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="endDateExp">End Date</label>
-            <input type="date" class="form-control" id="endDateExp" aria-describedby="" />
-          </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="experienceDetails">Experience Details</label>
-            <textarea class="form-control" id="experienceDetails" rows="3"></textarea>
-          </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="uploadFile">Upload File</label>
-            <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
-          </div>
+          <form>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="userNameEdit">Expereinece By</label>
+              <input type="text" class="form-control" id="expByName" aria-describedby="fname" placeholder="Expereinece By" />
+            </div>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="startDateExp">Start Date</label>
+              <input type="date" class="form-control" id="startDateExp" aria-describedby="startDateExp" />
+            </div>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="endDateExp">End Date</label>
+              <input type="date" class="form-control" id="endDateExp" aria-describedby="" />
+            </div>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="experienceDetails">Experience Details</label>
+              <textarea class="form-control" id="experienceDetails" rows="3"></textarea>
+            </div>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="uploadFile">Upload File</label>
+              <input type="file" class="form-control" id="uploadExpFile" aria-describedby="" />
+            </div>
+
+            <div className="divv d-flex justify-content-end">
+              <button
+                onSubmit={function (e) {
+                //   e.preventDefault();
+                //   const fileChangeHandler = (e) => {
+                //     setFileData(e.target.files[0]);
+                //   };
+                //   const data = new FormData();
+
+                //   data.append("CV", fileData);
+                //   data.append("_id", "637244067f8eb54bbde72295");
+
+                //   fetch("http://localhost:5000/uploadCV", {
+                //     method: "PUT",
+                //     body: data,
+                //   })
+                //     .then((result) => {
+                //       console.log("File Sent Successful");
+                //     })
+                //     .catch((err) => {
+                //       console.log(err.message);
+                //     });
+                //   var expBy = document.getElementById("expByName");
+                //   var expStartDate = document.getElementById("startDateExp");
+                //   var expEndDate = document.getElementById("endDateExp");
+                //   var expDetails = document.getElementById("experienceDetails")
+
+                //   var newExpObj = {
+                //     _id: "",
+                //     orginization: expBy,
+                //     startDate: expStartDate,
+                //     endDate: expEndDate,
+                //     details: expDetails
+                //   }
 
 
-          <div className="divv d-flex justify-content-end">
-            <button
-              onClick={function () {
-                swal({
-                  title: "Are you sure to save your edit?",
-                  icon: "warning",
-                  buttons: true,
-                  dangerMode: true,
-                })
-                  .then((willDelete) => {
-                    if (willDelete) {
-                      swal("Poof! Your edit has been success!", {
-                        icon: "success",
-                      });
-                    } else {
-                      swal("Your imaginary file is safe!");
-                    }
-                  });
-              }}
-              id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
+                //   swal({
+                //     title: "Are you sure to save your edit?",
+                //     icon: "warning",
+                //     buttons: true,
+                //     dangerMode: true,
+                //   })
+                //     .then((saveNewExp) => {
 
-          </div>
+                //       if (saveNewExp) {
+                //         swal("Poof! Your edit has been success!", {
+                //           icon: "success",
+                //         });
+                //       } else {
+                //         swal("Your imaginary file is safe!");
+                //       }
+                //     });
+                // }
+                }}
+                id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
+
+            </div>
+          </form>
         </section>
-
 
         {/* EDUCATION INFORMATION  */}
         <section className='settings-tab p-4'>
@@ -646,16 +694,66 @@ export default function Settings() {
           <div className="skills container mb-4 ">
             <h2 className='mb-4'><b><span className='span-style '>Current</span></b> Skills</h2>
             <div className="skill-row">
-              <div className="skill d-flex align-items-center"><div>Problem Solving</div></div>
-              <div className="skill d-flex align-items-center"><div>Data Science</div></div>
-              <div className="skill d-flex align-items-center"><div>Front-end developer</div></div>
-              <div className="skill d-flex align-items-center"><div>Microsoft Office</div></div>
-              <div className="skill d-flex align-items-centerl"><div>Artifical Intellegence</div></div>
+              {
+                skill.map((skill) => {
+                  <div className="skill d-flex align-items-center"><div>{skill}</div></div>
+
+                })
+              }
+
 
 
             </div>
           </div>
 
+
+
+
+          <div className="divv d-flex justify-content-end">
+            <button
+              onClick={function () {
+                swal({
+                  title: "Are you sure to save your edit?",
+                  icon: "warning",
+                  buttons: true,
+                  dangerMode: true,
+                })
+                  .then((willDelete) => {
+                    if (willDelete) {
+                      swal("Poof! Your edit has been success!", {
+                        icon: "success",
+                      });
+                    } else {
+                      swal("Your imaginary file is safe!");
+                    }
+                  });
+              }}
+              id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
+
+          </div>
+        </section>
+
+
+
+        {/* UPLOAD YOUR BASIC FILES  */}
+        <section className='settings-tab p-4'>
+          <h3 className='text-center'><b>Documents</b></h3>
+          <div class="form-group mb-3">
+            <label className='mb-2' for="uploadFile">Upload Your CV</label>
+            <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
+          </div>
+          <div class="form-group mb-3">
+            <label className='mb-2' for="uploadFile">Upload Your Personal ID</label>
+            <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
+          </div>
+          <div class="form-group mb-3">
+            <label className='mb-2' for="uploadFile">Upload Your Personal Passport</label>
+            <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
+          </div>
+          <div class="form-group mb-3">
+            <label className='mb-2' for="uploadFile">Upload Your University Grades</label>
+            <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
+          </div>
 
 
 

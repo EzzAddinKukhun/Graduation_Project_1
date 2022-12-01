@@ -3,6 +3,7 @@ import '../../CSSFiles/Navbar.css';
 import { Link } from 'react-router-dom';
 import Fade from 'react-reveal/Fade';
 import im from '../../../../imgs/alumni.jpg';
+import swal from 'sweetalert';
 
 
 export default class Navbar extends Component {
@@ -118,6 +119,29 @@ export default class Navbar extends Component {
                                         }
                                     }).then(response => response.json())
                                     .then(json => {
+                                        if (json.message == "success user"){
+                                            // here we have to retrieve the id from data base
+                                            // and pass it to the timeline page if log in success
+                                            swal("Good job!", "You clicked the button!", "success");
+
+                                        }
+                                        else if (json.message == "password incorrect"){
+                                            swal("Password is Wrong!", "Please sure that you enter correct password!", "error");
+
+                                        }
+                                        else if (json.message == "email does not exists"){
+                                            swal("email does not exists!", "", "error");
+
+                                        }
+                                        else if (json.message == "success admin"){
+                                            swal("Good job!", "You clicked the button!", "success");
+
+                                        }
+                                        else if (json.message == "email verification needed"){
+                                            swal("email verification needed", "", "error");
+
+
+                                        }
                                         console.log(json);
                                     });
                                 }}

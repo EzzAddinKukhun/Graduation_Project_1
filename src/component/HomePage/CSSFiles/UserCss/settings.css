@@ -112,13 +112,13 @@ textarea{
 .settings-tab:nth-child(3),
 .settings-tab:nth-child(4),
 .settings-tab:nth-child(5),
-.settings-tab:nth-child(6)
+.settings-tab:nth-child(6),
+.settings-tab:nth-child(7),
+.settings-tab:nth-child(8)
 {
     display: none;
 }
-.settings-tab:nth-child(7){
-    display: none;
-}
+
 
 #aboutPara{
     text-align: justify;
