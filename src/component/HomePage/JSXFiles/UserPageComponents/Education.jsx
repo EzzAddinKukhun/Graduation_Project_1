@@ -10,7 +10,12 @@ export default function Education() {
   let [edus, setEdus] = useState([]);
   let counter  = 0 ;
   async function getEdus() {
-    fetch("http://localhost:5000/getEducation/637244067f8eb54bbde72295")
+    fetch("http://localhost:5000/getEducation/637244067f8eb54bbde72295",{
+      method: 'GET',
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+      }
+    })
 
       .then(response => response.json())
       .then(json => {
@@ -28,7 +33,7 @@ export default function Education() {
         <div className="container">
           <div className="row justify-content-around">
             {edus.map((edu) => {
-              <Fade delay={0}>
+             return <Fade delay={0}>
                 <div className="education col-md-5 mb-4  d-flex">
                   <div className="edu-year">
                     <section className="year-icon">
