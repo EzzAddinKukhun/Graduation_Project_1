@@ -16,6 +16,12 @@ export default function Settings() {
   let [year, setYear] = useState([]);
   const [fileData, setFileData] = useState();
 
+  const a = [
+    "AI and MAchine Learning",
+    "AI and MAchine Learningg",
+    "JAVA",
+    "JAVaaaA"
+]
 
 
   async function getStateItems() {
@@ -80,7 +86,6 @@ export default function Settings() {
   }, []);
 
   return (
-    skill.length>0?
     <>
       <div className=' outlet ms-auto d-flex  mt-5 '>
         <section className='settings-bar ps-4'>
@@ -704,7 +709,7 @@ export default function Settings() {
             <div className="skill-row">
               {
                 skill.map((skill) => {
-                  <div className="skill d-flex align-items-center"><div>{skill}</div></div>
+                  return <div className="skill d-flex align-items-center"><div>{skill}</div></div>    
 
                 })
               }
@@ -790,6 +795,6 @@ export default function Settings() {
         </section>
 
       </div>
-    </>:""
+    </>
   )
 }
