@@ -11,7 +11,7 @@ import Profile from '../../../../imgs/profile.jpg';
 
 export default function Settings() {
   let [stateItem, setStateItem] = useState([]);
-  let [stateArrive, setIfStateArrive] = useState(false);
+  let [setArrive, setIfArrive] = useState(false);
   let [months, setMonths] = useState([]);
   let [year, setYear] = useState([]);
   const [fileData, setFileData] = useState();
@@ -55,7 +55,7 @@ export default function Settings() {
 
   let [skill, setSkill] = useState([]);
   async function getSkills() {
-    fetch("http://localhost:5000/getSkills/637244067f8eb54bbde72295", {
+    await fetch("http://localhost:5000/getSkills/637244067f8eb54bbde72295", {
       method: 'GET',
       headers: {
         "Content-type": "application/json; charset=UTF-8"
@@ -65,7 +65,7 @@ export default function Settings() {
       .then(response => response.json())
       .then(json => {
         setSkill(json.skills);
-
+        setIfArrive(true); 
       });
 
   }
@@ -86,6 +86,7 @@ export default function Settings() {
   }, []);
 
   return (
+    setArrive?
     <>
       <div className=' outlet ms-auto d-flex  mt-5 '>
         <section className='settings-bar ps-4'>
@@ -795,6 +796,6 @@ export default function Settings() {
         </section>
 
       </div>
-    </>
+    </>:""
   )
 }
