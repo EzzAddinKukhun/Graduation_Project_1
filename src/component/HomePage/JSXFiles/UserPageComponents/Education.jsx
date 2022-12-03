@@ -47,7 +47,7 @@ export default function Education() {
                     <h6 className='study'>{edu.specialization}</h6>
                     <h6 className='degree'><b>{edu.degree}</b></h6>
                   </div>
-                  <div className="edit-edu-btn" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+                  <div className="edit-edu-btn" data-bs-toggle="modal" data-bs-target={edu.educationId} >
 
                     <i className="fa-solid fa-pen"></i>
                   </div>
@@ -69,7 +69,7 @@ export default function Education() {
 
       {
         edus.map((edu) => {
-          <div className="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div className="modal fade bd-example-modal-lg" id={edu.educationId} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog modal-lg" role="document">
               <div className="modal-content ">
                 <div className="modal-header">
