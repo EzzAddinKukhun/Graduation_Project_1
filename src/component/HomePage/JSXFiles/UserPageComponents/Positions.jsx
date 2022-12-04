@@ -2,6 +2,7 @@ import React from 'react'
 import { Fade } from 'react-reveal';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import swal from 'sweetalert';
 
 export default function Positions() {
     let [pos, setPos] = useState([]);
@@ -68,7 +69,7 @@ export default function Positions() {
                                 <section className='settings-tab settings-tab-edit h-100 w-100'>
                                     <div class="form-group mb-3">
                                         <label className='mb-2' for="userNameEdit">Company</label>
-                                        <input type="text" class="form-control" id="userNameEdit" aria-describedby="fname" placeholder="Company"
+                                        <input type="text" class="form-control" id="companyEdit" aria-describedby="fname" placeholder="Company"
                                             value={pos.company}
                                         />
                                     </div>
@@ -91,7 +92,7 @@ export default function Positions() {
 
                                             </div>
                                             <div className="select-div w-50 ">
-                                                <select id="state_option" className='state-option-settings'>
+                                                <select id="year_option" className='state-option-settings'>
                                                     <option selected disabled>Year</option>
                                                     {(() => {
                                                         let years = [];
@@ -110,11 +111,11 @@ export default function Positions() {
                                     </div>
                                     <div class="form-group mb-3">
                                         <label className='mb-2' for="PositionName">Position Name</label>
-                                        <input type="text" class="form-control" id="PositionName" aria-describedby="PositionName" placeholder="Position Name" />
+                                        <input type="text" class="form-control" id="PositionNameEdit" aria-describedby="PositionName" placeholder="Position Name" />
                                     </div>
                                     <div class="form-group mb-3">
                                         <label className='mb-2' for="experienceDetails">Position Details</label>
-                                        <textarea class="form-control" id="experienceDetails" rows="3">
+                                        <textarea class="form-control" id="posDetailsEdit" rows="3">
                                             {pos.positionDetails}
                                         </textarea>
                                     </div>
@@ -125,7 +126,34 @@ export default function Positions() {
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" className="btn btn-primary">Save changes</button>
+                                <button
+                                   onClick={async () => {
+                                    var company = document.getElementById("companyEdit").value;
+                                    var msdate = document.getElementById("month_option").value;
+                                    var ysdate = document.getElementById("year_option").value;
+                                    var positionName = document.getElementById("PositionNameEdit").value;
+                                    var positionDetails = document.getElementById("posDetailsEdit").value;
+                                 
+                                    var data = {
+                                        company,
+                                        startDate: ysdate+"-"+msdate,
+                                        positionName,
+                                        positionDetails
+                                    }
+                  
+                                    await fetch(`http://localhost:5000/changePosition/update`, {
+                                      method: 'PUT',
+                                      body: JSON.stringify(data),
+                                      headers: {
+                                        "Content-type": "application/json; charset=UTF-8"
+                                      }
+                                    }).then(response => response.json())
+                                      .then(() => {        
+                                          swal("Good job!", "Your Account information had been edited successfully!", "success");
+                                      });
+                                  }}
+                  
+                                type="button" className="btn btn-primary">Save changes</button>
                             </div>
                         </div>
                     </div>

@@ -6,8 +6,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import swal from 'sweetalert';
 import Profile from '../../../../imgs/profile.jpg';
-
-
+import Axios from 'axios';
 
 export default function Settings() {
   let [stateItem, setStateItem] = useState([]);
@@ -16,12 +15,6 @@ export default function Settings() {
   let [year, setYear] = useState([]);
   const [fileData, setFileData] = useState();
 
-  const a = [
-    "AI and MAchine Learning",
-    "AI and MAchine Learningg",
-    "JAVA",
-    "JAVaaaA"
-]
 
 
   async function getStateItems() {
@@ -38,12 +31,12 @@ export default function Settings() {
       .then(response => response.text())
       .then(result => {
         setStateItem(JSON.parse(result));
-        setIfStateArrive(true);
+        setIfArrive(true);
 
       })
       .catch(error => console.log('error', error));
 
-    if (stateArrive) {
+    if (setArrive) {
       // console.log(JSON.parse(stateItem));
       // console.log(stateItem)
     }
@@ -65,411 +58,472 @@ export default function Settings() {
       .then(response => response.json())
       .then(json => {
         setSkill(json.skills);
-        setIfArrive(true); 
+        setIfArrive(true);
       });
 
   }
 
 
-  // function generateMonth() {
-  //   var monthsComboBox = document.getElementById("month_option");
-  //   console.log(monthsComboBox)
+  let [personalInfo, setPersonalInfo] = useState([]);
+  async function getPersonalInfos() {
+    await fetch("http://localhost:5000/personalInfo/637244067f8eb54bbde72295", {
+      method: 'GET',
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+      }
+    })
 
-  // }
+      .then(response => response.json())
+      .then(json => {
+        setPersonalInfo(json.personalInfo);
+        setIfArrive(true);
+      });
+
+  }
+
+  let [accountInfo, setAccountInfo] = useState([]);
+  async function getAccountInfos() {
+    await fetch("http://localhost:5000/accountInfo/637244067f8eb54bbde72295", {
+      method: 'GET',
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+      }
+    })
+
+      .then(response => response.json())
+      .then(json => {
+        setAccountInfo(json.personalInfo);
+        setIfArrive(true);
+      });
+
+  }
+
+
+  const [mediaFile = null, setmediaFile] = useState();
+  const [type, setType] = useState();
+  const receiveMedia = (e) => {
+    e.preventDefault();
+    Axios({
+      url: 'http://localhost:5000/getProfilePicture/637244067f8eb54bbde72295',
+      method: 'GET',
+      responseType: 'json'
+    }).then(response => response.data)
+      .then(json => {
+        let mediaFile = btoa(
+          new Uint8Array(json.file.dataFile.data)
+            .reduce((data, byte) => data + String.fromCharCode(byte), '')
+        );
+        console.log(mediaFile);
+        setmediaFile(mediaFile);
+        setType(json.file.type);
+      });
+  };
+
+  //FOR POSTING PROFILE PICTURE INTO THE SERVER
+  const [ProfilePic, setProfilePic] = useState();
+  const ProfilePicChangeHandler = (e) => {
+    setProfilePic(e.target.files[0]);
+  };
+
+  const onSubmitHandlerProfilePic = (e) => {
+    e.preventDefault();
+
+    const data = new FormData();
+
+    data.append("profilePicture", ProfilePic);
+    data.append("_id", "637244067f8eb54bbde72295");
+
+    fetch("http://localhost:5000/uploadProfilePic", {
+      method: "PUT",
+      body: data,
+    })
+      .then((result) => {
+        console.log("File Sent Successful");
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+
 
   // here when the array brackets are blanks, it represents the componentDidMount
   // we can use useEffect for three functions (Mount,DidMount,Unmount)
   useEffect(() => {
     getStateItems();
-    getSkills();
+    // getSkills();
+    // getPersonalInfos();
+    // receiveMedia(); 
+    // getAccountInfos();
 
   }, []);
 
   return (
-    setArrive?
-    <>
-      <div className=' outlet ms-auto d-flex  mt-5 '>
-        <section className='settings-bar ps-4'>
-          <div
-            onClick={function () {
-              var tabs = document.getElementsByClassName("settings-tab");
-              for (var i = 0; i < tabs.length; i++) {
-                if (i == 0) {
-                  tabs[0].style.display = "block";
+    setArrive ?
+      <>
+        <div className=' outlet ms-auto d-flex  mt-5 '>
+          <section className='settings-bar ps-4'>
+            <div
+              onClick={function () {
+                var tabs = document.getElementsByClassName("settings-tab");
+                for (var i = 0; i < tabs.length; i++) {
+                  if (i == 0) {
+                    tabs[0].style.display = "block";
+                  }
+                  else {
+                    tabs[i].style.display = "none";
+                  }
                 }
-                else {
-                  tabs[i].style.display = "none";
-                }
-              }
-            }}
-            className="setting-choice mb-2">
-            <h4><b>Personal Information</b></h4>
-            <h6 className='text-muted'>Edit Your Personal Information</h6>
-          </div>
-          <div
-            onClick={function () {
-              var tabs = document.getElementsByClassName("settings-tab");
-              for (var i = 0; i < tabs.length; i++) {
-                if (i == 1) {
-                  tabs[1].style.display = "block";
-                }
-                else {
-                  tabs[i].style.display = "none";
-                }
-              }
-            }}
-            className="setting-choice mb-2">
-            <h4><b>Account Information</b></h4>
-            <h6 className='text-muted'>Edit Your Basic Account Information</h6>
-          </div>
-          <div
-            onClick={function () {
-              var tabs = document.getElementsByClassName("settings-tab");
-              for (var i = 0; i < tabs.length; i++) {
-                if (i == 2) {
-                  tabs[2].style.display = "block";
-                }
-                else {
-                  tabs[i].style.display = "none";
-                }
-              }
-            }}
-            className="setting-choice mb-2">
-            <h4><b>Change Password</b></h4>
-            <h6 className='text-muted'>Edit Your Password, Try To Remember The Old</h6>
-          </div>
-          <div
-            onClick={function () {
-              var tabs = document.getElementsByClassName("settings-tab");
-              for (var i = 0; i < tabs.length; i++) {
-                if (i == 3) {
-                  tabs[3].style.display = "block";
-                }
-                else {
-                  tabs[i].style.display = "none";
-                }
-              }
-            }}
-            className="setting-choice mb-2">
-            <h4><b>Add New Experience</b></h4>
-            <h6 className='text-muted'>Add New Experience To Your Achievements</h6>
-          </div>
-          <div
-            onClick={function () {
-              var tabs = document.getElementsByClassName("settings-tab");
-              for (var i = 0; i < tabs.length; i++) {
-                if (i == 4) {
-                  tabs[4].style.display = "block";
-                }
-                else {
-                  tabs[i].style.display = "none";
-                }
-              }
-            }}
-            className="setting-choice mb-2">
-            <h4><b>Education Details</b></h4>
-            <h6 className='text-muted'>Add New Education Stage</h6>
-          </div>
-          <div
-            onClick={function () {
-              var tabs = document.getElementsByClassName("settings-tab");
-              for (var i = 0; i < tabs.length; i++) {
-                if (i == 5) {
-                  tabs[5].style.display = "block";
-                }
-                else {
-                  tabs[i].style.display = "none";
-                }
-              }
-            }}
-            className="setting-choice mb-2">
-            <h4><b>Positions</b></h4>
-            <h6 className='text-muted'>Edit Or Add New Employment Position</h6>
-          </div>
-          <div onClick={function () {
-            var tabs = document.getElementsByClassName("settings-tab");
-            for (var i = 0; i < tabs.length; i++) {
-              if (i == 6) {
-                tabs[6].style.display = "block";
-              }
-              else {
-                tabs[i].style.display = "none";
-              }
-            }
-          }}
-            className="setting-choice">
-            <h4><b>Skills</b></h4>
-            <h6 className='text-muted'>Basic Documents</h6>
-          </div>
-          <div onClick={function () {
-            var tabs = document.getElementsByClassName("settings-tab");
-            for (var i = 0; i < tabs.length; i++) {
-              if (i == 7) {
-                tabs[7].style.display = "block";
-              }
-              else {
-                tabs[i].style.display = "none";
-              }
-            }
-          }}
-            className="setting-choice">
-            <h4><b>Documents</b></h4>
-            <h6 className='text-muted'>Upload Basic Documents CV,ID,..</h6>
-          </div>
-        </section>
-
-        {/* PERSONAL INFORMATION EDITING */}
-        <section className='settings-tab p-4'>
-          <h3 className='text-center'><b>Personal Information</b></h3>
-          <div className="upload-new-photo p-4 w-100 h-25 mb-3 d-flex align-items-center">
-            <img className='me-4' src={Profile}></img>
-            <div className="upp">
-              <h2><b>Upload New Profile Photo</b></h2>
-              <h6 className='text-muted'>profile.jpg</h6>
+              }}
+              className="setting-choice mb-2">
+              <h4><b>Personal Information</b></h4>
+              <h6 className='text-muted'>Edit Your Personal Information</h6>
             </div>
-            <button className="upload-btn ms-auto">
-              <div>
-                <i class="fa-solid fa-cloud-arrow-up"></i> Update
+            <div
+              onClick={function () {
+                var tabs = document.getElementsByClassName("settings-tab");
+                for (var i = 0; i < tabs.length; i++) {
+                  if (i == 1) {
+                    tabs[1].style.display = "block";
+                  }
+                  else {
+                    tabs[i].style.display = "none";
+                  }
+                }
+              }}
+              className="setting-choice mb-2">
+              <h4><b>Account Information</b></h4>
+              <h6 className='text-muted'>Edit Your Basic Account Information</h6>
+            </div>
+            <div
+              onClick={function () {
+                var tabs = document.getElementsByClassName("settings-tab");
+                for (var i = 0; i < tabs.length; i++) {
+                  if (i == 2) {
+                    tabs[2].style.display = "block";
+                  }
+                  else {
+                    tabs[i].style.display = "none";
+                  }
+                }
+              }}
+              className="setting-choice mb-2">
+              <h4><b>Change Password</b></h4>
+              <h6 className='text-muted'>Edit Your Password, Try To Remember The Old</h6>
+            </div>
+            <div
+              onClick={function () {
+                var tabs = document.getElementsByClassName("settings-tab");
+                for (var i = 0; i < tabs.length; i++) {
+                  if (i == 3) {
+                    tabs[3].style.display = "block";
+                  }
+                  else {
+                    tabs[i].style.display = "none";
+                  }
+                }
+              }}
+              className="setting-choice mb-2">
+              <h4><b>Add New Experience</b></h4>
+              <h6 className='text-muted'>Add New Experience To Your Achievements</h6>
+            </div>
+            <div
+              onClick={function () {
+                var tabs = document.getElementsByClassName("settings-tab");
+                for (var i = 0; i < tabs.length; i++) {
+                  if (i == 4) {
+                    tabs[4].style.display = "block";
+                  }
+                  else {
+                    tabs[i].style.display = "none";
+                  }
+                }
+              }}
+              className="setting-choice mb-2">
+              <h4><b>Education Details</b></h4>
+              <h6 className='text-muted'>Add New Education Stage</h6>
+            </div>
+            <div
+              onClick={function () {
+                var tabs = document.getElementsByClassName("settings-tab");
+                for (var i = 0; i < tabs.length; i++) {
+                  if (i == 5) {
+                    tabs[5].style.display = "block";
+                  }
+                  else {
+                    tabs[i].style.display = "none";
+                  }
+                }
+              }}
+              className="setting-choice mb-2">
+              <h4><b>Positions</b></h4>
+              <h6 className='text-muted'>Edit Or Add New Employment Position</h6>
+            </div>
+            <div onClick={function () {
+              var tabs = document.getElementsByClassName("settings-tab");
+              for (var i = 0; i < tabs.length; i++) {
+                if (i == 6) {
+                  tabs[6].style.display = "block";
+                }
+                else {
+                  tabs[i].style.display = "none";
+                }
+              }
+            }}
+              className="setting-choice">
+              <h4><b>Skills</b></h4>
+              <h6 className='text-muted'>Basic Documents</h6>
+            </div>
+            <div onClick={function () {
+              var tabs = document.getElementsByClassName("settings-tab");
+              for (var i = 0; i < tabs.length; i++) {
+                if (i == 7) {
+                  tabs[7].style.display = "block";
+                }
+                else {
+                  tabs[i].style.display = "none";
+                }
+              }
+            }}
+              className="setting-choice">
+              <h4><b>Documents</b></h4>
+              <h6 className='text-muted'>Upload Basic Documents CV,ID,..</h6>
+            </div>
+          </section>
+
+          {/* PERSONAL INFORMATION EDITING */}
+          <section className='settings-tab p-4'>
+            <h3 className='text-center'><b>Personal Information</b></h3>
+            <div className="upload-new-photo p-4 w-100 h-25 mb-3 d-flex align-items-center">
+              {/* <img src={`data:video/mp4;base64,${mediaFile}`} alt="" /> */}
+              <img className='me-4' src={Profile}></img>
+              <div className="upp">
+                <h2><b>Upload New Profile Photo</b></h2>
+                <h6 className='text-muted'>profile.jpg</h6>
               </div>
-              <input type="file"></input>
+              <button className="upload-btn ms-auto">
+                <div>
+                  <i class="fa-solid fa-cloud-arrow-up"></i> Update
+                </div>
+                <form onSubmit={onSubmitHandlerProfilePic}>
+                  <input type="file" onChange={ProfilePicChangeHandler} />
+                </form>
 
-            </button>
-
-          </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="firstLastEdit">First Name</label>
-            <input type="text" class="form-control" id="firstLastEdit" aria-describedby="fname" placeholder="First Name" />
-          </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="firstNameEdit">Last Name</label>
-            <input type="text" class="form-control" id="firstNameEdit" aria-describedby="lname" placeholder="Last Name" />
-          </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="firstNameEdit">Birthdate</label>
-            <input type="date" class="form-control" id="firstNameEdit" aria-describedby="emailHelp" placeholder="First Name" />
-            <small id="emailHelp" class="form-text text-danger">Your Old Birthdate is 2000/09/10. </small>
-          </div>
-          <div className="field-form w-100 mb-3 ">
-            <label for="firstNameTextField" class="form-label">State</label>
-            <div className="select-div w-100 ">
-              <select id="state_option" className='state-option-settings'>
-                <option selected disabled>Select State</option>
-                {stateItem.map((state) =>
-                  <option>
-                    {state.name}
-                  </option>
-                )}
-
-              </select>
-              <small id="emailHelp" class="form-text text-danger">Your Old State is Palestine. </small>
+              </button>
 
             </div>
-
-          </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="firstNameEdit">City</label>
-            <input type="text" class="form-control" id="firstNameEdit" aria-describedby="emailHelp" placeholder="City" />
-          </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="firstNameEdit">Phone Number</label>
-            <input type="text" class="form-control" id="firstNameEdit" aria-describedby="emailHelp" placeholder="Phone Number" />
-          </div>
-
-          <div className="divv d-flex justify-content-end">
-            <button
-              onClick={function () {
-                swal({
-                  title: "Are you sure to save your edit?",
-                  icon: "warning",
-                  buttons: true,
-                  dangerMode: true,
-                })
-                  .then((willDelete) => {
-                    if (willDelete) {
-                      swal("Poof! Your edit has been success!", {
-                        icon: "success",
-                      });
-                    } else {
-                      swal("Your imaginary file is safe!");
-                    }
-                  });
-              }}
-              id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
-
-          </div>
-        </section>
-
-        {/* ACCOUNT INFORMATION EDITING */}
-        <section className='settings-tab p-4'>
-          <h3 className='text-center'><b>Account Information</b></h3>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="userNameEdit">Username</label>
-            <input type="text" class="form-control" id="userNameEdit" aria-describedby="fname" placeholder="Username" />
-          </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="emailEdit">Email Address</label>
-            <input type="email" class="form-control" id="emailEdit" aria-describedby="emailEdit" placeholder="Email Address" />
-          </div>
-          <div class="form-group mb-3">
-            <label for="exampleFormControlTextarea1">Bio</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-          </div>
-
-          <div className="divv d-flex justify-content-end">
-            <button
-
-              id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
-
-          </div>
-        </section>
-
-        {/* CHANGE YOUR PASSWORD EDITING */}
-        <section className='settings-tab p-4'>
-          <h3 className='text-center'><b>Change Password</b></h3>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="userNameEdit">Old Password</label>
-            <input type="password" class="form-control" id="userNameEdit" aria-describedby="fname" placeholder="Old Password" />
-          </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="emailEdit">New Password</label>
-            <input
-              onKeyUp={(e) => {
-                var notify = document.getElementById("notify");
-                var newPassword = document.getElementById("confeditpassword");
-                console.log(e.target.value);
-                if (e.target.value != newPassword.value) {
-                  console.log("EZZ");
-                  notify.style.display = "block";
-
-                } else {
-                  notify.style.display = "none";
-
-                }
-
-
-              }}
-              type="password" class="form-control" id="newPassword" aria-describedby="emailEdit" placeholder="New Password" />
-          </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="emailEdit">Confirm New Password</label>
-            <input
-              onKeyUp={(e) => {
-                var notify = document.getElementById("notify");
-                var newPassword = document.getElementById("newPassword");
-                console.log(e.target.value);
-                if (e.target.value != newPassword.value) {
-                  console.log("EZZ");
-                  notify.style.display = "block";
-
-                } else {
-                  notify.style.display = "none";
-
-                }
-
-
-              }}
-              type="password" class="form-control" id="confeditpassword" aria-describedby="" placeholder="Confirm New Password" />
-            <small id="notify" class="form-text text-danger">Two Passwords are Not Identical! </small>
-
-          </div>
-
-
-          <div className="divv d-flex justify-content-end">
-            <button
-              onClick={function () {
-                swal({
-                  title: "Are you sure to save your edit?",
-                  icon: "warning",
-                  buttons: true,
-                  dangerMode: true,
-                })
-                  .then((willDelete) => {
-                    if (willDelete) {
-                      swal("Poof! Your edit has been success!", {
-                        icon: "success",
-                      });
-                    } else {
-                      swal("Your imaginary file is safe!");
-                    }
-                  });
-              }}
-              id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
-
-          </div>
-        </section>
-
-        {/* ADD NEW EXPEIRENCE */}
-        <section className='settings-tab p-4'>
-          <h3 className='text-center'><b>New Experience</b></h3>
-          <form>
             <div class="form-group mb-3">
-              <label className='mb-2' for="userNameEdit">Expereinece By</label>
-              <input type="text" class="form-control" id="expByName" aria-describedby="fname" placeholder="Expereinece By" />
+              <label className='mb-2' for="firstLastEdit">First Name</label>
+              <input type="text" class="form-control" id="firstNameEdit" aria-describedby="fname" placeholder="First Name"
+                value={personalInfo.firstName}
+              />
             </div>
             <div class="form-group mb-3">
-              <label className='mb-2' for="startDateExp">Start Date</label>
-              <input type="date" class="form-control" id="startDateExp" aria-describedby="startDateExp" />
+              <label className='mb-2' for="firstNameEdit">Last Name</label>
+              <input type="text" class="form-control" id="lastNameEdit" aria-describedby="lname" placeholder="Last Name"
+                value={personalInfo.lastName}
+              />
             </div>
             <div class="form-group mb-3">
-              <label className='mb-2' for="endDateExp">End Date</label>
-              <input type="date" class="form-control" id="endDateExp" aria-describedby="" />
+              <label className='mb-2' for="firstNameEdit">Birthdate</label>
+              <input type="date" class="form-control" id="birthdate" aria-describedby="emailHelp" placeholder="First Name" />
+              <small id="emailHelp" class="form-text text-danger">Your Old Birthdate is {personalInfo.birthDate}</small>
+            </div>
+            <div className="field-form w-100 mb-3 ">
+              <label for="firstNameTextField" class="form-label">State</label>
+              <div className="select-div w-100 ">
+                <select id="state_option" className='state-option-settings'>
+                  <option selected disabled>Select State</option>
+                  {stateItem.map((state) =>
+                    <option>
+                      {state.name}
+                    </option>
+                  )}
+
+                </select>
+                <small id="emailHelp" class="form-text text-danger">Your Old State is {personalInfo.country} </small>
+
+              </div>
+
             </div>
             <div class="form-group mb-3">
-              <label className='mb-2' for="experienceDetails">Experience Details</label>
-              <textarea class="form-control" id="experienceDetails" rows="3"></textarea>
+              <label className='mb-2' for="firstNameEdit">City</label>
+              <input type="text" class="form-control" id="city" aria-describedby="emailHelp"
+                value={personalInfo.city}
+                placeholder="City" />
             </div>
             <div class="form-group mb-3">
-              <label className='mb-2' for="uploadFile">Upload File</label>
-              <input onChange={(e) => {
-                setFileData(e.target.files[0]);
-                console.log(fileData);
-              }} type="file" class="form-control" id="uploadExpFile" aria-describedby="" />
+              <label className='mb-2' for="phoneNumber">Phone Number</label>
+              <input
+                value={personalInfo.phoneNumber}
+                type="text" class="form-control" id="phoneNumber" aria-describedby="emailHelp" placeholder="Phone Number" />
             </div>
 
             <div className="divv d-flex justify-content-end">
               <button
-                onSubmit={function (e) {
+                onClick={async () => {
+                  var firstName = document.getElementById("firstNameEdit").value;
+                  var lastName = document.getElementById("lasttNameEdit").value;
+                  var birthDate = document.getElementById("birthdate").value;
+                  var country = document.getElementById("state_option").value;
+                  var city = document.getElementById("city").value;
+                  var phoneNumber = document.getElementById("phoneNumber").value;
+                  var data = {
+                    firstName,
+                    lastName,
+                    birthDate,
+                    country,
+                    city,
+                    phoneNumber
+                  }
 
-                  // e.preventDefault();
+                  await fetch(`http://localhost:5000/personalInfo/update`, {
+                    method: 'PUT',
+                    body: JSON.stringify(data),
+                    headers: {
+                      "Content-type": "application/json; charset=UTF-8"
+                    }
+                  }).then(response => response.json())
+                    .then(json => {
+                      if (json.message == "success") {
+                        swal("Good job!", "Your personal information had been edited successfully!", "success");
 
-                  console.log(fileData)
-                  const data = new FormData();
+                      }
+                      else if (json.message == "phone already exists") {
+                        swal("Phone Number is exists!", "Please sure that you enter new phone number!", "error");
 
-                  var expBy = document.getElementById("expByName").value;
-                  var expStartDate = document.getElementById("startDateExp").value;
-                  var expEndDate = document.getElementById("endDateExp").value;
-                  var expDetails = document.getElementById("experienceDetails").value
+                      }
 
-
-                  data.append("orginization", expBy);
-                  data.append("startDate", expStartDate);
-                  data.append("endDate", expEndDate);
-                  data.append("details", expDetails);
-                  data.append("experienceFile", fileData);
-                  data.append("_id", "637244067f8eb54bbde72295");
-
-                  fetch("http://localhost:5000/addExperience/update", {
-                    method: "PUT",
-                    body: data,
-                  })
-                    .then((result) => {
-                      console.log("New Experience had been added or updated successfully");
-                    })
-                    .catch((err) => {
-                      console.log(err.message);
                     });
+                }}
+
+                id='saveInfoBtn' > <i class="fa-solid fa-floppy-disk"></i> Save</button>
+
+            </div>
+          </section>
+
+          {/* ACCOUNT INFORMATION EDITING */}
+          <section className='settings-tab p-4'>
+            <h3 className='text-center'><b>Account Information</b></h3>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="userNameEdit">Username</label>
+              <input
+                value={accountInfo.userName}
+                type="text" class="form-control" id="userNameEdit" aria-describedby="fname" placeholder="Username" />
+            </div>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="emailEdit">Email Address</label>
+              <input
+                value={accountInfo.emailAddress}
+                type="email" class="form-control" id="emailEdit" aria-describedby="emailEdit" placeholder="Email Address" />
+            </div>
+            <div class="form-group mb-3">
+              <label for="exampleFormControlTextarea1">Bio</label>
+              <textarea
+                value={accountInfo.about}
+                class="form-control" id="bio" rows="3"></textarea>
+            </div>
+
+            <div className="divv d-flex justify-content-end">
+              <button
+                onClick={async () => {
+                  var userName = document.getElementById("userNameEdit").value;
+                  var emailAddress = document.getElementById("emailEdit").value;
+                  var about = document.getElementById("bio").value;
+
+                  var data = {
+                    userName,
+                    emailAddress,
+                    about,
+
+                  }
+
+                  await fetch(`http://localhost:5000/accountInfo/update`, {
+                    method: 'PUT',
+                    body: JSON.stringify(data),
+                    headers: {
+                      "Content-type": "application/json; charset=UTF-8"
+                    }
+                  }).then(response => response.json())
+                    .then(json => {
+                      if (json.message == "success") {
+                        swal("Good job!", "Your Account information had been edited successfully!", "success");
+
+                      }
+                      else if (json.message == "email already exists") {
+                        swal("Email Already Exists!", "Please sure that you enter new email address!", "error");
+
+                      }
+
+                    });
+                }}
+
+                id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
+
+            </div>
+          </section>
+
+          {/* CHANGE YOUR PASSWORD EDITING */}
+          <section className='settings-tab p-4'>
+            <h3 className='text-center'><b>Change Password</b></h3>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="userNameEdit">Old Password</label>
+              <input type="password" class="form-control" id="userNameEdit" aria-describedby="fname" placeholder="Old Password" />
+            </div>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="emailEdit">New Password</label>
+              <input
+                onKeyUp={(e) => {
+                  var notify = document.getElementById("notify");
+                  var newPassword = document.getElementById("confeditpassword");
+                  console.log(e.target.value);
+                  if (e.target.value != newPassword.value) {
+                    console.log("EZZ");
+                    notify.style.display = "block";
+
+                  } else {
+                    notify.style.display = "none";
+
+                  }
 
 
+                }}
+                type="password" class="form-control" id="newPassword" aria-describedby="emailEdit" placeholder="New Password" />
+            </div>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="emailEdit">Confirm New Password</label>
+              <input
+                onKeyUp={(e) => {
+                  var notify = document.getElementById("notify");
+                  var newPassword = document.getElementById("newPassword");
+                  console.log(e.target.value);
+                  if (e.target.value != newPassword.value) {
+                    console.log("EZZ");
+                    notify.style.display = "block";
 
+                  } else {
+                    notify.style.display = "none";
+
+                  }
+
+
+                }}
+                type="password" class="form-control" id="confeditpassword" aria-describedby="" placeholder="Confirm New Password" />
+              <small id="notify" class="form-text text-danger">Two Passwords are Not Identical! </small>
+
+            </div>
+
+
+            <div className="divv d-flex justify-content-end">
+              <button
+                onClick={function () {
                   swal({
                     title: "Are you sure to save your edit?",
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
                   })
-                    .then((saveNewExp) => {
-
-                      if (saveNewExp) {
+                    .then((willDelete) => {
+                      if (willDelete) {
                         swal("Poof! Your edit has been success!", {
                           icon: "success",
                         });
@@ -477,325 +531,485 @@ export default function Settings() {
                         swal("Your imaginary file is safe!");
                       }
                     });
-                }
-                }
+                }}
                 id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
 
             </div>
-          </form>
-        </section>
+          </section>
 
-        {/* EDUCATION INFORMATION  */}
-        <section className='settings-tab p-4'>
-          <h3 className='text-center'><b>New Education</b></h3>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="userNameEdit">University</label>
-            <input type="text" class="form-control" id="userNameEdit" aria-describedby="fname" placeholder="University" />
-          </div>
-          <div className="field-form w-100 mb-3 ">
-            <label for="firstNameTextField" class="form-label">Faculty</label>
-            <div className="select-div w-100 ">
-              <select id="state_option" className='state-option-settings'>
-                <option selected disabled>Select Your Faculty</option>
-                <option value="Engineering & IT">Engineering & IT</option>
-                <option value="Science">Science</option>
-                <option value="Medicine">Medicine</option>
-                <option value="Physical Education">Physical Education</option>
-                <option value="Litreatures">Litreatures</option>
-                <option value="Economic">Economic</option>
-                <option value="Public Relationships">Public Relationships</option>
-                <option value="Arts">Arts</option>
-
-              </select>
-
-            </div>
-
-          </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="Specialization">Specialization</label>
-            <input type="text" class="form-control" id="Specialization" aria-describedby="Specialization" placeholder="Specialization" />
-          </div>
-          <div className="field-form w-100 mb-3 ">
-            <label for="firstNameTextField" class="form-label">Scientific Degree</label>
-            <div className="select-div w-100 ">
-              <select id="state_option" className='state-option-settings'>
-                <option selected disabled>Select Your Degree</option>
-                <option value="Diploma">Diploma</option>
-                <option value="Bachelor">Bachelor </option>
-                <option value="Master">Master</option>
-                <option value="PHd">PHd</option>
-
-
-              </select>
-
-            </div>
-
-          </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="startDateStudy">Start Date</label>
-            <div className='d-flex'>
-              <div className="select-div w-50 ">
-                <select id="month_option" className='state-option-settings'>
-                  <option selected disabled>Month</option>
-                  {(() => {
-                    let months = [];
-                    for (var i = 1; i < 13; i++) {
-                      months.push(<option>{i}</option>);
-                    }
-                    return months;
-                  })()}
-                </select>
-
+          {/* ADD NEW EXPEIRENCE */}
+          <section className='settings-tab p-4'>
+            <h3 className='text-center'><b>New Experience</b></h3>
+            <form>
+              <div class="form-group mb-3">
+                <label className='mb-2' for="userNameEdit">Expereinece By</label>
+                <input type="text" class="form-control" id="expByName" aria-describedby="fname" placeholder="Expereinece By" />
               </div>
-              <div className="select-div w-50 ">
-                <select id="state_option" className='state-option-settings'>
-                  <option selected disabled>Year</option>
-                  {(() => {
-                    let years = [];
-                    for (var i = 1990; i < 2023; i++) {
-                      years.push(<option>{i}</option>);
-                    }
-                    return years;
-                  })()}
-
-                </select>
-
+              <div class="form-group mb-3">
+                <label className='mb-2' for="startDateExp">Start Date</label>
+                <input on type="date" class="form-control" id="startDateExp" aria-describedby="startDateExp" />
               </div>
-            </div>
-          </div>
-          <div className="form-group mb-3">
-            <label className='mb-2' for="endDateStudy">End Date</label>
-            <div className='d-flex'>
-              <div className="select-div w-50 ">
-                <select id="month_option" className='state-option-settings'>
-                  <option selected disabled>Month</option>
-                  {(() => {
-                    let months = [];
-                    for (var i = 1; i < 13; i++) {
-                      months.push(<option>{i}</option>);
-                    }
-                    return months;
-                  })()}
-                </select>
-
+              <div class="form-group mb-3">
+                <label className='mb-2' for="endDateExp">End Date</label>
+                <input
+                  type="date" class="form-control" id="endDateExp" aria-describedby="" />
               </div>
-              <div className="select-div w-50 ">
-                <select id="state_option" className='state-option-settings'>
-                  <option selected disabled>Year</option>
-                  {(() => {
-                    let years = [];
-                    for (var i = 1990; i < 2023; i++) {
-                      years.push(<option>{i}</option>);
-                    }
-                    return years;
-                  })()}
-
-                </select>
-
+              <div class="form-group mb-3">
+                <label className='mb-2' for="experienceDetails">Experience Details</label>
+                <textarea class="form-control" id="experienceDetails" rows="3"></textarea>
               </div>
-            </div>
-            <small id="emailHelp" class="form-text text-danger">If you still a student, select an expected date for your graduation</small>
+              <div class="form-group mb-3">
+                <label className='mb-2' for="uploadFile">Upload File</label>
+                <input onChange={(e) => {
+                  setFileData(e.target.files[0]);
+                  console.log(fileData);
+                }} type="file" class="form-control" id="uploadExpFile" aria-describedby="" />
+              </div>
 
-          </div>
+              <div className="divv d-flex justify-content-end">
+                <button
+                  onSubmit={function (e) {
+
+                    e.preventDefault();
+
+                    console.log(fileData)
+                    const data = new FormData();
+
+                    var expBy = document.getElementById("expByName").value;
+                    var expStartDate = document.getElementById("startDateExp").value;
+                    var expEndDate = document.getElementById("endDateExp").value;
+                    var expDetails = document.getElementById("experienceDetails").value
+
+                    console.log(expStartDate);
+
+                    data.append("orginization", expBy);
+                    data.append("startDate", expStartDate);
+                    data.append("endDate", expEndDate);
+                    data.append("details", expDetails);
+                    data.append("experienceFile", fileData);
+                    data.append("_id", "637244067f8eb54bbde72295");
 
 
 
-
-          <div className="divv d-flex justify-content-end">
-            <button
-              onClick={function () {
-                swal({
-                  title: "Are you sure to save your edit?",
-                  icon: "warning",
-                  buttons: true,
-                  dangerMode: true,
-                })
-                  .then((willDelete) => {
-                    if (willDelete) {
-                      swal("Poof! Your edit has been success!", {
-                        icon: "success",
+                    swal({
+                      title: "Are You Sure To Save Your New Experience?",
+                      icon: "warning",
+                      buttons: true,
+                      dangerMode: true,
+                    })
+                      .then((saveNewExp) => {
+                        if (saveNewExp) {
+                          fetch("http://localhost:5000/addExperience/update", {
+                            method: "PUT",
+                            body: data,
+                          })
+                            .then((result) => {
+                              console.log("New Experience had been added or updated successfully");
+                            });
+                          swal("Poof! Your edit has been success!", {
+                            icon: "success",
+                          });
+                        } else {
+                          swal("Your imaginary file is safe!");
+                        }
                       });
-                    } else {
-                      swal("Your imaginary file is safe!");
-                    }
-                  });
-              }}
-              id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
+                  }
+                  }
+                  id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
 
-          </div>
-        </section>
+              </div>
+            </form>
+          </section>
 
-        {/* ADD NEW POSITION */}
-        <section className='settings-tab p-4'>
-          <h3 className='text-center'><b>New Position</b></h3>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="userNameEdit">Company</label>
-            <input type="text" class="form-control" id="userNameEdit" aria-describedby="fname" placeholder="Company" />
-          </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="startDateExp">Start Date</label>
-            <div className='d-flex'>
-              <div className="select-div w-50 ">
-                <select id="month_option" className='state-option-settings'>
-                  <option selected disabled>Month</option>
-                  {(() => {
-                    let months = [];
-                    for (var i = 1; i < 13; i++) {
-                      months.push(<option>{i}</option>);
-                    }
-                    return months;
-                  })()}
+          {/* EDUCATION INFORMATION  */}
+          <section className='settings-tab p-4'>
+            <h3 className='text-center'><b>New Education</b></h3>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="userNameEdit">University</label>
+              <input type="text" class="form-control" id="University" aria-describedby="fname" placeholder="University" />
+            </div>
+            <div className="field-form w-100 mb-3 ">
+              <label for="firstNameTextField" class="form-label">Faculty</label>
+              <div className="select-div w-100 ">
+                <select id="Faculty" className='state-option-settings'>
+                  <option selected disabled>Select Your Faculty</option>
+                  <option value="Engineering & IT">Engineering & IT</option>
+                  <option value="Science">Science</option>
+                  <option value="Medicine">Medicine</option>
+                  <option value="Physical Education">Physical Education</option>
+                  <option value="Litreatures">Litreatures</option>
+                  <option value="Economic">Economic</option>
+                  <option value="Public Relationships">Public Relationships</option>
+                  <option value="Arts">Arts</option>
+
                 </select>
 
               </div>
-              <div className="select-div w-50 ">
-                <select id="state_option" className='state-option-settings'>
-                  <option selected disabled>Year</option>
-                  {(() => {
-                    let years = [];
-                    for (var i = 1990; i < 2023; i++) {
-                      years.push(<option>{i}</option>);
-                    }
-                    return years;
-                  })()}
+
+            </div>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="Specialization">Specialization</label>
+              <input type="text" class="form-control" id="Specialization" aria-describedby="Specialization" placeholder="Specialization" />
+            </div>
+            <div className="field-form w-100 mb-3 ">
+              <label for="ScientificDegree" class="form-label">Scientific Degree</label>
+              <div className="select-div w-100 ">
+                <select id="scientificDegree" className='state-option-settings'>
+                  <option selected disabled>Select Your Degree</option>
+                  <option value="Diploma">Diploma</option>
+                  <option value="Bachelor">Bachelor </option>
+                  <option value="Master">Master</option>
+                  <option value="PHd">PHd</option>
+
 
                 </select>
 
+              </div>
+
+            </div>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="startDateStudy">Start Date</label>
+              <div className='d-flex'>
+                <div className="select-div w-50 ">
+                  <select id="month_option_start" className='state-option-settings'>
+                    <option selected disabled>Month</option>
+                    {(() => {
+                      let months = [];
+                      for (var i = 1; i < 13; i++) {
+                        months.push(<option>{i}</option>);
+                      }
+                      return months;
+                    })()}
+                  </select>
+
+                </div>
+                <div className="select-div w-50 ">
+                  <select id="year_option_start" className='state-option-settings'>
+                    <option selected disabled>Year</option>
+                    {(() => {
+                      let years = [];
+                      for (var i = 1990; i < 2023; i++) {
+                        years.push(<option>{i}</option>);
+                      }
+                      return years;
+                    })()}
+
+                  </select>
+
+                </div>
               </div>
             </div>
-          </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="PositionName">Position Name</label>
-            <input type="text" class="form-control" id="PositionName" aria-describedby="PositionName" placeholder="Position Name" />
-          </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="experienceDetails">Position Details</label>
-            <textarea class="form-control" id="experienceDetails" rows="3"></textarea>
-          </div>
+            <div className="form-group mb-3">
+              <label className='mb-2' for="endDateStudy">End Date</label>
+              <div className='d-flex'>
+                <div className="select-div w-50 ">
+                  <select id="month_option_end" className='state-option-settings'>
+                    <option selected disabled>Month</option>
+                    {(() => {
+                      let months = [];
+                      for (var i = 1; i < 13; i++) {
+                        months.push(<option>{i}</option>);
+                      }
+                      return months;
+                    })()}
+                  </select>
+
+                </div>
+                <div className="select-div w-50 ">
+                  <select id="year_option_end" className='state-option-settings'>
+                    <option selected disabled>Year</option>
+                    {(() => {
+                      let years = [];
+                      for (var i = 1990; i < 2023; i++) {
+                        years.push(<option>{i}</option>);
+                      }
+                      return years;
+                    })()}
+
+                  </select>
+
+                </div>
+              </div>
+              <small id="emailHelp" class="form-text text-danger">If you still a student, select an expected date for your graduation</small>
+
+            </div>
 
 
-          <div className="divv d-flex justify-content-end">
-            <button
-              onClick={function () {
-                swal({
-                  title: "Are you sure to save your edit?",
-                  icon: "warning",
-                  buttons: true,
-                  dangerMode: true,
-                })
-                  .then((willDelete) => {
-                    if (willDelete) {
-                      swal("Poof! Your edit has been success!", {
-                        icon: "success",
-                      });
-                    } else {
-                      swal("Your imaginary file is safe!");
+
+
+            <div className="divv d-flex justify-content-end">
+              <button
+                onClick={async () => {
+
+                  var university = document.getElementById("University").value;
+                  var faculty = document.getElementById("Faculty").value;
+                  var specialization = document.getElementById("Specialization").value;
+                  var degree = document.getElementById("scientificDegree").value;
+                  var month_option_start = document.getElementById("month_option_start").value;
+                  var year_option_start = document.getElementById("year_option_start").value;
+                  var month_option_end = document.getElementById("month_option_end").value;
+                  var year_option_end = document.getElementById("year_option_end").value;
+
+
+                  var data = {
+                    university,
+                    faculty,
+                    specialization,
+                    degree,
+                    startDate: year_option_start + "-" + month_option_start,
+                    endDate: year_option_end + "-" + month_option_end
+                  }
+
+                  await fetch(`http://localhost:5000/addEducation/update`, {
+                    method: 'PUT',
+                    body: JSON.stringify(data),
+                    headers: {
+                      "Content-type": "application/json; charset=UTF-8"
                     }
-                  });
-              }}
-              id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
+                  }).then(response => response.json())
+                    .then(() => {
 
-          </div>
-        </section>
+                      swal("Good job!", "Your Education information had been added successfully!", "success");
 
-        {/* ADD NEW SKILL */}
-        <section className='settings-tab p-4'>
-          <h3 className='text-center'><b>New Skill</b></h3>
-          <div class="form-group mb-3">
+
+                    });
+                }}
+                id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
+
+            </div>
+          </section>
+
+          {/* ADD NEW POSITION */}
+          <section className='settings-tab p-4'>
+            <h3 className='text-center'><b>New Position</b></h3>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="Company">Company</label>
+              <input type="text" class="form-control" id="Company" aria-describedby="fname" placeholder="Company" />
+            </div>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="startDatePos">Start Date</label>
+              <div className='d-flex'>
+                <div className="select-div w-50 ">
+                  <select id="month_option_start_pos" className='state-option-settings'>
+                    <option selected disabled>Month</option>
+                    {(() => {
+                      let months = [];
+                      for (var i = 1; i < 13; i++) {
+                        months.push(<option>{i}</option>);
+                      }
+                      return months;
+                    })()}
+                  </select>
+
+                </div>
+                <div className="select-div w-50 ">
+                  <select id="year_option_start_pos" className='state-option-settings'>
+                    <option selected disabled>Year</option>
+                    {(() => {
+                      let years = [];
+                      for (var i = 1990; i < 2023; i++) {
+                        years.push(<option>{i}</option>);
+                      }
+                      return years;
+                    })()}
+
+                  </select>
+
+                </div>
+              </div>
+            </div>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="PositionName">Position Name</label>
+              <input type="text" class="form-control" id="PositionName" aria-describedby="PositionName" placeholder="Position Name" />
+            </div>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="positionDetails">Position Details</label>
+              <textarea class="form-control" id="positionDetails" rows="3"></textarea>
+            </div>
+
+
+            <div className="divv d-flex justify-content-end">
+              <button
+                onClick={async () => {
+                  var company = document.getElementById("Company").value;
+                  var msdate = document.getElementById("month_option_start_pos").value;
+                  var ysdate = document.getElementById("year_option_start_pos").value;
+                  var positionName = document.getElementById("PositionName").value;
+                  var positionDetails = document.getElementById("positionDetails").value;
+
+                  var data = {
+                    company,
+                    startDate: ysdate + "-" + msdate,
+                    positionName,
+                    positionDetails
+                  }
+
+                  await fetch(`http://localhost:5000/addPosition/update`, {
+                    method: 'PUT',
+                    body: JSON.stringify(data),
+                    headers: {
+                      "Content-type": "application/json; charset=UTF-8"
+                    }
+                  }).then(response => response.json())
+                    .then(() => {
+                      swal("Good job!", "New Position had been added successfully!", "success");
+                    });
+                }}
+
+                id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
+
+            </div>
+          </section>
+
+          {/* ADD NEW SKILL */}
+          <section className='settings-tab p-4'>
+            <h3 className='text-center'><b>New Skill</b></h3>
             <label className='mb-2' for="userSkillEdit">Skill</label>
-            <input type="text" class="form-control" id="userSkillEdit" aria-describedby="fname" placeholder="Company" />
-          </div>
-          <div className="skills container mb-4 ">
-            <h2 className='mb-4'><b><span className='span-style '>Current</span></b> Skills</h2>
-            <div className="skill-row">
-              {
-                skill.map((skill) => {
-                  return <div className="skill d-flex align-items-center"><div>{skill}</div></div>    
 
-                })
-              }
+            <div className='d-flex justify-around'>
+              <div class="form-group mb-3 addSkill">
+                <input type="text" class="form-control" id="userSkillEdit" aria-describedby="fname" placeholder="New Skill" />
+              </div>
 
-
+              <div className='saveNewSkill'>
+                <button
+                   onClick={async () => {
+                      
+                    var newSkill = document.getElementById("userSkillEdit").value;        
+                    var data = {
+                      newSkill
+         
+                    }
+  
+                    await fetch(`http://localhost:5000/addSkill/update`, {
+                      method: 'PUT',
+                      body: JSON.stringify(data),
+                      headers: {
+                        "Content-type": "application/json; charset=UTF-8"
+                      }
+                    }).then(response => response.json())
+                      .then(() => {
+                        
+                          swal("Good job!", "New Skill had been added successfully!", "success");
+  
+  
+                      });
+                  }}
+                  id='saveInfoBtnSkill'><i class="fa-solid fa-plus"></i>&nbsp; Add</button>
+              </div>
 
             </div>
-          </div>
 
 
+            <div className="skills container mb-4 ">
+              <h2 className='mb-4'><b><span className='span-style '>Current</span></b> Skills</h2>
+              <div className="skill-row">
+                {
+                  skill.map((skill) => {
+                    return (
+                      <div className="skill d-flex align-items-center  ">
+                        <input id="editSkill" className='skill-blank'
+                        value={skill}
+                        ></input>
+                        <div
+                        onClick={()=>{
+                          //DELETE REQUEST FOR THIS SKILL 
+                        }}
+                        className="remove-skill">
+                          <i class="fa-solid fa-trash-can"></i>
+                        </div>
+                      </div>
+                    );
+
+                  })
+                }
+              </div>
 
 
-          <div className="divv d-flex justify-content-end">
-            <button
-              onClick={function () {
-                swal({
-                  title: "Are you sure to save your edit?",
-                  icon: "warning",
-                  buttons: true,
-                  dangerMode: true,
-                })
-                  .then((willDelete) => {
-                    if (willDelete) {
-                      swal("Poof! Your edit has been success!", {
-                        icon: "success",
-                      });
-                    } else {
-                      swal("Your imaginary file is safe!");
+              <div className="divv d-flex justify-content-end">
+                <button
+                 onClick={async () => {
+                      
+                  var newSkill = document.getElementById("editSkill").value;        
+                  var data = {
+                    newSkill
+       
+                  }
+
+                  await fetch(`http://localhost:5000/changeSkill/update`, {
+                    method: 'PUT',
+                    body: JSON.stringify(data),
+                    headers: {
+                      "Content-type": "application/json; charset=UTF-8"
                     }
-                  });
-              }}
-              id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
-
-          </div>
-        </section>
+                  }).then(response => response.json())
+                    .then(() => {
+                      
+                        swal("Good job!", "New Skill had been added successfully!", "success");
 
 
+                    });
+                }}
+                  id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
 
-        {/* UPLOAD YOUR BASIC FILES  */}
-        <section className='settings-tab p-4'>
-          <h3 className='text-center'><b>Documents</b></h3>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="uploadFile">Upload Your CV</label>
-            <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
-          </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="uploadFile">Upload Your Personal ID</label>
-            <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
-          </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="uploadFile">Upload Your Personal Passport</label>
-            <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
-          </div>
-          <div class="form-group mb-3">
-            <label className='mb-2' for="uploadFile">Upload Your University Grades</label>
-            <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
-          </div>
+              </div>
+            </div>
 
 
 
-          <div className="divv d-flex justify-content-end">
-            <button
-              onClick={function () {
-                swal({
-                  title: "Are you sure to save your edit?",
-                  icon: "warning",
-                  buttons: true,
-                  dangerMode: true,
-                })
-                  .then((willDelete) => {
-                    if (willDelete) {
-                      swal("Poof! Your edit has been success!", {
-                        icon: "success",
-                      });
-                    } else {
-                      swal("Your imaginary file is safe!");
-                    }
-                  });
-              }}
-              id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
 
-          </div>
-        </section>
 
-      </div>
-    </>:""
+          </section>
+
+
+
+          {/* UPLOAD YOUR BASIC FILES  */}
+          <section className='settings-tab p-4'>
+            <h3 className='text-center'><b>Documents</b></h3>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="uploadFile">Upload Your CV</label>
+              <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
+            </div>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="uploadFile">Upload Your Personal ID</label>
+              <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
+            </div>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="uploadFile">Upload Your Personal Passport</label>
+              <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
+            </div>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="uploadFile">Upload Your University Grades</label>
+              <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
+            </div>
+
+
+
+            <div className="divv d-flex justify-content-end">
+              <button
+                onClick={function () {
+                  swal({
+                    title: "Are you sure to save your edit?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                  })
+                    .then((willDelete) => {
+                      if (willDelete) {
+                        swal("Poof! Your edit has been success!", {
+                          icon: "success",
+                        });
+                      } else {
+                        swal("Your imaginary file is safe!");
+                      }
+                    });
+                }}
+                id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
+
+            </div>
+          </section>
+
+        </div >
+      </> : ""
   )
 }

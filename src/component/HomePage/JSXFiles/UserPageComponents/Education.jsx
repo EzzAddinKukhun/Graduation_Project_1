@@ -24,7 +24,7 @@ export default function Education() {
   }
 
   useEffect(() => {
-    getEdus();
+    // getEdus();
   }, []);
 
   return (
@@ -81,27 +81,27 @@ export default function Education() {
                 <div className="modal-body">
                   <section className='settings-tab settings-tab-edit h-100 w-100'>
                     <div class="form-group mb-3">
-                      <label className='mb-2' for="userNameEdit">University</label>
-                      <input type="text" class="form-control" id="userNameEdit" aria-describedby="fname" placeholder="University"
+                      <label className='mb-2' for="universityEdit">University</label>
+                      <input type="text" class="form-control" id="universityEdit" aria-describedby="fname" placeholder="University"
                         value={edu.university}
                       />
                     </div>
                     <div class="form-group mb-3">
-                      <label className='mb-2' for="userNameEdit">Facullty</label>
-                      <input type="text" class="form-control" id="userNameEdit" aria-describedby="fname" placeholder="University"
+                      <label className='mb-2' for="facultyEdit">Facullty</label>
+                      <input type="text" class="form-control" id="facultyEdit" aria-describedby="fname" placeholder="University"
                         value={edu.faculty}
                       />
                     </div>
                     <div class="form-group mb-3">
-                      <label className='mb-2' for="Specialization">Specialization</label>
-                      <input type="text" class="form-control" id="Specialization" aria-describedby="Specialization" placeholder="Specialization"
+                      <label className='mb-2' for="specializationEdit">Specialization</label>
+                      <input type="text" class="form-control" id="specializationEdit" aria-describedby="Specialization" placeholder="Specialization"
                         value={edu.specialization}
                       />
                     </div>
                     <div className="field-form w-100 mb-3 ">
-                      <label for="firstNameTextField" class="form-label">Scientific Degree</label>
+                      <label for="scientificDegreeEdit" class="form-label">Scientific Degree</label>
                       <div className="select-div w-100 ">
-                        <select id="state_option" className='state-option-settings'>
+                        <select id="scientificDegreeEdit" className='state-option-settings'>
                           {edu.degree === "Diploma" ?
                             <>
                               <option disabled>Select Your Degree</option>
@@ -163,7 +163,7 @@ export default function Education() {
                       <label className='mb-2' for="startDateStudy">Start Date</label>
                       <div className='d-flex'>
                         <div className="select-div w-50 ">
-                          <select id="month_option" className='state-option-settings'>
+                          <select id="month_option_edit_start" className='state-option-settings'>
                             <option selected disabled>Month</option>
                             {(() => {
                               let months = [];
@@ -178,7 +178,7 @@ export default function Education() {
 
                         </div>
                         <div className="select-div w-50 ">
-                          <select id="state_option" className='state-option-settings'>
+                          <select id="year_option_edit_start" className='state-option-settings'>
                             <option selected disabled>Year</option>
                             {(() => {
                               let years = [];
@@ -199,7 +199,7 @@ export default function Education() {
                       <label className='mb-2' for="endDateStudy">End Date</label>
                       <div className='d-flex'>
                         <div className="select-div w-50 ">
-                          <select id="month_option" className='state-option-settings'>
+                          <select id="month_option_edit_end" className='state-option-settings'>
                             <option selected disabled>Month</option>
                             {(() => {
                               let months = [];
@@ -213,7 +213,7 @@ export default function Education() {
 
                         </div>
                         <div className="select-div w-50 ">
-                          <select id="state_option" className='state-option-settings'>
+                          <select id="year_option_edit_end" className='state-option-settings'>
                             <option selected disabled>Year</option>
                             {(() => {
                               let years = [];
@@ -231,14 +231,49 @@ export default function Education() {
                       <small id="emailHelp" class="form-text text-danger">If you still a student, select an expected date for your graduation</small>
 
                     </div>
-
-
                   </section>
 
                 </div>
                 <div className="modal-footer">
                   <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="button" className="btn btn-primary">Save changes</button>
+                  <button type="button" className="btn btn-primary"
+                     onClick={async () => {
+                      
+                      var university = document.getElementById("universityEdit").value;
+                      var faculty = document.getElementById("facultyEdit").value;
+                      var specialization = document.getElementById("specializationEdit").value;
+                      var degree = document.getElementById("scientificDegreeEdit").value;
+                      var month_option_edit_start = document.getElementById("month_option_edit_start").value;
+                      var year_option_edit_start = document.getElementById("year_option_edit_start").value;
+                      var month_option_edit_end = document.getElementById("month_option_edit_end").value;
+                      var year_option_edit_end = document.getElementById("year_option_edit_end").value;
+                   
+                   
+                      var data = {
+                        university,
+                        faculty,
+                        specialization,
+                        degree,
+                        startDate: year_option_edit_start+"-"+month_option_edit_start,
+                        endDate: year_option_edit_end+"-"+month_option_edit_end 
+                      }
+    
+                      await fetch(`http://localhost:5000/changeEducation/update`, {
+                        method: 'PUT',
+                        body: JSON.stringify(data),
+                        headers: {
+                          "Content-type": "application/json; charset=UTF-8"
+                        }
+                      }).then(response => response.json())
+                        .then(() => {
+                          
+                            swal("Good job!", "Your Education information had been edited successfully!", "success");
+    
+    
+                        });
+                    }}
+    
+                  >Save changes</button>
                 </div>
               </div>
             </div>

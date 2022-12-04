@@ -103,7 +103,8 @@ export default class Navbar extends Component {
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button onClick={async () => {
+                                <button 
+                                onClick={async () => {
                                      var emailAddress = document.getElementById("exampleInputEmail1").value;
                                      var password = document.getElementById("exampleInputPassword1").value;
                                      var data = {
