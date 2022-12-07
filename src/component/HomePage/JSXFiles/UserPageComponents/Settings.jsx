@@ -568,7 +568,7 @@ export default function Settings() {
 
               <div className="divv d-flex justify-content-end">
                 <button
-                  onSubmit={function (e) {
+                  onSubmit={ async (e)=> {
 
                     e.preventDefault();
 

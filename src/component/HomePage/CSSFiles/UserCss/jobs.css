@@ -34,7 +34,7 @@
 
 }
 
-.job-apply-btn {
+.job-apply-btn,.searchJobBtn {
     outline: none;
     border: none;
     color: #2A4D69;
@@ -194,4 +194,112 @@
     color: white;
     background-color: #2A4D69;
     transition: 1s ease;
+}
+
+.job-info-part-1,.job-info-part-2, .job-info-part-3,.job-info-part-4{
+    height: 440px;
+    padding: 20px;
+}
+
+.job-info-part-2, .job-info-part-3,.job-info-part-4{
+    height: 250px;
+}
+
+.job-symbol{
+    padding-top: 37px;
+    font-size: 20px;
+}
+
+.w-90{
+    width: 90%;
+}
+
+.addJobSkillBtn{
+    color: white;
+    border-radius: 5px;
+    width: 8%;
+
+}
+
+.addJobSkillBtn button{
+    background-color: #2A4D69;
+    color: white;
+    border-radius: 5px;
+    width: 100%;
+    height: 70%;
+    outline: none;
+    border: none;
+    /* margin-top: 27px; */
+
+}
+
+.jobsTableContainer{
+    width: 90%;
+    margin: auto;
+}
+
+.JT-H1{
+    width: 10%;  
+}
+.JT-H2{
+    width: 30%; 
+}
+.JT-H3{
+    width: 20%;
+}
+.JT-H4{
+    width: 20%;
+}
+.JT-H5{
+    width: 20%;
+}
+
+.jobsTable{
+    text-align: center;
+}
+
+.jobsApplicationSearchBar{
+    width: 90%;
+    margin: auto;
+    height: 70px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.jobsTable td, .jobsTable th{
+    /* display: flex; */
+    /* align-items: center;
+    justify-content: center; */
+    vertical-align:middle;
+}
+
+.jobsTable a {
+    text-decoration: none;
+
+}
+
+.searchJobBtn{
+    margin-top: 31px;
+    height: 40px;
+    width: 8%;
+}
+
+
+.job-application-container{
+    width: 95%;
+    margin: auto;
+}
+
+
+.downloadCV{
+    width: 170px;
+    height:50px; 
+    margin-left: auto;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    background-color: #2A4D69;
+    color: white;
+    
+
 }

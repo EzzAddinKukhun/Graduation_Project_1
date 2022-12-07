@@ -338,3 +338,18 @@
 .comment-of-post{
     overflow-y: auto;
 }
+
+.addNewPostByChannel{
+    margin-top: 30px;
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    background-color: #2A4D69;
+    color: white;
+    border: #2A4D69 solid 1px;
+
+}
+
+.textAreaPost{
+    height: 180px;
+}

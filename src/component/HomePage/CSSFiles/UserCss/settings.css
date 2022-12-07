@@ -91,6 +91,20 @@ textarea{
     cursor: pointer;
 
 }
+.upload-btn-post{
+    width: 10%;
+    overflow: hidden;
+    width: 20%;
+    display: block;
+    color: white;
+    border: none;
+    background-color: #2A4D69;
+    border-radius: 4px;
+    padding: 5px;
+    position: relative;
+    cursor: pointer;
+
+}
 
 .upload-btn div{
     position: absolute;
@@ -99,8 +113,18 @@ textarea{
     transform: translate(-50%,-50%);
     font-size: 15px;
 }
+.upload-btn-post div{
+    position: absolute;
+    top:50%; 
+    left: 50%;
+    transform: translate(-50%,-50%);
+    font-size: 15px;
+}
 
 .upload-btn input{
+    opacity: 0;
+}
+.upload-btn-post input{
     opacity: 0;
 }
 
