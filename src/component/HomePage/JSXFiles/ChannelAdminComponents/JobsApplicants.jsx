@@ -27,115 +27,164 @@ export default function JobsApplicants() {
                         </thead>
                         <tbody>
                             {/* GENERATE JOBS HERE */}
-                         
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>
-                                    Ezz Addin H. Kukhun 
-                                </td>
-                                <td>
-                                    Frontend Development
-                                </td>
-                                <td>
-                                    <div className='updateJobBtn'>
-                                        <Link to="jopApplication">
-                                            <i class="fa-solid fa-file-contract"></i>
-                                        </Link>
-                                    </div>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-danger">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>
-                                    Ezz Addin H. Kukhun 
-                                </td>
-                                <td>
-                                    Frontend Development
-                                </td>
-                                <td>
-                                    <div className='updateJobBtn'>
-                                        <Link to="jopApplication">
-                                            <i class="fa-solid fa-file-contract"></i>
-                                        </Link>
-                                    </div>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-danger">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>
-                                    Ezz Addin H. Kukhun 
-                                </td>
-                                <td>
-                                    Frontend Development
-                                </td>
-                                <td>
-                                    <div className='updateJobBtn'>
-                                        <Link to="jopApplication">
-                                            <i class="fa-solid fa-file-contract"></i>
-                                        </Link>
-                                    </div>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-danger">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>
-                                    Ezz Addin H. Kukhun 
-                                </td>
-                                <td>
-                                    Frontend Development
-                                </td>
-                                <td>
-                                    <div className='updateJobBtn'>
-                                        <Link to="jopApplication">
-                                            <i class="fa-solid fa-file-contract"></i>
-                                        </Link>
-                                    </div>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-danger">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>
-                                    Ezz Addin H. Kukhun 
-                                </td>
-                                <td>
-                                    Frontend Development
-                                </td>
-                                <td>
-                                    <div className='updateJobBtn'>
-                                        <Link to="jopApplication">
-                                            <i class="fa-solid fa-file-contract"></i>
-                                        </Link>
-                                    </div>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-danger">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                 
-                           
 
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>
+                                    Ezz Addin H. Kukhun
+                                </td>
+                                <td>
+                                    Frontend Development
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary">
+                                        <Link to="jopApplication">
+                                            <i class="fa-solid fa-file-contract text-light"></i>
+                                        </Link>
+                                    </button>
+                                </td>
+                             
+                                <td>
+                                    <button type="button" class="btn btn-danger">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>
+                                    Ezz Addin H. Kukhun
+                                </td>
+                                <td>
+                                    Frontend Development
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary">
+                                        <Link to="jopApplication">
+                                            <i class="fa-solid fa-file-contract text-light"></i>
+                                        </Link>
+                                    </button>
+                                </td>
+                             
+                                <td>
+                                    <button type="button" class="btn btn-danger">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>
+                                    Ezz Addin H. Kukhun
+                                </td>
+                                <td>
+                                    Frontend Development
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary">
+                                        <Link to="jopApplication">
+                                            <i class="fa-solid fa-file-contract text-light"></i>
+                                        </Link>
+                                    </button>
+                                </td>
+                             
+                                <td>
+                                    <button type="button" class="btn btn-danger">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>
+                                    Ezz Addin H. Kukhun
+                                </td>
+                                <td>
+                                    Frontend Development
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary">
+                                        <Link to="jopApplication">
+                                            <i class="fa-solid fa-file-contract text-light"></i>
+                                        </Link>
+                                    </button>
+                                </td>
+                             
+                                <td>
+                                    <button type="button" class="btn btn-danger">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>
+                                    Ezz Addin H. Kukhun
+                                </td>
+                                <td>
+                                    Frontend Development
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary">
+                                        <Link to="jopApplication">
+                                            <i class="fa-solid fa-file-contract text-light"></i>
+                                        </Link>
+                                    </button>
+                                </td>
+                             
+                                <td>
+                                    <button type="button" class="btn btn-danger">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>
+                                    Ezz Addin H. Kukhun
+                                </td>
+                                <td>
+                                    Frontend Development
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary">
+                                        <Link to="jopApplication">
+                                            <i class="fa-solid fa-file-contract text-light"></i>
+                                        </Link>
+                                    </button>
+                                </td>
+                             
+                                <td>
+                                    <button type="button" class="btn btn-danger">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>
+                                    Ezz Addin H. Kukhun
+                                </td>
+                                <td>
+                                    Frontend Development
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary">
+                                        <Link to="jopApplication">
+                                            <i class="fa-solid fa-file-contract text-light"></i>
+                                        </Link>
+                                    </button>
+                                </td>
+                             
+                                <td>
+                                    <button type="button" class="btn btn-danger">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+
+                          
 
 
 

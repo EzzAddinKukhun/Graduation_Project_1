@@ -135,7 +135,7 @@
 .header-scholar {
     width: 100%;
     height: 30vh;
-    background-image: url(../../../../imgs/OIP.jpg);
+    /* background-image: url(../../../../imgs/OIP.jpg); */
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;

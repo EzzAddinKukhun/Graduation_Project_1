@@ -10,6 +10,10 @@ import '../node_modules/@fortawesome/fontawesome-free/css/all.min.css';
 import User from './component/HomePage/JSXFiles/User';
 import Home from './component/HomePage/JSXFiles/Home';
 import Channel from './component/HomePage/JSXFiles/Channel.jsx';
+// import '../node_modules/@fullcalendar/common/main.css'; 
+// import '../node_modules/@fullcalendar/common/main.js'; 
+
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

@@ -300,6 +300,28 @@
     outline: none;
     background-color: #2A4D69;
     color: white;
-    
+
+
+}
+
+.personal-info-inisde-job-application div:nth-child(1){
+    padding-top: 13px;
+}
+
+button i a{
+    color: white;
+}
+
+
+.follower{
+    background-color: white;
+    border: none;
+    outline: none;
+}
+
+.removeFollower{
+    width: 5%; 
+    outline: none;
+    border: none;
 
 }

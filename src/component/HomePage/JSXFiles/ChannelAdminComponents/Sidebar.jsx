@@ -22,7 +22,7 @@ export default function Sidebar() {
                                 <i class="fa-solid fa-timeline"></i>
                             </div>
                             <div className="nav-name">
-                                <Link to="timeLine">Add New Post</Link>
+                                <Link to="timeLine">New Post</Link>
                             </div>
                         </div>
                         <div className="user-nav p-4">
@@ -39,6 +39,14 @@ export default function Sidebar() {
                             </div>
                             <div className="nav-name">
                                 <Link to="jobstable">Jobs</Link>
+                            </div>
+                        </div>
+                        <div className="user-nav p-4">
+                            <div className="nav-icon me-4">
+                                <i class="fa-solid fa-people-roof"></i>
+                            </div>
+                            <div className="nav-name">
+                                <Link to="newEvent">New Event</Link>
                             </div>
                         </div>
                         {/* <div className="user-nav p-4">
