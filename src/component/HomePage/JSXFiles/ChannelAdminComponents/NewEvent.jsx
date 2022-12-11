@@ -41,11 +41,11 @@ export default class NewEvent extends React.Component {
                                     console.log(e); 
                                 }}
                                 eventRemove={function(){}}
-                            /* you can update a remote database when these fire:
-                            eventAdd={function(){}}
-                            eventChange={function(){}}
-                            eventRemove={function(){}}
-                            */
+                                /* you can update a remote database when these fire:
+                                eventAdd={function(){}}
+                                eventChange={function(){}}
+                                eventRemove={function(){}}
+                                */
                             />
                         </div>
                     </div>
@@ -55,17 +55,17 @@ export default class NewEvent extends React.Component {
     }
 
     renderSidebar() {
-        return (
-            <div className='demo-app-sidebar'>
+        // return (
+        //     <div className='demo-app-sidebar'>
                
-                <div className='demo-app-sidebar-section'>
-                    <h2>All Events ({this.state.currentEvents.length})</h2>
-                    <ul>
-                        {this.state.currentEvents.map(renderSidebarEvent)}
-                    </ul>
-                </div>
-            </div>
-        )
+        //         <div className='demo-app-sidebar-section'>
+        //             <h2>All Events ({this.state.currentEvents.length})</h2>
+        //             <ul>
+        //                 {this.state.currentEvents.map(renderSidebarEvent)}
+        //             </ul>
+        //         </div>
+        //     </div>
+        // )
     }
 
     
@@ -85,7 +85,7 @@ export default class NewEvent extends React.Component {
                 allDay: selectInfo.allDay,
         
             })
-            console.log(selectInfo.startStr); 
+            console.log(calendarApi.getEvents()); 
             console.log(selectInfo.endStr); 
         }
     }
@@ -105,6 +105,7 @@ export default class NewEvent extends React.Component {
 }
 
 function renderEventContent(eventInfo) {
+    console.log(eventInfo); 
     return (
         <>
             <b>{eventInfo.timeText}</b>

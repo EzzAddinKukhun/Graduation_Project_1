@@ -192,15 +192,29 @@
 
   }
 
-  .demo-app tr:nth-child(1)  td{
+  /* .demo-app tr:nth-child(1)  td{
     padding: 0;
     background-color: white;
     width: 75.3px;
-  }
+  } */
 
+
+  .fc-daygrid-day, .fc-day, .fc-day-sun, .fc-day-past, .fc-day-other{
+    width: 75.3px;
+    padding: 0;
+    background-color: white;
+  }
+  
+
+ .fc-timegrid-slots> table>tbody > tr > td{
+  width: 520px;
+  text-align: center;
+ }
 
 
   .demo-app a{
     text-decoration: none;
-  }
+  } 
+
+
   
