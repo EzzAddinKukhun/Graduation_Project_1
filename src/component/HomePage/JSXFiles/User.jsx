@@ -45,7 +45,7 @@ export default class User extends Component {
             <Route path="ScholarFilesToUpload" element={<ScholarFilesToUpload/>} ></Route>
           </Route>
 
-
+            {/* {THIS IS THE USER JSX} */}
 
           <Route path="alumniProf" element={<AlumniProfile />}></Route>
           <Route path="mem" element={<MemberShips />}></Route>
