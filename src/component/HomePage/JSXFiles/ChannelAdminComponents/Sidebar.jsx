@@ -54,7 +54,23 @@ export default function Sidebar() {
                                 <i class="fa-solid fa-people-roof"></i>
                             </div>
                             <div className="nav-name">
-                                <Link to="newEvent">Events</Link>
+                                <Link to="eventsList">Events</Link>
+                            </div>
+                        </div>
+                        <div className="user-nav p-4">
+                            <div className="nav-icon me-4">
+                                <i class="fa-solid fa-people-roof"></i>
+                            </div>
+                            <div className="nav-name">
+                                <Link to="newSchoolar">New Scholarship</Link>
+                            </div>
+                        </div>
+                        <div className="user-nav p-4">
+                            <div className="nav-icon me-4">
+                                <i class="fa-solid fa-people-roof"></i>
+                            </div>
+                            <div className="nav-name">
+                                <Link to="scholarTable">Scholarships</Link>
                             </div>
                         </div>
                         {/* <div className="user-nav p-4">

@@ -17,7 +17,7 @@ import Channel from './component/HomePage/JSXFiles/Channel.jsx';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
-    <User/>
+    <Channel/>
   </BrowserRouter>
 );
 
