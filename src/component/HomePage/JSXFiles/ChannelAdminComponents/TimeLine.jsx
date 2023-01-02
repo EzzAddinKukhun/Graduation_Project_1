@@ -4,9 +4,10 @@ import cover from '../../../../imgs/cover.jpg';
 import Profile from '../../../../imgs/profile.jpg';
 import { Link } from 'react-router-dom';
 import { Fade } from 'react-reveal'
-
+import { useState } from 'react';
 
 export default function TimeLine() {
+    const [fileData, setFileData] = useState();
     return (
         <>
             <div className='d-flex outlet ms-auto'>
@@ -275,7 +276,7 @@ export default function TimeLine() {
                         </div>
                         <div className="modal-body">
                             <div className="textAreaPost form-floating">
-                                <textarea className="form-control h-100" placeholder="Leave a comment here" id="floatingTextarea2"></textarea>
+                                <textarea className="form-control h-100" placeholder="Leave a comment here" id="descPost"></textarea>
                                 <label for="floatingTextarea2">What You Think about? </label>
                             </div>
 
@@ -285,15 +286,41 @@ export default function TimeLine() {
                                 <div className='d-flex'>
                                     <i class="fa-solid fa-cloud-arrow-up me-1"></i> Upload
                                 </div>
-                                <input type="file" />
+                                <input type="file"
+                                    onChange={(e) => {
+                                        setFileData(e.target.files[0]);
+                                    }}
+                                />
                             </button>
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cansel</button>
-                            <button type="button" className="btn btn-primary">Post Now</button>
-                        </div>
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    const data = new FormData();
+                                    data.append("_id", "637244067f8eb54bbde72295");
+                                    data.append("description", document.getElementById("descPost").value);
+                                    data.append("mediaFile", fileData);
 
+                                    fetch("http://localhost:5000/uploadDocuments/update", {
+                                        method: "PUT",
+                                        body: data,
+                                    })
+                                        .then((result) => {
+                                            console.log("File Sent Successful");
+                                        })
+                                        .catch((err) => {
+                                            console.log(err.message);
+                                        });
+                                
+
+
+                                }}
+                                type="button" className="btn btn-primary">Post Now</button>
                     </div>
+
                 </div>
             </div>
+        </div>
 
         </>
     )
