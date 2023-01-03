@@ -52,6 +52,7 @@ export default function TimeLine() {
                     <div className="inner-timeline">
                         {/* GENERATE ALL POSTS START FROM HERE */}
                         {posts.map((post) => {
+                            return (
                             <div className="post">
                                 <div className="post-container">
                                     <div className="post-header">
@@ -259,6 +260,7 @@ export default function TimeLine() {
                                 </div>
 
                             </div>
+                            ); 
                         })}
 
 
