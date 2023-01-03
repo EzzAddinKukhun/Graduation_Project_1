@@ -49,7 +49,7 @@ export default function TimeLine() {
         <>
             <div className='d-flex outlet ms-auto'>
                 <div className="timeline">
-                    <div className="inner-timeline bg-warning">
+                    <div className="inner-timeline">
                         {/* GENERATE ALL POSTS START FROM HERE */}
                         {posts.map((post) => {
                             <div className="post">
