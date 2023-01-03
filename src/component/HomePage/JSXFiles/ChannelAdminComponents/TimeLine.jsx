@@ -14,7 +14,7 @@ export default function TimeLine() {
     let channelID = "6390c162d9c4e5d6bff034a2";
 
     let [posts, setPosts] = useState([]);
-    async function getSkills() {
+    async function getPosts() {
         await fetch(`http://localhost:5000/api/post/getChannelsPosts/${channelID}`, {
             method: 'GET',
             headers: {
