@@ -136,8 +136,8 @@ export default function Navbar() {
                                                 // here we have to retrieve the id from data base
                                                 // and pass it to the timeline page if log in success
                                                 let dataUser = {
-                                                    id: json.id,
-                                                    type: json.type
+                                                    id: json._id,
+                                                    type: "userPage"
                                                 }
                                                 localStorage.setItem("ACCOUNT", JSON.stringify(dataUser));
                                                 
