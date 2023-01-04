@@ -251,9 +251,7 @@ export default function ScholarApplicants() {
                                     </button>
                                 </td>
                             </tr>
-                            
-                          
-                          
+                                             
                             <tr>
                                 <th scope="row">1</th>
                                 <td>

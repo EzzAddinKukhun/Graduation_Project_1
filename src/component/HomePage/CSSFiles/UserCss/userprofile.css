@@ -186,7 +186,7 @@
 
 /* EXP_LINE-LIST */
 .exp-line-list {
-    height: 120vh;
+    height: 100%;
     width: 2px;
     position: absolute;
     background-color: #2A4D69;

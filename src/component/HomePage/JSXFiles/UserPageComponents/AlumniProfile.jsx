@@ -8,15 +8,38 @@ import Flip from 'react-reveal/Flip';
 import Zoom from 'react-reveal/Zoom';
 import { Link, Routes, Route, Outlet } from 'react-router-dom';
 import Settings from './Settings';
+import { ConfirmationDialog } from '@devexpress/dx-react-scheduler';
 
-
+import { useEffect } from 'react';
 
 export default function AlumniProfile() {
     const [counterOn, setCounterOn] = useState(false);
+    let [userID, setUserId] = useState("");
+ 
+    let [userInformation, setUserInformation] = useState({});
+    async function getPosts(id) {
+        await fetch(`http://localhost:5000/personalInfo/${id}`, {
+            method: 'GET',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+            .then(response => response.json())
+            .then(json => {
+                setUserInformation(json.personalInfo)
+            });
+    }
+
+    useEffect(() => {
+        let userDataString = localStorage.getItem("ACCOUNT");
+        let userData = JSON.parse(userDataString);
+        setUserId(userData.id);
+
+    }, []);
 
     return (
         <>
-
+     
             <div className='outlet ms-auto'>
                 <div className="main-profile-top position-relative">
                     {/* for editting cover page from here */}
@@ -34,7 +57,7 @@ export default function AlumniProfile() {
                                     </section>
                                     <section className='account-details   w-100 d-flex align-items-center justify-content-center'>
                                         <div className="name-and-career pt-3">
-                                            <h2 className='account-name'><b>Ezz Addin</b> H. Kukhun</h2>
+                                            <h2 className='account-name'><b>{userInformation.firstName}</b> {userInformation.lastName}</h2>
                                             <h6 className='career-name text-muted'>Front-end intern at Foothill</h6>
                                             <h6 className='career-name text-muted'>
                                                 An-Najah National University

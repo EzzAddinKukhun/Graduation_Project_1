@@ -27,13 +27,14 @@ export default class User extends Component {
   render() {
     return (
       <>
+      {console.log(this.props.id)}
         <Sidebar />
         <UserNavbar />
         <Routes>
           <Route path="/" element={<TimeLine />}></Route>
-          <Route path="profile" element={<Profile />}></Route>
           <Route path="timeLine" element={<TimeLine />}>
-            <Route path="alumniProf" element={<AlumniProfile />}></Route>
+          <Route path="profile" element={<Profile />}></Route>
+            <Route  path="alumniProf" element={<AlumniProfile />} ></Route>
           </Route>
           <Route path="channels" element={<Channels />}></Route>
           <Route path="scholars" element={<Scholarships />}>

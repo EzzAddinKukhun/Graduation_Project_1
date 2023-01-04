@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../CSSFiles/UserCss/timeline.css'
 import cover from '../../../../imgs/cover.jpg';
 import Profile from '../../../../imgs/profile.jpg';
@@ -7,8 +7,22 @@ import { Fade } from 'react-reveal'
 
 
 export default function TimeLine() {
+
+    let [userID, setUserId] = useState("");
+
+
+
+    useEffect(() => {
+        let userDataString = localStorage.getItem("ACCOUNT");
+        let userData = JSON.parse(userDataString);
+        setUserId(userData.id);
+
+    }, []);
+
+
     return (
         <>
+
             <div className='d-flex outlet ms-auto'>
                 <div className="timeline">
                     <div className="inner-timeline bg-warning">

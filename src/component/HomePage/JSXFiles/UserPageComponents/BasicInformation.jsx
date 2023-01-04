@@ -9,9 +9,65 @@ import Flip from 'react-reveal/Flip';
 import Zoom from 'react-reveal/Zoom';
 import { Link, Routes, Route, Outlet } from 'react-router-dom';
 import Settings from './Settings';
-
+import { useEffect } from 'react';
 
 export default function BasicInformation() {
+
+    let [userID, setUserId] = useState("");
+
+    let [userInformation, setUserInformation] = useState({});
+    let [userAccountInformation, setUserAccountInformation] = useState({});
+    let [userSkills, setUserSkills] = useState([]); 
+
+    async function getUserInformation(id) {
+        await fetch(`http://localhost:5000/AllData/${id}`, {
+            method: 'GET',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+            .then(response => response.json())
+            .then(json => {
+                setUserInformation(json.personalInfo)
+            });
+    }
+
+    async function getUserAccountInformation(id) {
+        await fetch(`http://localhost:5000/accountInfo/${id}`, {
+            method: 'GET',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+            .then(response => response.json())
+            .then(json => {
+                setUserAccountInformation(json.AccountInfo)
+            });
+    }
+
+    async function getUserSkills (id){
+        await fetch(`http://localhost:5000/getSkills/${id}`, {
+            method: 'GET',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+            .then(response => response.json())
+            .then(json => {
+                setUserSkills(json.skills)
+            });
+    }
+
+    useEffect(() => {
+        let userDataString = localStorage.getItem("ACCOUNT");
+        let userData = JSON.parse(userDataString);
+        setUserId(userData.id);
+        getUserInformation(userID);
+        getUserAccountInformation(userID);
+        getUserSkills (userID); 
+
+    }, []);
+
     return (
         <>
             {/* ABOUT CONTAINER */}
@@ -20,7 +76,7 @@ export default function BasicInformation() {
                     <div className="skills container mb-4 ">
                         <h2 className='mb-2 p-3'><b><span className='span-style '>About</span></b></h2>
                         <p id="aboutPara">
-                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolores blanditiis vero cum aperiam ea, totam similique quis distinctio! Repudiandae commodi modi ullam voluptatibus aut quia asperiores eveniet, dicta eum repellat doloribus officia! Non atque pariatur alias error illo eaque, doloribus voluptate provident placeat natus eligendi. Ut enim soluta quos earum voluptatum, debitis doloremque. Dolores ducimus cumque quisquam odio quod veritatis, odit vero cupiditate enim, error quas quasi ipsa dolorum veniam consequatur beatae expedita ullam quos velit? Beatae molestiae totam itaque excepturi tenetur accusantium vero repellendus, sunt, nihil aliquam quibusdam voluptas earum omnis! Enim, ratione. Aspernatur iusto alias laboriosam nostrum perspiciatis.
+                            {userAccountInformation.about}
                         </p>
                     </div>
 
@@ -37,7 +93,7 @@ export default function BasicInformation() {
                                         </div>
                                         <div className="field-form ">
                                             <label for="firstNameTextField" class="form-label">First Name</label>
-                                            <h6 name="fname"><b>Ezz Addin</b></h6>
+                                            <h6 name="fname"><b>{userInformation.firstName}</b></h6>
                                         </div>
                                     </div>
 
@@ -47,7 +103,7 @@ export default function BasicInformation() {
                                         </div>
                                         <div className="field-form ">
                                             <label for="lastNameTextField" class="form-label">Last Name</label>
-                                            <h6 name="lname"><b>Kukhun</b></h6>
+                                            <h6 name="lname"><b>{userInformation.lastName}</b></h6>
                                         </div>
 
                                     </div>
@@ -58,7 +114,7 @@ export default function BasicInformation() {
                                         </div>
                                         <div className="field-form ">
                                             <label for="BirthdateTextField" class="form-label">Birthdate</label>
-                                            <h6 name="bdate"><b>2000/09/10</b></h6>
+                                            <h6 name="bdate"><b>{userInformation.birthDate}</b></h6>
 
 
                                         </div>
@@ -70,7 +126,7 @@ export default function BasicInformation() {
                                         </div>
                                         <div className="field-form ">
                                             <label for="BirthdateTextField" class="form-label">Email Address</label>
-                                            <h6 name="email"><b>ezkukhun2000@gmail.com</b></h6>
+                                            <h6 name="email"><b>{userInformation.emailAddress}</b></h6>
 
 
                                         </div>
@@ -90,7 +146,7 @@ export default function BasicInformation() {
                                         <div className="field-form ">
                                             <div className="field-form ">
                                                 <label for="BirthdateTextField" class="form-label">State</label>
-                                                <h6 name="state"><b>Palestine</b></h6>
+                                                <h6 name="state"><b>{userInformation.country}</b></h6>
                                             </div>
 
                                         </div>
@@ -102,7 +158,7 @@ export default function BasicInformation() {
                                         </div>
                                         <div className="field-form ">
                                             <label for="lastNameTextField" class="form-label">Phone Number</label>
-                                            <h6 name="phone"><b>+970 599836899</b></h6>
+                                            <h6 name="phone"><b>{userInformation.phoneNumber}</b></h6>
 
                                         </div>
                                     </div>
@@ -113,7 +169,7 @@ export default function BasicInformation() {
                                         </div>
                                         <div className="field-form ">
                                             <label for="lastNameTextField" class="form-label">Study State</label>
-                                            <h6 name="studystate"><b>Graduated</b></h6>
+                                            <h6 name="studystate"><b>{userInformation.studyState}</b></h6>
                                         </div>
                                     </div>
 
@@ -123,7 +179,7 @@ export default function BasicInformation() {
                                         </div>
                                         <div className="field-form ">
                                             <label for="lastNameTextField" class="form-label">Faculty</label>
-                                            <h6 name="studystate"><b>IT</b></h6>
+                                            <h6 name="studystate"><b>{userInformation.studyField}</b></h6>
                                         </div>
                                     </div>
 
@@ -141,7 +197,7 @@ export default function BasicInformation() {
                                         </div>
                                         <div className="field-form ">
                                             <label for="Username" class="form-label">Username</label>
-                                            <h6 name="studystate"><b>ezz_addin_kukhun</b></h6>
+                                            <h6 name="studystate"><b>{userInformation.userName}</b></h6>
                                         </div>
                                     </div>
                                     <div class="sign-up-field mb-4 d-flex">
@@ -150,29 +206,10 @@ export default function BasicInformation() {
                                         </div>
                                         <div className="field-form ">
                                             <label for="Username" class="form-label">Specialization</label>
-                                            <h6 name="studystate"><b>Computer Engineering</b></h6>
+                                            <h6 name="studystate"><b>{userInformation.specialization}</b></h6>
                                         </div>
                                     </div>
-                                    <div class="sign-up-field mb-4 d-flex">
-                                        <div className="icon-form text-center">
-                                            <i class="fa-solid fa-calendar"></i>
-                                        </div>
-                                        <div className="field-form ">
-                                            <label for="Username" class="form-label">Graduation Year</label>
-                                            <h6 name="studystate"><b>2023</b></h6>
-                                        </div>
-                                    </div>
-                                    <div class="sign-up-field mb-4 d-flex">
-                                        <div className="icon-form text-center">
-                                            <i class="fa-solid fa-scroll"></i>
-                                        </div>
-                                        <div className="field-form ">
-                                            <label for="Username" class="form-label">Degree</label>
-                                            <h6 name="studystate"><b>Bachaleroes</b></h6>
-                                        </div>
-                                    </div>
-
-
+                                    
                                 </div>
                             </Zoom>
 
@@ -184,11 +221,14 @@ export default function BasicInformation() {
                     <div className="skills container mb-4 ">
                         <h2 className='mb-4'><b><span className='span-style '>New</span></b> Skills</h2>
                         <div className="skill-row">
-                            <div className="skill">Problem Solving</div>
-                            <div className="skill">Data Science</div>
-                            <div className="skill">Front-end developer</div>
-                            <div className="skill">Microsoft Office</div>
-                            <div className="skill">Artifical Intellegence</div>
+                        {
+                            userSkills.map((skill)=>{
+                                return (
+                                    <div className="skill">{skill.newSkill}</div>
+                                ); 
+                            })
+                        }
+                            
 
 
                         </div>

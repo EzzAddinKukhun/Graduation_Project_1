@@ -3,23 +3,53 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css'; 
-import '../node_modules/bootstrap/dist/js/bootstrap.bundle.js'; 
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import '../node_modules/bootstrap/dist/js/bootstrap.bundle.js';
 import { BrowserRouter } from 'react-router-dom';
-import '../node_modules/@fortawesome/fontawesome-free/css/all.min.css'; 
+import '../node_modules/@fortawesome/fontawesome-free/css/all.min.css';
 import User from './component/HomePage/JSXFiles/User';
 import Home from './component/HomePage/JSXFiles/Home';
 import Channel from './component/HomePage/JSXFiles/Channel.jsx';
 
-
-
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <BrowserRouter>
-    <Channel/>
-  </BrowserRouter>
-);
+
+let accountString = localStorage.getItem("ACCOUNT");
+// let  account = JSON.parse(accountString) ;
+if (accountString == "") {
+  console.log(accountString)
+  root.render(
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  );
+}
+else {
+  let account = JSON.parse(accountString); 
+  if (account.type == "userPage") {
+    root.render(
+      <BrowserRouter>
+        <User id={account.id} />
+      </BrowserRouter>
+    );
+  }
+  else if (account.type == "adminPage") {
+    root.render(
+      <BrowserRouter>
+        <Channel id={account.id} />
+      </BrowserRouter>
+    );
+  }
+
+  else {
+    root.render(
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    );
+  }
+}
+
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
