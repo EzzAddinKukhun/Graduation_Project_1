@@ -13,7 +13,55 @@ export default function Settings() {
   let [setArrive, setIfArrive] = useState(false);
   let [months, setMonths] = useState([]);
   let [year, setYear] = useState([]);
+  let [userID, setUserID] = useState (""); 
   const [fileData, setFileData] = useState();
+
+  //TO UPLOAD FILES - DOCUMENTS
+  const [fileData1, setFileData1] = useState();
+  const [fileData2, setFileData2] = useState();
+  const [fileData3, setFileData3] = useState();
+  const [fileData4, setFileData4] = useState();
+
+  const fileChangeHandler1 = (e) => {
+    setFileData1(e.target.files[0]);
+  };
+  const fileChangeHandler2 = (e) => {
+    setFileData2(e.target.files[0]);
+  };
+  const fileChangeHandler3 = (e) => {
+    setFileData3(e.target.files[0]);
+  };
+  const fileChangeHandler4 = (e) => {
+    setFileData4(e.target.files[0]);
+  };
+
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+
+    // Handle File Data from the state Before Sending
+    const data = new FormData();
+    let _id = userID
+    data.append("documentFiles", fileData1);
+    data.append("documentFiles", fileData2);
+    data.append("documentFiles", fileData3);
+    data.append("documentFiles", fileData4);
+    data.append("_id", _id);
+    data.append("updateArrayFiles", typeof fileData1);
+    data.append("updateArrayFiles", typeof fileData2);
+    data.append("updateArrayFiles", typeof fileData3);
+    data.append("updateArrayFiles", typeof fileData4);
+
+    fetch("http://localhost:5000/uploadDocuments/update", {
+      method: "PUT",
+      body: data,
+    })
+      .then((result) => {
+        console.log("File Sent Successful");
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
 
 
 
@@ -104,7 +152,7 @@ export default function Settings() {
   const receiveMedia = (e) => {
     e.preventDefault();
     Axios({
-      url: 'http://localhost:5000/getProfilePicture/637244067f8eb54bbde72295',
+      url: `http://localhost:5000/getProfilePicture/${userID}`,
       method: 'GET',
       responseType: 'json'
     }).then(response => response.data)
@@ -154,6 +202,10 @@ export default function Settings() {
     // getPersonalInfos();
     // receiveMedia(); 
     // getAccountInfos();
+    let dataText = localStorage.getItem("ACCOUNT"); 
+    let dataJSON = JSON.parse(dataText); 
+    let id = dataJSON.id; 
+    setUserID(id); 
 
   }, []);
 
@@ -294,8 +346,8 @@ export default function Settings() {
           <section className='settings-tab p-4'>
             <h3 className='text-center'><b>Personal Information</b></h3>
             <div className="upload-new-photo p-4 w-100 h-25 mb-3 d-flex align-items-center">
-              {/* <img src={`data:video/mp4;base64,${mediaFile}`} alt="" /> */}
-              <img className='me-4' src={Profile}></img>
+              <img src={`data:video/mp4;base64,${mediaFile}`} alt="" />
+              {/* <img className='me-4' src={Profile}></img> */}
               <div className="upp">
                 <h2><b>Upload New Profile Photo</b></h2>
                 <h6 className='text-muted'>profile.jpg</h6>
@@ -569,10 +621,7 @@ export default function Settings() {
               <div className="divv d-flex justify-content-end">
                 <button
                   onSubmit={ async (e)=> {
-
                     e.preventDefault();
-
-                    console.log(fileData)
                     const data = new FormData();
 
                     var expBy = document.getElementById("expByName").value;
@@ -580,17 +629,12 @@ export default function Settings() {
                     var expEndDate = document.getElementById("endDateExp").value;
                     var expDetails = document.getElementById("experienceDetails").value
 
-                    console.log(expStartDate);
-
+                    data.append("_id", userID);
                     data.append("orginization", expBy);
                     data.append("startDate", expStartDate);
                     data.append("endDate", expEndDate);
                     data.append("details", expDetails);
                     data.append("experienceFile", fileData);
-                    data.append("_id", "637244067f8eb54bbde72295");
-
-
-
                     swal({
                       title: "Are You Sure To Save Your New Experience?",
                       icon: "warning",
@@ -752,6 +796,7 @@ export default function Settings() {
 
 
                   var data = {
+                    userID,
                     university,
                     faculty,
                     specialization,
@@ -759,6 +804,7 @@ export default function Settings() {
                     startDate: year_option_start + "-" + month_option_start,
                     endDate: year_option_end + "-" + month_option_end
                   }
+
 
                   await fetch(`http://localhost:5000/addEducation/update`, {
                     method: 'PUT',
@@ -836,8 +882,10 @@ export default function Settings() {
                   var ysdate = document.getElementById("year_option_start_pos").value;
                   var positionName = document.getElementById("PositionName").value;
                   var positionDetails = document.getElementById("positionDetails").value;
+                  let _id = userID; 
 
                   var data = {
+                    _id,
                     company,
                     startDate: ysdate + "-" + msdate,
                     positionName,
@@ -929,9 +977,10 @@ export default function Settings() {
               <div className="divv d-flex justify-content-end">
                 <button
                  onClick={async () => {
-                      
+                  let _id = userID; 
                   var newSkill = document.getElementById("editSkill").value;        
                   var data = {
+                    _id,
                     newSkill
        
                   }
@@ -968,42 +1017,26 @@ export default function Settings() {
             <h3 className='text-center'><b>Documents</b></h3>
             <div class="form-group mb-3">
               <label className='mb-2' for="uploadFile">Upload Your CV</label>
-              <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
+              <input onChange={fileChangeHandler1} type="file" class="form-control" id="uploadFile" aria-describedby="" />
             </div>
             <div class="form-group mb-3">
               <label className='mb-2' for="uploadFile">Upload Your Personal ID</label>
-              <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
+              <input onChange={fileChangeHandler2} type="file" class="form-control" id="uploadFile" aria-describedby="" />
             </div>
             <div class="form-group mb-3">
               <label className='mb-2' for="uploadFile">Upload Your Personal Passport</label>
-              <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
+              <input onChange={fileChangeHandler3} type="file" class="form-control" id="uploadFile" aria-describedby="" />
             </div>
             <div class="form-group mb-3">
               <label className='mb-2' for="uploadFile">Upload Your University Grades</label>
-              <input type="file" class="form-control" id="uploadFile" aria-describedby="" />
+              <input onChange={fileChangeHandler4} type="file" class="form-control" id="uploadFile" aria-describedby="" />
             </div>
 
 
 
             <div className="divv d-flex justify-content-end">
               <button
-                onClick={function () {
-                  swal({
-                    title: "Are you sure to save your edit?",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                  })
-                    .then((willDelete) => {
-                      if (willDelete) {
-                        swal("Poof! Your edit has been success!", {
-                          icon: "success",
-                        });
-                      } else {
-                        swal("Your imaginary file is safe!");
-                      }
-                    });
-                }}
+               
                 id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
 
             </div>

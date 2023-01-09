@@ -10,10 +10,12 @@ import '../node_modules/@fortawesome/fontawesome-free/css/all.min.css';
 import User from './component/HomePage/JSXFiles/User';
 import Home from './component/HomePage/JSXFiles/Home';
 import Channel from './component/HomePage/JSXFiles/Channel.jsx';
+import TopAdmin from './component/HomePage/JSXFiles/TopAdmin';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 let accountString = localStorage.getItem("ACCOUNT");
+console.log(accountString)
 // let  account = JSON.parse(accountString) ;
 if (accountString == "") {
   console.log(accountString)
@@ -36,6 +38,13 @@ else {
     root.render(
       <BrowserRouter>
         <Channel id={account.id} />
+      </BrowserRouter>
+    );
+  }
+  else if (account.type == "tadminPage") {
+    root.render(
+      <BrowserRouter>
+        <TopAdmin id={account.id} />
       </BrowserRouter>
     );
   }

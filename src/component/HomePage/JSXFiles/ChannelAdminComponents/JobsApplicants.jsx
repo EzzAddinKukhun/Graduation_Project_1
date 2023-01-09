@@ -1,200 +1,318 @@
 import React from 'react'
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Outlet, useNavigate } from 'react-router-dom'
+import { Fade, Zoom } from 'react-reveal';
+import { useSearchParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import { useState } from 'react';
+import { useEffect } from 'react';
+
 export default function JobsApplicants() {
+    let navigator = useNavigate();
+    let [searchParams, setSearchParams] = useSearchParams();
+    let [jobID, setJobID] = useState("");
+    let [searchToken, setSearchToken] = useState("");
+    // let [applicants, setApplicants] = useState([]); 
+    let job = {
+        "_id": "6390ecb1d782cb68698894d9",
+        "orginizationId": "6390b9a2fbf8669105e238e1",
+        "jobName": "Data Engineering",
+        "jobLevel": "Senior",
+        "industry": "Computer Science",
+        "salary": 3500,
+        "experience": "4 Years",
+        "jobType": "Full Time",
+        "postDate": "2022-01-01",
+        "deadline": "2023-07-01",
+        "jobOverview": "YES YES YES YES YES YES ",
+        "applicants": [],
+        "requiredSkills": [
+            "Sprting Boot",
+            "C",
+            "SQL"
+        ],
+        "preferredExperience": [
+            "GIT",
+            "XML",
+            "Bonto"
+        ],
+        "__v": 0,
+        "createdAt": "2022-12-07T19:42:41.806Z",
+        "updatedAt": "2022-12-10T17:18:20.799Z"
+    }
+
+
+    //WE HAVE TO COMMENT THIS
+    let applicants = [
+        {
+            "_id": "637244067f8eb54bbde72295",
+            "applicantName": "FATHI FATHALLAH ALI",
+            "jobName": "Data Engineering"
+        },
+        {
+            "_id": "638669b35dca4b6b30551e26",
+            "applicantName": "EZZ HELAL  KUKHUN",
+            "jobName": "Data Engineering"
+        },
+        {
+            "_id": "6372bbeb064d4873ecbaf9e8",
+            "applicantName": "OMAR MOHAMMAD RAYAN",
+            "jobName": "Data Engineering"
+        }
+    ]
+
+    async function getApplicantsOfJob(id) {
+        await fetch(`http://localhost:5000/api/job/getJobApplicants/${id}`, {
+            method: 'GET',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+
+            .then(response => response.json())
+            .then(json => {
+                let apps = json.applicantsArray;
+                applicants = apps;
+                // setApplicants(applicants);
+            });
+    }
+
+    function renderApplicants() {
+        return (
+            applicants.filter((app) =>
+                app.applicantName.toLocaleLowerCase().includes(searchToken)
+            ).map((applicant, key) => {
+                return (
+                    <tr>
+                        <th scope="row">{key + 1}</th>
+                        <td>
+                            {applicant.applicantName}
+                        </td>
+                        <td>
+                            <button
+                                onClick={() => {
+                                    navigateToApplicant(applicant._id);
+
+                                }}
+                                type="button" class="btn btn-primary">
+
+                                <i class="fa-solid fa-file-contract text-light"></i>
+
+                            </button>
+                        </td>
+
+                        <td>
+                            <button
+                                onClick={() => {
+                                    deleteApplication(jobID, applicant._id)
+                                }}
+                                type="button" class="btn btn-danger">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                );
+            }))
+
+    }
+
+    useEffect(() => {
+        let jobId = searchParams.get('id');
+        setJobID(jobId);
+        // getApplicantsOfJob(jobID); 
+
+
+    }, [])
+
+
+    function navigateToApplicant(id) {
+        navigator({
+            pathname: 'jopApplication',
+            search: `?id=${id}`
+        });
+    }
+
+
     return (
         <>
             <div className="outlet ms-auto">
-                <div className='jobsApplicationSearchBar d-flex justify-content-between'>
-                    <div class="mb-3 w-90">
-                        <label for="exampleInputEmail1" class="form-label">Search</label>
-                        <input placeholder='Search using job applicant name..' type="text" class="form-control" id="exampleInputEmail1" aria-describedby="searchApplications" />
+                <div className='jobInformation'>
+                    <div className="container p-4 ">
+                        <Fade>
+                            <div className="job-apply-title d-flex">
+                                <div className="job-apply-title-child w-50 h-100  d-flex align-items-center ">
+                                    <div>
+                                        <h2><b>{job.jobName}</b></h2>
+                                        <div className="meta-job-data d-flex justify-content-start text-muted">
+                                            <div className="job-type-card d-flex me-4">
+                                                <i className="fa-solid fa-briefcase me-1"></i>
+                                                <h6>{job.jobType}</h6>
+                                            </div>
+                                            <div className="job-type-time d-flex">
+                                                <i className="fa-solid fa-clock me-1"></i>
+                                                <h6>Posted: {job.postDate}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </Fade>
+
+                        <Fade delay={1000}>
+                            <div className="job-info-container ">
+                                <div className="container ">  
+                                        <h2 className='mb-4'><b><span className='span-style '>Employment </span></b> Information</h2>
+                                    <div className="jobEntries">
+                                        <div className="jobEntryInfo col-md-3  d-flex flex-nowrap">
+                                            <div className="icon-form text-center">
+                                                <i className="fa-solid fa-industry"></i>                                        </div>
+                                            <div className="field-form ">
+                                                <label for="Industry" className="form-label">Industry</label>
+                                                <h6 name="Industry"><b>{job.industry}</b></h6>
+                                            </div>
+                                        </div>
+
+                                        <div className="jobEntryInfo col-md-3 d-flex">
+                                            <div className="icon-form text-center">
+                                                <i className="fa-solid fa-dollar-sign"></i>
+                                            </div>
+                                            <div className="field-form ">
+                                                <label for="Salary" className="form-label">Salary</label>
+                                                <h6 name="Salary"><b>{job.salary}</b></h6>
+                                            </div>
+
+                                        </div>
+
+                                        <div className="jobEntryInfo col-md-3 d-flex">
+                                            <div className="icon-form text-center">
+                                                <i className="fa-solid fa-briefcase"></i>                                        </div>
+                                            <div className="field-form ">
+                                                <label for="JobType" className="form-label">Job Type</label>
+                                                <h6 name="JobType"><b>{job.jobType}</b></h6>
+
+
+                                            </div>
+                                        </div>
+
+
+                                        <div className="jobEntryInfo col-md-3 d-flex">
+                                            <div className="icon-form text-center">
+                                                <i className="fa-solid fa-location-dot"></i>                                        </div>
+                                            <div className="field-form ">
+                                                <label for="lastNameTextField" className="form-label">Location</label>
+                                                <h6 name="studystate"><b>{job.location}</b></h6>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div className="jobEntryInfo col-md-3 d-flex">
+                                            <div className="icon-form text-center">
+                                                <i className="fa-solid fa-user-tie"></i>                                        </div>
+                                            <div className="field-form ">
+                                                <div className="field-form ">
+                                                    <label for="Joblevel" className="form-label">
+                                                        Job level</label>
+                                                    <h6 name="Joblevel"><b>{job.jobLevel}</b></h6>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div className="jobEntryInfo col-md-3 d-flex">
+                                            <div className="icon-form text-center">
+                                                <i className="fa-solid fa-medal"></i>                                        </div>
+                                            <div className="field-form ">
+                                                <label for="lastNameTextField" className="form-label">Experience</label>
+                                                <h6 name="phone"><b>
+                                                    {job.experience}</b></h6>
+
+                                            </div>
+                                        </div>
+
+                                        <div className="jobEntryInfo col-md-3 d-flex">
+                                            <div className="icon-form text-center">
+                                                <i className="fa-solid fa-clock"></i>                                        </div>
+                                            <div className="field-form ">
+                                                <label for="Deadline" className="form-label">Deadline</label>
+                                                <h6 name="Deadline"><b>{job.deadline}</b></h6>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </Fade>
                     </div>
-                    <button className='searchJobBtn'>
-                        Search
-                    </button>
+
                 </div>
+                <Fade delay={1500}>
+                    <div className='jobsApplicationSearchBar d-flex justify-content-between'>
+                        <div class="mb-3 w-100">
+                            <label for="exampleInputEmail1" class="form-label">Search</label>
+                            <input
+                                onKeyUp={(e) => {
+                                    searchToken = e.target.value;
+                                    setSearchToken(searchToken);
+                                }}
+                                placeholder='Search using job applicant name..' type="text" class="form-control" id="exampleInputEmail1" aria-describedby="searchApplications" />
+                        </div>
+                    </div>
+                </Fade>
+                <Fade delay={2000}>
+                    <div className='jobsTableContainer'>
+                        <table class="table table-hover jobsTable">
+                            <thead>
+                                <tr>
+                                    <th className='JT-H1' scope="col">Applicant ID</th>
+                                    <th className='JT-H2' scope="col">Applicant Name</th>
+                                    {/* <th className='JT-H3' scope="col">Job Name</th> */}
+                                    <th className='JT-H4' scope="col">Application</th>
+                                    <th className='JT-H5' scope="col">Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableApplicantsBody">
+                                {/* GENERATE JOBS HERE */}
+                                {renderApplicants()}
 
-                <div className='jobsTableContainer'>
-                    <table class="table table-hover jobsTable">
-                        <thead>
-                            <tr>
-                                <th className='JT-H1' scope="col">Applicant ID</th>
-                                <th className='JT-H2' scope="col">Applicant Name</th>
-                                <th className='JT-H3' scope="col">Job Name</th>
-                                <th className='JT-H4' scope="col">Application</th>
-                                <th className='JT-H5' scope="col">Remove</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {/* GENERATE JOBS HERE */}
-
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>
-                                    Ezz Addin H. Kukhun
-                                </td>
-                                <td>
-                                    Frontend Development
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-primary">
-                                        <Link to="jopApplication">
-                                            <i class="fa-solid fa-file-contract text-light"></i>
-                                        </Link>
-                                    </button>
-                                </td>
-                             
-                                <td>
-                                    <button type="button" class="btn btn-danger">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>
-                                    Ezz Addin H. Kukhun
-                                </td>
-                                <td>
-                                    Frontend Development
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-primary">
-                                        <Link to="jopApplication">
-                                            <i class="fa-solid fa-file-contract text-light"></i>
-                                        </Link>
-                                    </button>
-                                </td>
-                             
-                                <td>
-                                    <button type="button" class="btn btn-danger">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>
-                                    Ezz Addin H. Kukhun
-                                </td>
-                                <td>
-                                    Frontend Development
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-primary">
-                                        <Link to="jopApplication">
-                                            <i class="fa-solid fa-file-contract text-light"></i>
-                                        </Link>
-                                    </button>
-                                </td>
-                             
-                                <td>
-                                    <button type="button" class="btn btn-danger">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>
-                                    Ezz Addin H. Kukhun
-                                </td>
-                                <td>
-                                    Frontend Development
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-primary">
-                                        <Link to="jopApplication">
-                                            <i class="fa-solid fa-file-contract text-light"></i>
-                                        </Link>
-                                    </button>
-                                </td>
-                             
-                                <td>
-                                    <button type="button" class="btn btn-danger">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>
-                                    Ezz Addin H. Kukhun
-                                </td>
-                                <td>
-                                    Frontend Development
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-primary">
-                                        <Link to="jopApplication">
-                                            <i class="fa-solid fa-file-contract text-light"></i>
-                                        </Link>
-                                    </button>
-                                </td>
-                             
-                                <td>
-                                    <button type="button" class="btn btn-danger">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>
-                                    Ezz Addin H. Kukhun
-                                </td>
-                                <td>
-                                    Frontend Development
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-primary">
-                                        <Link to="jopApplication">
-                                            <i class="fa-solid fa-file-contract text-light"></i>
-                                        </Link>
-                                    </button>
-                                </td>
-                             
-                                <td>
-                                    <button type="button" class="btn btn-danger">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>
-                                    Ezz Addin H. Kukhun
-                                </td>
-                                <td>
-                                    Frontend Development
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-primary">
-                                        <Link to="jopApplication">
-                                            <i class="fa-solid fa-file-contract text-light"></i>
-                                        </Link>
-                                    </button>
-                                </td>
-                             
-                                <td>
-                                    <button type="button" class="btn btn-danger">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                </td>
-                            </tr>
-
-
-                          
-
-
-
-                        </tbody>
-                    </table>
-                </div>
-
+                            </tbody>
+                        </table>
+                    </div>
+                </Fade>
             </div>
 
             <Outlet />
         </>
     )
 }
+
+
+
+async function deleteJobAPI(data) {
+    await fetch(`http://localhost:5000/api/job/deleteApplication`, {
+        method: 'DELETE',
+        body: JSON.stringify(data),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    }).then(response => response.json())
+        .then(json => {
+            if (json.message == "success") {
+                Swal.fire("Good job!", "Job Application Deleted Successfully!", "success");
+            }
+        });
+}
+
+
+function deleteApplication(jobId, applicantId) {
+
+    let data = {
+        jobId,
+        applicantId
+    }
+    deleteJobAPI(data);
+
+}
+

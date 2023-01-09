@@ -122,7 +122,6 @@ export default function Navbar() {
 
 
 
-                                
                                     var end_point = "logIn";
                                     await fetch(`http://localhost:5000/${end_point}`, {
                                         method: 'POST',
@@ -140,8 +139,8 @@ export default function Navbar() {
                                                     type: "userPage"
                                                 }
                                                 localStorage.setItem("ACCOUNT", JSON.stringify(dataUser));
-                                                
-                                                setTimeout(()=>{
+
+                                                setTimeout(() => {
                                                     window.location.reload();
                                                 }, 2000)
 

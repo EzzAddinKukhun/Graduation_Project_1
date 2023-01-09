@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
 import Combobox from "react-widgets/Combobox";
+import Swal from 'sweetalert2';
 
 
 export default function NewJob() {
-    let [skillPt, addSkillPt] = useState([]);
-    const a = [];
-    const b = [];
+
+    let [jobType, setJobType] = useState("");
+    let [requiredSkills, setRequiredSkills] = useState([]);
+    let [preferredExperience, setPreferredExperience] = useState([]);
+
     return (
         <>
             <div className='outlet ms-auto'>
@@ -19,7 +22,7 @@ export default function NewJob() {
                                 </div>
                                 <div className='w-100'>
                                     <label className='mb-2' for="firstNameEdit">Job Name</label>
-                                    <input type="text" class="form-control" id="city"
+                                    <input type="text" class="form-control" id="jobName"
                                         placeholder="Job Name" />
                                 </div>
                             </div>
@@ -30,7 +33,7 @@ export default function NewJob() {
                                 </div>
                                 <div className='w-100'>
                                     <label className='mb-2' for="firstNameEdit">Industry</label>
-                                    <input type="text" class="form-control" id="city" aria-describedby="emailHelp"
+                                    <input type="text" class="form-control" id="jobIndustry" aria-describedby="emailHelp"
                                         placeholder="Industry" />
                                 </div>
 
@@ -41,7 +44,7 @@ export default function NewJob() {
                                 </div>
                                 <div className='w-100'>
                                     <label className='mb-2' for="firstNameEdit">Job Level</label>
-                                    <input type="text" class="form-control" id="city" aria-describedby="emailHelp"
+                                    <input type="text" class="form-control" id="jobLevel" aria-describedby="emailHelp"
                                         placeholder="Job Level" />
                                 </div>
 
@@ -52,7 +55,7 @@ export default function NewJob() {
                                 </div>
                                 <div className='w-100'>
                                     <label className='mb-2' for="firstNameEdit">Salary</label>
-                                    <input type="text" class="form-control" id="city"
+                                    <input type="text" class="form-control" id="jobSalary"
                                         placeholder="Salary" />
                                 </div>
 
@@ -63,7 +66,7 @@ export default function NewJob() {
                                 </div>
                                 <div className='w-100'>
                                     <label className='mb-2' for="firstNameEdit">Experience</label>
-                                    <input type="text" class="form-control" id="city" aria-describedby="emailHelp"
+                                    <input type="text" class="form-control" id="jobExperience" aria-describedby="emailHelp"
                                         placeholder="Experience" />
                                 </div>
 
@@ -74,7 +77,9 @@ export default function NewJob() {
                                 </div>
                                 <div className='w-100'>
                                     <label className='mb-2' for="firstNameEdit">Job Type</label>
-                                    <Combobox defaultValue="Full Time" data={["Full Time", "Part Time", "Volunteer", "Freelance", "Internship"]} />
+                                    <Combobox onChange={(e) => {
+                                        setJobType(e);
+                                    }} defaultValue="Full Time" data={["Full Time", "Part Time", "Volunteer", "Freelance", "Internship"]} />
 
                                 </div>
 
@@ -85,7 +90,7 @@ export default function NewJob() {
                                 </div>
                                 <div className='w-100'>
                                     <label className='mb-2' for="firstNameEdit">Post Date</label>
-                                    <input type="date" class="form-control" id="city"
+                                    <input type="date" class="form-control" id="jobPostDate"
                                     />
                                 </div>
 
@@ -96,7 +101,7 @@ export default function NewJob() {
                                 </div>
                                 <div className='w-100'>
                                     <label className='mb-2' for="firstNameEdit">Deadline</label>
-                                    <input type="date" class="form-control" placeholder="City" />
+                                    <input type="date" id="jobDeadline" class="form-control" placeholder="City" />
                                 </div>
 
                             </div>
@@ -113,7 +118,7 @@ export default function NewJob() {
                     <div className=" container pt-3">
                         <div className="row">
                             <div class="mb-3">
-                                <textarea rows="6" type="email" placeholder='Write an over view about this job..' class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"></textarea>
+                                <textarea rows="6" id="jobOverView" type="" placeholder='Write an over view about this job..' class="form-control" aria-describedby="emailHelp"></textarea>
                             </div>
                         </div>
                     </div>
@@ -132,27 +137,23 @@ export default function NewJob() {
                                 <div className='addJobSkillBtn'>
                                     <button
                                         onClick={function () {
-                                            var skillPointInput = document.getElementById("addSkillPoint").value;
-                                            var skillPoint = document.getElementById("skill-point");
-                                            var obj = {
-                                                skillPointInput : skillPointInput
-                                            }
-                                             a.push (obj);         
-                                             var liString = ""; 
-                                             a.map((element)=>{
-                                                liString += `<li>${element.skillPointInput}</li>`
-                                             });                          
-                                             skillPoint.innerHTML = liString
-
+                                            let skill = document.getElementById("addSkillPoint").value;
+                                            let skillContainer = document.getElementById("skillList");
+                                            let skillsConcatenate = "";
+                                            requiredSkills.push(skill);
+                                            setRequiredSkills(requiredSkills);
+                                            requiredSkills.map((skill) => {
+                                                skillsConcatenate += `<li>${skill}</li>`
+                                            })
+                                            skillContainer.innerHTML = skillsConcatenate;
                                         }}
                                     >Add  </button>
                                 </div>
                             </div>
-                            <div id="skill-point">
-                                <ul id="skill-point">
-                                   
-                                </ul>
+                            <div id="skill-point-container">
+                                <ul id="skillList" >
 
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -164,31 +165,31 @@ export default function NewJob() {
                         <div className="row">
                             <div className="add-skill-for-job d-flex">
                                 <div class="mb-3 me-1 w-90">
-                                    <input placeholder='Preferred Experience.. ' type="email" class="form-control" id="addSkillPoint" aria-describedby="emailHelp" />
+                                    <input placeholder='Preferred Experience.. ' type="email" class="form-control" id="addPreferredSkillPoint" aria-describedby="emailHelp" />
                                 </div>
 
                                 <div className='addJobSkillBtn'>
                                     <button
                                         onClick={function () {
-                                            var skillPointInput = document.getElementById("addSkillPoint").value;
-                                            var skillPoint = document.getElementById("skill-point");
-                                            var obj = {
-                                                skillPointInput : skillPointInput
-                                            }
-                                             a.push (obj);         
-                                             var liString = ""; 
-                                             a.map((element)=>{
-                                                liString += `<li>${element.skillPointInput}</li>`
-                                             });                          
-                                             skillPoint.innerHTML = liString
 
-                                        }}
+                                            let skill = document.getElementById("addPreferredSkillPoint").value;
+                                            let skillContainer = document.getElementById("preferredSkillsContainer");
+                                            let skillsConcatenate = "";
+                                            preferredExperience.push(skill);
+                                            setPreferredExperience(preferredExperience);
+                                            preferredExperience.map((skill) => {
+                                                skillsConcatenate += `<li>${skill}</li>`
+                                            })
+                                            skillContainer.innerHTML = skillsConcatenate;
+                                        }
+
+                                        }
                                     >Add  </button>
                                 </div>
                             </div>
                             <div id="skill-point">
-                                <ul className='d-block' id="skill-point">
-                                 
+                                <ul className='d-block' id="preferredSkillsContainer">
+
                                 </ul>
 
                             </div>
@@ -196,6 +197,61 @@ export default function NewJob() {
                     </div>
                 </div>
 
+                <div className=' addJobContainer'>
+                    <button
+                        onClick={async () => {
+                            let jobName = document.getElementById("jobName").value;
+                            let industry = document.getElementById("jobIndustry").value;
+                            let jobLevel = document.getElementById("jobLevel").value;
+                            let salary = document.getElementById("jobSalary").value;
+                            let experience = document.getElementById("jobExperience").value;
+                            let postDate = document.getElementById("jobPostDate").value;
+                            let deadline = document.getElementById("jobDeadline").value;
+                            let jobOverview = document.getElementById("jobOverView").value;
+
+                            let data = {
+                                jobName,
+                                jobLevel,
+                                industry,
+                                salary,
+                                experience,
+                                jobType,
+                                postDate,
+                                deadline,
+                                jobOverview,
+                                requiredSkills,
+                                preferredExperience
+                            }
+
+                            await fetch(`http://localhost:5000/api/job/addNewJob`, {
+                                method: 'PUT',
+                                body: JSON.stringify(data),
+                                headers: {
+                                    "Content-type": "application/json; charset=UTF-8"
+                                }
+                            }).then(response => response.json())
+                                .then(json => {
+                                    if (json.message == "success") {
+                                        Swal.fire("Good job!", "The Job is published successfully!", "success");
+
+                                    }
+                                    else{
+                                        Swal.fire("Oh No!", "There is an error, try to republish the job!", "error");
+
+                                    }
+                                   
+
+                                });
+
+
+
+
+                            console.log(data)
+
+                        }} className='addJob'>
+                        Add Job
+                    </button>
+                </div>
 
             </div>
 

@@ -3,7 +3,7 @@ import '../../CSSFiles/UserCss/usernavbar.css';
 import Profile from '../../../../imgs/profile.jpg'
 import { Link, Outlet } from 'react-router-dom';
 
-export default function ChannelAdminNav() {
+export default function Navbar() {
     return (
         <>
             <div className="user-search-nav ms-auto p-3 d-flex justify-content-between ">

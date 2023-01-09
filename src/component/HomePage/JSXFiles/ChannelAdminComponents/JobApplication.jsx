@@ -1,8 +1,12 @@
 import React from 'react'
 import Profile from '../../../../imgs/profile.jpg';
 import { Zoom } from 'react-reveal';
+import { useSearchParams } from 'react-router-dom';
 
 export default function JobApplication() {
+    let [searchParams, setSearchParams] = useSearchParams(); 
+
+   
     return (
         <>
             <div className="outlet ms-auto">

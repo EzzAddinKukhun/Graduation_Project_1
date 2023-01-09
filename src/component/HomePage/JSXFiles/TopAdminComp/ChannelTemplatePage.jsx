@@ -14,44 +14,19 @@ import Slide from 'react-reveal/Slide';
 import ScrollTrigger from 'react-scroll-trigger';
 import CountUp from 'react-countup';
 import Swal from 'sweetalert2';
+import { useSearchParams } from 'react-router-dom';
 
 
-export default function ChannelAdminProfile() {
+export default function ChannelTemplatePage() {
     const [counterOn, setCounterOn] = useState(false);
     const [expertImageBytes, setExpertImageBytes] = useState([]);
     const [coverImage, setCoverImageBytes] = useState([]);
     const [channelExpertImgFile, setChannelExpertImgFile] = useState([]);
     const [channelCoverImgFile, setChannelCoverImg] = useState([]);
     let [channelID, setChannelID] = useState("");
+    let [searchParams, setSearchParams] = useSearchParams();
 
-    const ProfilePicChangeHandler = (e) => {
-        let cover = e.target.files[0];
-        e.preventDefault();
 
-        const data = new FormData();
-
-        data.append("_id", channelID);
-        data.append("ImgUpload", cover);
-
-        fetch("http://localhost:5000/api/orginization/updateChannelCover", {
-            method: "PUT",
-            body: data,
-        })
-            .then((result) => {
-                Swal.fire(
-                    'Good job!',
-                    'Cover Image Updated Successfully!',
-                    'success'
-                  )
-                  setTimeout(()=>{
-                    window.location.reload(); 
-                  },3000)
-            })
-            .catch((err) => {
-                console.log(err.message);
-            });
-
-    };
     // const [orgInfo, setOrgInfo] = useState({});
     let orgInfo = {
         "orginizationName": "Apple",
@@ -72,11 +47,8 @@ export default function ChannelAdminProfile() {
     }
 
 
-    // async function getOrgInfo() {
-    //     let channelInfo = localStorage.getItem("ACCOUNT");
-    //     let channelJSON = JSON.parse(channelInfo);
-    //     let channelID = channelJSON.id;
-    //     await fetch(`http://localhost:5000/api/orginization/getOrgInfo/${channelID}`, {
+    // async function getOrgInfo(id) {
+    //     await fetch(`http://localhost:5000/api/orginization/getOrgInfo/${id}`, {
     //         method: 'GET',
     //         headers: {
     //             "Content-type": "application/json; charset=UTF-8"
@@ -116,10 +88,9 @@ export default function ChannelAdminProfile() {
     // }
 
     useEffect(() => {
-        // getOrgInfo(); 
-        let channelInfo = localStorage.getItem("ACCOUNT");
-        let channelJSON = JSON.parse(channelInfo);
-        setChannelID(channelJSON.id)
+        let id = searchParams.get('id');
+        console.log(id)
+        // getOrgInfo(id); 
 
     }, [])
 
@@ -141,18 +112,7 @@ export default function ChannelAdminProfile() {
                         </div>
                     </div>
                     <div className="overlayChannel"></div>
-                    <Fade delay={500}>
-                        <button className='editCoverPage'>
-                            <input onClick={() => {
-                                console.log("FFFF")
-                            }} onChange={ProfilePicChangeHandler}
-                                className='position-absolute' type="file" />
-                            <i className="fa-solid fa-pen">
-                            </i>
-                        </button>
 
-
-                    </Fade>
 
                 </div>
 
@@ -162,9 +122,7 @@ export default function ChannelAdminProfile() {
                             <div>
                                 <h2 className='mb-2 p-3'><b><span className='span-style '>Channel</span></b> Expert</h2>
                             </div>
-                            <button className="channel-settings-btn">
-                                <Link to="../settings">Settings</Link>
-                            </button>
+
                         </div>
                         <div className='d-flex channel-expert-data-container'>
                             <Fade delay={700}>

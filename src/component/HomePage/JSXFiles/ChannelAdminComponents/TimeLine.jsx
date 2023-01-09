@@ -31,6 +31,7 @@ export default function TimeLine() {
                             .reduce((data, byte) => data + String.fromCharCode(byte), '')
                     );
                     post.mediaFile.data = mediaFile; 
+                    setMediaFiles(mediaFile)
                 })
                 
             });

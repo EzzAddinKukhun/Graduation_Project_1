@@ -1,0 +1,26 @@
+.chartsContainer{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+
+}
+
+.pieChart {
+    width: 50%;
+    height: 46vh;
+    display: flex;
+    justify-content: center;
+}
+.areaChart{
+    height: 46vh;
+    width: 50%;
+    margin-top: 20px;
+}
+
+.donoughtChart{
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    height: 46vh;
+
+}

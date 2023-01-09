@@ -17,91 +17,91 @@ export default function Experience() {
     let [userID, setUserID] = useState("")
 
 
-    // let exp = [
-    //     {
-    //         "experienceId": 1,
-    //         "orginization": "Apple",
-    //         "startDate": "2009-04-04",
-    //         "endDate": "2022-04-04",
-    //         "details": "this was the best thing i have ever done",
-    //         "fileName": "1670006852066-675218383-yuchenliang-resume.pdf"
-    //     },
-    //     {
-    //         "experienceId": 2,
-    //         "orginization": "An najah National University",
-    //         "startDate": "2019-04-04",
-    //         "endDate": "2020-03-04",
-    //         "details": "Assistant Professor",
-    //         "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
-    //     },
-    //     {
-    //         "experienceId": 3,
-    //         "orginization": "Asal Tech",
-    //         "startDate": "2019-04-04",
-    //         "endDate": "2020-05-04",
-    //         "details": "Assistant Professor",
-    //         "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
-    //     },
-    //     {
-    //         "experienceId": 4,
-    //         "orginization": "Foothill",
-    //         "startDate": "2019-04-04",
-    //         "endDate": "2020-10-04",
-    //         "details": "Assistant Professor",
-    //         "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
-    //     },
-    //     {
-    //         "experienceId": 4,
-    //         "orginization": "Foothill",
-    //         "startDate": "2019-04-04",
-    //         "endDate": "2021-12-31",
-    //         "details": "Assistant Professor",
-    //         "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
-    //     },
-    //     {
-    //         "experienceId": 5,
-    //         "orginization": "exalt",
-    //         "startDate": "2019-04-04",
-    //         "endDate": "2023-02-04",
-    //         "details": "Assistant Professor",
-    //         "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
-    //     },
-    //     {
-    //         "experienceId": 6,
-    //         "orginization": "An najah National University",
-    //         "startDate": "2019-04-04",
-    //         "endDate": "2021-06-14",
-    //         "details": "Assistant Professor",
-    //         "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
-    //     },
-    //     {
-    //         "experienceId": 7,
-    //         "orginization": "An najah National University",
-    //         "startDate": "2019-04-04",
-    //         "endDate": "2021-08-27",
-    //         "details": "Assistant Professor",
-    //         "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
-    //     },
-    //     {
-    //         "experienceId": 8,
-    //         "orginization": "An najah National University",
-    //         "startDate": "2019-04-04",
-    //         "endDate": "2022-01-18",
-    //         "details": "Assistant Professor",
-    //         "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
-    //     },
-    //     {
-    //         "experienceId": 9,
-    //         "orginization": "An najah National University",
-    //         "startDate": "2019-04-04",
-    //         "endDate": "2022-08-12",
-    //         "details": "Assistant Professor",
-    //         "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
-    //     }
-    // ]
+    let expo = [
+        {
+            "experienceId": 1,
+            "orginization": "Apple",
+            "startDate": "2009-04-04",
+            "endDate": "2022-04-04",
+            "details": "this was the best thing i have ever done",
+            "fileName": "1670006852066-675218383-yuchenliang-resume.pdf"
+        },
+        {
+            "experienceId": 2,
+            "orginization": "An najah National University",
+            "startDate": "2019-04-04",
+            "endDate": "2020-03-04",
+            "details": "Assistant Professor",
+            "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
+        },
+        {
+            "experienceId": 3,
+            "orginization": "Asal Tech",
+            "startDate": "2019-04-04",
+            "endDate": "2020-05-04",
+            "details": "Assistant Professor",
+            "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
+        },
+        {
+            "experienceId": 4,
+            "orginization": "Foothill",
+            "startDate": "2019-04-04",
+            "endDate": "2020-10-04",
+            "details": "Assistant Professor",
+            "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
+        },
+        {
+            "experienceId": 4,
+            "orginization": "Foothill",
+            "startDate": "2019-04-04",
+            "endDate": "2021-12-31",
+            "details": "Assistant Professor",
+            "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
+        },
+        {
+            "experienceId": 5,
+            "orginization": "exalt",
+            "startDate": "2019-04-04",
+            "endDate": "2023-02-04",
+            "details": "Assistant Professor",
+            "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
+        },
+        {
+            "experienceId": 6,
+            "orginization": "An najah National University",
+            "startDate": "2019-04-04",
+            "endDate": "2021-06-14",
+            "details": "Assistant Professor",
+            "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
+        },
+        {
+            "experienceId": 7,
+            "orginization": "An najah National University",
+            "startDate": "2019-04-04",
+            "endDate": "2021-08-27",
+            "details": "Assistant Professor",
+            "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
+        },
+        {
+            "experienceId": 8,
+            "orginization": "An najah National University",
+            "startDate": "2019-04-04",
+            "endDate": "2022-01-18",
+            "details": "Assistant Professor",
+            "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
+        },
+        {
+            "experienceId": 9,
+            "orginization": "An najah National University",
+            "startDate": "2019-04-04",
+            "endDate": "2022-08-12",
+            "details": "Assistant Professor",
+            "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
+        }
+    ]
 
     async function getExp(id) {
-        fetch(`http://localhost:5000/experience/${id}`, {
+       await fetch(`http://localhost:5000/experience/${id}`, {
           method: 'GET',
           headers: {
             "Content-type": "application/json; charset=UTF-8"
@@ -151,7 +151,7 @@ export default function Experience() {
         let id = user.id;
         userID = id;
         setUserID(userID);
-        getExp(userID); 
+        // getExp(userID); 
         displayExperience(); 
         
 
@@ -167,7 +167,7 @@ export default function Experience() {
                         <span className='exp-line-list d-block'></span>
                         {/* GENERATE YEARS OF EXPERIENCES */}
 
-                        {expAllYear.map((expYear) => {
+                        {expo.map((expYear) => {
 
                             console.log(expYear)
                             return (
