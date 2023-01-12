@@ -7,6 +7,7 @@ import swal from 'sweetalert';
 import User from '../User';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 export default function Navbar() {
     const nav = useNavigate();
@@ -123,7 +124,7 @@ export default function Navbar() {
 
 
                                     var end_point = "logIn";
-                                    await fetch(`http://localhost:5000/${end_point}`, {
+                                    await fetch(`https://alumnibackend-fathifathallah.onrender.com/${end_point}`, {
                                         method: 'POST',
                                         body: JSON.stringify(data),
                                         headers: {
@@ -145,6 +146,20 @@ export default function Navbar() {
                                                 }, 2000)
 
                                                 swal("Good job!", "Welcome to your account", "success");
+
+
+                                            }
+                                            else if (json.message == "success channel admin") {
+                                                let dataUser = {
+                                                    id: json._id,
+                                                    type: "adminPage"
+                                                }
+                                                localStorage.setItem("ACCOUNT", JSON.stringify(dataUser));
+
+                                                Swal.fire("Log In Successfully!", "Welcome to your account", "success");
+                                                setTimeout(() => {
+                                                    window.location.reload();
+                                                }, 2000)
 
 
                                             }

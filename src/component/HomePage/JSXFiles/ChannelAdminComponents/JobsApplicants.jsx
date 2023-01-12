@@ -11,57 +11,30 @@ export default function JobsApplicants() {
     let [searchParams, setSearchParams] = useSearchParams();
     let [jobID, setJobID] = useState("");
     let [searchToken, setSearchToken] = useState("");
-    // let [applicants, setApplicants] = useState([]); 
-    let job = {
-        "_id": "6390ecb1d782cb68698894d9",
-        "orginizationId": "6390b9a2fbf8669105e238e1",
-        "jobName": "Data Engineering",
-        "jobLevel": "Senior",
-        "industry": "Computer Science",
-        "salary": 3500,
-        "experience": "4 Years",
-        "jobType": "Full Time",
-        "postDate": "2022-01-01",
-        "deadline": "2023-07-01",
-        "jobOverview": "YES YES YES YES YES YES ",
-        "applicants": [],
-        "requiredSkills": [
-            "Sprting Boot",
-            "C",
-            "SQL"
-        ],
-        "preferredExperience": [
-            "GIT",
-            "XML",
-            "Bonto"
-        ],
-        "__v": 0,
-        "createdAt": "2022-12-07T19:42:41.806Z",
-        "updatedAt": "2022-12-10T17:18:20.799Z"
-    }
-
+    let [applicants, setApplicants] = useState([]); 
+    let [job, setJob] = useState({}); 
 
     //WE HAVE TO COMMENT THIS
-    let applicants = [
-        {
-            "_id": "637244067f8eb54bbde72295",
-            "applicantName": "FATHI FATHALLAH ALI",
-            "jobName": "Data Engineering"
-        },
-        {
-            "_id": "638669b35dca4b6b30551e26",
-            "applicantName": "EZZ HELAL  KUKHUN",
-            "jobName": "Data Engineering"
-        },
-        {
-            "_id": "6372bbeb064d4873ecbaf9e8",
-            "applicantName": "OMAR MOHAMMAD RAYAN",
-            "jobName": "Data Engineering"
-        }
-    ]
+    // let applicants = [
+    //     {
+    //         "_id": "637244067f8eb54bbde72295",
+    //         "applicantName": "FATHI FATHALLAH ALI",
+    //         "jobName": "Data Engineering"
+    //     },
+    //     {
+    //         "_id": "638669b35dca4b6b30551e26",
+    //         "applicantName": "EZZ HELAL  KUKHUN",
+    //         "jobName": "Data Engineering"
+    //     },
+    //     {
+    //         "_id": "6372bbeb064d4873ecbaf9e8",
+    //         "applicantName": "OMAR MOHAMMAD RAYAN",
+    //         "jobName": "Data Engineering"
+    //     }
+    // ]
 
-    async function getApplicantsOfJob(id) {
-        await fetch(`http://localhost:5000/api/job/getJobApplicants/${id}`, {
+    async function getJobProfile(id) {
+        await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/job/getJob/${id}`, {
             method: 'GET',
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -70,9 +43,25 @@ export default function JobsApplicants() {
 
             .then(response => response.json())
             .then(json => {
-                let apps = json.applicantsArray;
-                applicants = apps;
-                // setApplicants(applicants);
+                setJob(json.job[0]);
+           
+            });
+    }
+
+
+    async function getApplicantsOfJob(id) {
+        
+        await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/job/getJobApplicants/${id}`, {
+            method: 'GET',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+
+            .then(response => response.json())
+            .then(json => {
+                console.log(json.applicantsArray)    
+                setApplicants(json.applicantsArray);
             });
     }
 
@@ -118,7 +107,8 @@ export default function JobsApplicants() {
     useEffect(() => {
         let jobId = searchParams.get('id');
         setJobID(jobId);
-        // getApplicantsOfJob(jobID); 
+        getJobProfile(jobId)
+        getApplicantsOfJob(jobId); 
 
 
     }, [])
@@ -291,7 +281,7 @@ export default function JobsApplicants() {
 
 
 async function deleteJobAPI(data) {
-    await fetch(`http://localhost:5000/api/job/deleteApplication`, {
+    await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/job/deleteApplication`, {
         method: 'DELETE',
         body: JSON.stringify(data),
         headers: {
@@ -302,6 +292,9 @@ async function deleteJobAPI(data) {
             if (json.message == "success") {
                 Swal.fire("Good job!", "Job Application Deleted Successfully!", "success");
             }
+            setTimeout(()=>{
+                window.location.reload(); 
+            },2500)
         });
 }
 

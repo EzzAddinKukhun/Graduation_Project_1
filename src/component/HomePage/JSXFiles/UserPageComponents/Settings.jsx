@@ -7,14 +7,17 @@ import { useEffect } from 'react';
 import swal from 'sweetalert';
 import Profile from '../../../../imgs/profile.jpg';
 import Axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default function Settings() {
   let [stateItem, setStateItem] = useState([]);
   let [setArrive, setIfArrive] = useState(false);
   let [months, setMonths] = useState([]);
   let [year, setYear] = useState([]);
-  let [userID, setUserID] = useState (""); 
+  let [userID, setUserID] = useState("");
+  let [skillToEdit, setSkillToEdit] = useState("")
   const [fileData, setFileData] = useState();
+  const [skillIdToEdit, setSkillIdToEdit] = useState(0);
 
   //TO UPLOAD FILES - DOCUMENTS
   const [fileData1, setFileData1] = useState();
@@ -95,8 +98,8 @@ export default function Settings() {
 
 
   let [skill, setSkill] = useState([]);
-  async function getSkills() {
-    await fetch("http://localhost:5000/getSkills/637244067f8eb54bbde72295", {
+  async function getSkills(id) {
+    await fetch(`https://alumnibackend-fathifathallah.onrender.com/getSkills/${id}`, {
       method: 'GET',
       headers: {
         "Content-type": "application/json; charset=UTF-8"
@@ -106,15 +109,14 @@ export default function Settings() {
       .then(response => response.json())
       .then(json => {
         setSkill(json.skills);
-        setIfArrive(true);
       });
 
   }
 
 
   let [personalInfo, setPersonalInfo] = useState([]);
-  async function getPersonalInfos() {
-    await fetch("http://localhost:5000/personalInfo/637244067f8eb54bbde72295", {
+  async function getPersonalInfos(id) {
+    await fetch(`https://alumnibackend-fathifathallah.onrender.com/personalInfo/${id}`, {
       method: 'GET',
       headers: {
         "Content-type": "application/json; charset=UTF-8"
@@ -130,8 +132,8 @@ export default function Settings() {
   }
 
   let [accountInfo, setAccountInfo] = useState([]);
-  async function getAccountInfos() {
-    await fetch("http://localhost:5000/accountInfo/637244067f8eb54bbde72295", {
+  async function getAccountInfos(id) {
+    await fetch(`https://alumnibackend-fathifathallah.onrender.com/accountInfo/${id}`, {
       method: 'GET',
       headers: {
         "Content-type": "application/json; charset=UTF-8"
@@ -140,37 +142,41 @@ export default function Settings() {
 
       .then(response => response.json())
       .then(json => {
-        setAccountInfo(json.personalInfo);
+        setAccountInfo(json.AccountInfo);
         setIfArrive(true);
       });
 
   }
 
 
-  const [mediaFile = null, setmediaFile] = useState();
-  const [type, setType] = useState();
-  const receiveMedia = (e) => {
-    e.preventDefault();
-    Axios({
-      url: `http://localhost:5000/getProfilePicture/${userID}`,
-      method: 'GET',
-      responseType: 'json'
-    }).then(response => response.data)
-      .then(json => {
-        let mediaFile = btoa(
-          new Uint8Array(json.file.dataFile.data)
-            .reduce((data, byte) => data + String.fromCharCode(byte), '')
-        );
-        console.log(mediaFile);
-        setmediaFile(mediaFile);
-        setType(json.file.type);
-      });
-  };
 
   //FOR POSTING PROFILE PICTURE INTO THE SERVER
   const [ProfilePic, setProfilePic] = useState();
-  const ProfilePicChangeHandler = (e) => {
+  const ProfilePicChangeHandler = async (e) => {
     setProfilePic(e.target.files[0]);
+    let personalPhotoFile = e.target.files[0];
+    e.preventDefault();
+    const data = new FormData();
+    data.append("profilePicture", personalPhotoFile);
+    data.append("_id", userID);
+
+    await fetch("https://alumnibackend-fathifathallah.onrender.com/uploadProfilePic", {
+      method: "PUT",
+      body: data,
+    })
+      .then((result) => {
+        Swal.fire(
+          'Good job!',
+          'Your Profile Photo Updated Successfully!',
+          'success'
+        )
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000)
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
   const onSubmitHandlerProfilePic = (e) => {
@@ -198,14 +204,18 @@ export default function Settings() {
   // we can use useEffect for three functions (Mount,DidMount,Unmount)
   useEffect(() => {
     getStateItems();
-    // getSkills();
     // getPersonalInfos();
     // receiveMedia(); 
-    // getAccountInfos();
-    let dataText = localStorage.getItem("ACCOUNT"); 
-    let dataJSON = JSON.parse(dataText); 
-    let id = dataJSON.id; 
-    setUserID(id); 
+    let dataText = localStorage.getItem("ACCOUNT");
+    let dataJSON = JSON.parse(dataText);
+    let id = dataJSON.id;
+    setUserID(id);
+    getPersonalInfos(id);
+    getAccountInfos(id);
+    getSkills(id);
+
+
+
 
   }, []);
 
@@ -346,11 +356,10 @@ export default function Settings() {
           <section className='settings-tab p-4'>
             <h3 className='text-center'><b>Personal Information</b></h3>
             <div className="upload-new-photo p-4 w-100 h-25 mb-3 d-flex align-items-center">
-              <img src={`data:video/mp4;base64,${mediaFile}`} alt="" />
-              {/* <img className='me-4' src={Profile}></img> */}
+              <img className='me-4' src={`https://alumnibackend-fathifathallah.onrender.com/getProfilePicture/${userID}`}></img>
               <div className="upp">
                 <h2><b>Upload New Profile Photo</b></h2>
-                <h6 className='text-muted'>profile.jpg</h6>
+                <h6 className='text-muted'>{personalInfo.profilePic}</h6>
               </div>
               <button className="upload-btn ms-auto">
                 <div>
@@ -363,36 +372,23 @@ export default function Settings() {
               </button>
 
             </div>
-            <div class="form-group mb-3">
-              <label className='mb-2' for="firstLastEdit">First Name</label>
-              <input type="text" class="form-control" id="firstNameEdit" aria-describedby="fname" placeholder="First Name"
-                value={personalInfo.firstName}
-              />
-            </div>
-            <div class="form-group mb-3">
-              <label className='mb-2' for="firstNameEdit">Last Name</label>
-              <input type="text" class="form-control" id="lastNameEdit" aria-describedby="lname" placeholder="Last Name"
-                value={personalInfo.lastName}
-              />
-            </div>
-            <div class="form-group mb-3">
-              <label className='mb-2' for="firstNameEdit">Birthdate</label>
-              <input type="date" class="form-control" id="birthdate" aria-describedby="emailHelp" placeholder="First Name" />
-              <small id="emailHelp" class="form-text text-danger">Your Old Birthdate is {personalInfo.birthDate}</small>
-            </div>
+
             <div className="field-form w-100 mb-3 ">
               <label for="firstNameTextField" class="form-label">State</label>
               <div className="select-div w-100 ">
                 <select id="state_option" className='state-option-settings'>
                   <option selected disabled>Select State</option>
                   {stateItem.map((state) =>
-                    <option>
-                      {state.name}
-                    </option>
+                    state.name == personalInfo.country ?
+                      <option selected>
+                        {state.name}
+                      </option> :
+                      <option>
+                        {state.name}
+                      </option>
                   )}
 
                 </select>
-                <small id="emailHelp" class="form-text text-danger">Your Old State is {personalInfo.country} </small>
 
               </div>
 
@@ -400,26 +396,29 @@ export default function Settings() {
             <div class="form-group mb-3">
               <label className='mb-2' for="firstNameEdit">City</label>
               <input type="text" class="form-control" id="city" aria-describedby="emailHelp"
-                value={personalInfo.city}
+                defaultValue={personalInfo.city}
                 placeholder="City" />
             </div>
             <div class="form-group mb-3">
               <label className='mb-2' for="phoneNumber">Phone Number</label>
               <input
-                value={personalInfo.phoneNumber}
+                defaultValue={personalInfo.phoneNumber}
                 type="text" class="form-control" id="phoneNumber" aria-describedby="emailHelp" placeholder="Phone Number" />
             </div>
 
             <div className="divv d-flex justify-content-end">
               <button
                 onClick={async () => {
-                  var firstName = document.getElementById("firstNameEdit").value;
-                  var lastName = document.getElementById("lasttNameEdit").value;
-                  var birthDate = document.getElementById("birthdate").value;
+                  var firstName = personalInfo.firstName;
+                  var lastName = personalInfo.lastName;
+                  var birthDate = personalInfo.birthDate;
                   var country = document.getElementById("state_option").value;
                   var city = document.getElementById("city").value;
                   var phoneNumber = document.getElementById("phoneNumber").value;
+                  let _id = userID;
+
                   var data = {
+                    _id,
                     firstName,
                     lastName,
                     birthDate,
@@ -428,7 +427,7 @@ export default function Settings() {
                     phoneNumber
                   }
 
-                  await fetch(`http://localhost:5000/personalInfo/update`, {
+                  await fetch(`https://alumnibackend-fathifathallah.onrender.com/personalInfo/update`, {
                     method: 'PUT',
                     body: JSON.stringify(data),
                     headers: {
@@ -437,11 +436,14 @@ export default function Settings() {
                   }).then(response => response.json())
                     .then(json => {
                       if (json.message == "success") {
-                        swal("Good job!", "Your personal information had been edited successfully!", "success");
+                        Swal.fire("Good job!", "Your personal information updated successfully!", "success");
+                        setTimeout(() => {
+                          window.location.reload();
+                        }, 2000)
 
                       }
                       else if (json.message == "phone already exists") {
-                        swal("Phone Number is exists!", "Please sure that you enter new phone number!", "error");
+                        Swal.fire("Phone Number is exists!", "Please sure that you enter new phone number!", "error");
 
                       }
 
@@ -459,19 +461,19 @@ export default function Settings() {
             <div class="form-group mb-3">
               <label className='mb-2' for="userNameEdit">Username</label>
               <input
-                value={accountInfo.userName}
+                defaultValue={accountInfo.userName}
                 type="text" class="form-control" id="userNameEdit" aria-describedby="fname" placeholder="Username" />
             </div>
             <div class="form-group mb-3">
               <label className='mb-2' for="emailEdit">Email Address</label>
               <input
-                value={accountInfo.emailAddress}
+                defaultValue={accountInfo.emailAddress}
                 type="email" class="form-control" id="emailEdit" aria-describedby="emailEdit" placeholder="Email Address" />
             </div>
             <div class="form-group mb-3">
               <label for="exampleFormControlTextarea1">Bio</label>
               <textarea
-                value={accountInfo.about}
+                defaultValue={accountInfo.about}
                 class="form-control" id="bio" rows="3"></textarea>
             </div>
 
@@ -481,15 +483,16 @@ export default function Settings() {
                   var userName = document.getElementById("userNameEdit").value;
                   var emailAddress = document.getElementById("emailEdit").value;
                   var about = document.getElementById("bio").value;
+                  let _id = userID;
 
                   var data = {
+                    _id,
                     userName,
                     emailAddress,
                     about,
-
                   }
 
-                  await fetch(`http://localhost:5000/accountInfo/update`, {
+                  await fetch(`https://alumnibackend-fathifathallah.onrender.com/accountInfo/update`, {
                     method: 'PUT',
                     body: JSON.stringify(data),
                     headers: {
@@ -592,77 +595,67 @@ export default function Settings() {
           {/* ADD NEW EXPEIRENCE */}
           <section className='settings-tab p-4'>
             <h3 className='text-center'><b>New Experience</b></h3>
-            <form>
-              <div class="form-group mb-3">
-                <label className='mb-2' for="userNameEdit">Expereinece By</label>
-                <input type="text" class="form-control" id="expByName" aria-describedby="fname" placeholder="Expereinece By" />
-              </div>
-              <div class="form-group mb-3">
-                <label className='mb-2' for="startDateExp">Start Date</label>
-                <input on type="date" class="form-control" id="startDateExp" aria-describedby="startDateExp" />
-              </div>
-              <div class="form-group mb-3">
-                <label className='mb-2' for="endDateExp">End Date</label>
-                <input
-                  type="date" class="form-control" id="endDateExp" aria-describedby="" />
-              </div>
-              <div class="form-group mb-3">
-                <label className='mb-2' for="experienceDetails">Experience Details</label>
-                <textarea class="form-control" id="experienceDetails" rows="3"></textarea>
-              </div>
-              <div class="form-group mb-3">
-                <label className='mb-2' for="uploadFile">Upload File</label>
-                <input onChange={(e) => {
-                  setFileData(e.target.files[0]);
-                  console.log(fileData);
-                }} type="file" class="form-control" id="uploadExpFile" aria-describedby="" />
-              </div>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="userNameEdit">Expereinece By</label>
+              <input type="text" class="form-control" id="expByName" aria-describedby="fname" placeholder="Expereinece By" />
+            </div>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="startDateExp">Start Date</label>
+              <input on type="date" class="form-control" id="startDateExp" aria-describedby="startDateExp" />
+            </div>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="endDateExp">End Date</label>
+              <input
+                type="date" class="form-control" id="endDateExp" aria-describedby="" />
+            </div>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="experienceDetails">Experience Details</label>
+              <textarea class="form-control" id="experienceDetails" rows="3"></textarea>
+            </div>
+            <div class="form-group mb-3">
+              <label className='mb-2' for="uploadFile">Upload File</label>
+              <input onChange={(e) => {
+                setFileData(e.target.files[0]);
+                console.log(fileData);
+              }} type="file" class="form-control" id="uploadExpFile" aria-describedby="" />
+            </div>
 
-              <div className="divv d-flex justify-content-end">
-                <button
-                  onSubmit={ async (e)=> {
-                    e.preventDefault();
-                    const data = new FormData();
+            <div className="divv d-flex justify-content-end">
+              <button
+                onClick={async (e) => {
+                  e.preventDefault();
+                  const data = new FormData();
 
-                    var expBy = document.getElementById("expByName").value;
-                    var expStartDate = document.getElementById("startDateExp").value;
-                    var expEndDate = document.getElementById("endDateExp").value;
-                    var expDetails = document.getElementById("experienceDetails").value
+                  var expBy = document.getElementById("expByName").value;
+                  var expStartDate = document.getElementById("startDateExp").value;
+                  var expEndDate = document.getElementById("endDateExp").value;
+                  var expDetails = document.getElementById("experienceDetails").value
 
-                    data.append("_id", userID);
-                    data.append("orginization", expBy);
-                    data.append("startDate", expStartDate);
-                    data.append("endDate", expEndDate);
-                    data.append("details", expDetails);
-                    data.append("experienceFile", fileData);
-                    swal({
-                      title: "Are You Sure To Save Your New Experience?",
-                      icon: "warning",
-                      buttons: true,
-                      dangerMode: true,
-                    })
-                      .then((saveNewExp) => {
-                        if (saveNewExp) {
-                          fetch("http://localhost:5000/addExperience/update", {
-                            method: "PUT",
-                            body: data,
-                          })
-                            .then((result) => {
-                              console.log("New Experience had been added or updated successfully");
-                            });
-                          swal("Poof! Your edit has been success!", {
-                            icon: "success",
-                          });
-                        } else {
-                          swal("Your imaginary file is safe!");
-                        }
+                  data.append("_id", userID);
+                  data.append("orginization", expBy);
+                  data.append("startDate", expStartDate);
+                  data.append("endDate", expEndDate);
+                  data.append("details", expDetails);
+                  data.append("experienceFile", fileData);
+
+                  await fetch("https://alumnibackend-fathifathallah.onrender.com/addExperience/update", {
+                    method: "PUT",
+                    body: data,
+                  })
+                    .then((result) => {
+                      Swal.fire("New Experience added successfully!", {
+                        icon: "success",
                       });
-                  }
-                  }
-                  id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
+                      setTimeout(() => {
+                        window.location.reload()
+                      })
+                    });
 
-              </div>
-            </form>
+                }
+                }
+                id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
+
+            </div>
           </section>
 
           {/* EDUCATION INFORMATION  */}
@@ -701,9 +694,9 @@ export default function Settings() {
                 <select id="scientificDegree" className='state-option-settings'>
                   <option selected disabled>Select Your Degree</option>
                   <option value="Diploma">Diploma</option>
-                  <option value="Bachelor">Bachelor </option>
-                  <option value="Master">Master</option>
-                  <option value="PHd">PHd</option>
+                  <option value="Bachelor">Bachelor's</option>
+                  <option value="Master">Master's</option>
+                  <option value="PHd">PhD</option>
 
 
                 </select>
@@ -793,10 +786,11 @@ export default function Settings() {
                   var year_option_start = document.getElementById("year_option_start").value;
                   var month_option_end = document.getElementById("month_option_end").value;
                   var year_option_end = document.getElementById("year_option_end").value;
+                  let _id = userID;
 
 
                   var data = {
-                    userID,
+                    _id,
                     university,
                     faculty,
                     specialization,
@@ -806,7 +800,7 @@ export default function Settings() {
                   }
 
 
-                  await fetch(`http://localhost:5000/addEducation/update`, {
+                  await fetch(`https://alumnibackend-fathifathallah.onrender.com/addEducation/update`, {
                     method: 'PUT',
                     body: JSON.stringify(data),
                     headers: {
@@ -882,7 +876,7 @@ export default function Settings() {
                   var ysdate = document.getElementById("year_option_start_pos").value;
                   var positionName = document.getElementById("PositionName").value;
                   var positionDetails = document.getElementById("positionDetails").value;
-                  let _id = userID; 
+                  let _id = userID;
 
                   var data = {
                     _id,
@@ -892,7 +886,7 @@ export default function Settings() {
                     positionDetails
                   }
 
-                  await fetch(`http://localhost:5000/addPosition/update`, {
+                  await fetch(`https://alumnibackend-fathifathallah.onrender.com/addPosition/update`, {
                     method: 'PUT',
                     body: JSON.stringify(data),
                     headers: {
@@ -900,7 +894,8 @@ export default function Settings() {
                     }
                   }).then(response => response.json())
                     .then(() => {
-                      swal("Good job!", "New Position had been added successfully!", "success");
+                      Swal.fire("Good job!", "New Position had been added successfully!", "success");
+
                     });
                 }}
 
@@ -921,15 +916,16 @@ export default function Settings() {
 
               <div className='saveNewSkill'>
                 <button
-                   onClick={async () => {
-                      
-                    var newSkill = document.getElementById("userSkillEdit").value;        
+                  onClick={async () => {
+                    let _id = userID;
+
+                    var newSkill = document.getElementById("userSkillEdit").value;
                     var data = {
+                      _id,
                       newSkill
-         
                     }
-  
-                    await fetch(`http://localhost:5000/addSkill/update`, {
+
+                    await fetch(`https://alumnibackend-fathifathallah.onrender.com/addSkill/update`, {
                       method: 'PUT',
                       body: JSON.stringify(data),
                       headers: {
@@ -937,10 +933,10 @@ export default function Settings() {
                       }
                     }).then(response => response.json())
                       .then(() => {
-                        
-                          swal("Good job!", "New Skill had been added successfully!", "success");
-  
-  
+
+                        Swal.fire("Good job!", "New Skill had been added successfully!", "success");
+
+
                       });
                   }}
                   id='saveInfoBtnSkill'><i class="fa-solid fa-plus"></i>&nbsp; Add</button>
@@ -957,13 +953,45 @@ export default function Settings() {
                     return (
                       <div className="skill d-flex align-items-center  ">
                         <input id="editSkill" className='skill-blank'
-                        value={skill}
+                          defaultValue={skill.newSkill}
+                          onChange={(e) => {
+                            setSkillToEdit(e.target.value);
+                            setSkillIdToEdit(skill.skillId)
+                          }}
+
                         ></input>
                         <div
-                        onClick={()=>{
-                          //DELETE REQUEST FOR THIS SKILL 
-                        }}
-                        className="remove-skill">
+                          onClick={async () => {
+                            let _id = userID;
+                            let skillId = skill.skillId
+
+
+                            let data = {
+                              _id,
+                              skillId
+                            }
+
+                            console.log(data); 
+
+
+
+                            await fetch(`https://alumnibackend-fathifathallah.onrender.com/deleteSkill/update`, {
+                              method: 'DELETE',
+                              body: JSON.stringify(data),
+                              headers: {
+                                "Content-type": "application/json; charset=UTF-8"
+                              }
+                            }).then(response => response.json())
+                              .then(json => {
+                                if (json.message == "success") {
+                                  Swal.fire("Good job!", "Skill Deleted Successfully!", "success");
+                                  // setTimeout(() => {
+                                  //   window.location.reload()
+                                  // }, 2000)
+                                }
+                              });
+                          }}
+                          className="remove-skill">
                           <i class="fa-solid fa-trash-can"></i>
                         </div>
                       </div>
@@ -976,29 +1004,33 @@ export default function Settings() {
 
               <div className="divv d-flex justify-content-end">
                 <button
-                 onClick={async () => {
-                  let _id = userID; 
-                  var newSkill = document.getElementById("editSkill").value;        
-                  var data = {
-                    _id,
-                    newSkill
-       
-                  }
+                  onClick={async () => {
+                    let _id = userID;
+                    var newSkill = skillToEdit;
+                    let skillId = skillIdToEdit
+                    var data = {
+                      _id,
+                      skillId,
+                      newSkill
 
-                  await fetch(`http://localhost:5000/changeSkill/update`, {
-                    method: 'PUT',
-                    body: JSON.stringify(data),
-                    headers: {
-                      "Content-type": "application/json; charset=UTF-8"
                     }
-                  }).then(response => response.json())
-                    .then(() => {
-                      
+
+                    console.log(data);
+
+                    await fetch(`https://alumnibackend-fathifathallah.onrender.com/changeSkill/update`, {
+                      method: 'PUT',
+                      body: JSON.stringify(data),
+                      headers: {
+                        "Content-type": "application/json; charset=UTF-8"
+                      }
+                    }).then(response => response.json())
+                      .then(() => {
+
                         swal("Good job!", "New Skill had been added successfully!", "success");
 
 
-                    });
-                }}
+                      });
+                  }}
                   id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
 
               </div>
@@ -1036,7 +1068,7 @@ export default function Settings() {
 
             <div className="divv d-flex justify-content-end">
               <button
-               
+
                 id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
 
             </div>

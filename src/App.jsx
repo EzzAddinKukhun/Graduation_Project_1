@@ -7,6 +7,7 @@ import Contact from './component/HomePage/JSXFiles/Contact';
 import SignUp from './component/HomePage/JSXFiles/SignUp';
 import User from './component/HomePage/JSXFiles/User';
 import Settings from './component/HomePage/JSXFiles/UserPageComponents/Settings';
+import SignUpOrg from './component/HomePage/JSXFiles/SignUpOrg';
 
 export default class App extends Component {
   render() {
@@ -19,6 +20,7 @@ export default class App extends Component {
           <Route path='about' element={<About />}></Route>
           <Route path='contact' element={<Contact />}></Route>
           <Route path='signup' element={<SignUp />}></Route>
+          <Route path='signupOrg' element={<SignUpOrg/>}></Route>
         </Routes>
       </>
     )

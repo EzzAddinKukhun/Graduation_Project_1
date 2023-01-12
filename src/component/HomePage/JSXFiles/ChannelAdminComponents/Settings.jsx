@@ -16,11 +16,27 @@ export default function Settings() {
   const [fileData, setFileData] = useState();
   let [channelID, setChannelID] = useState("");
   const [ProfilePic, setProfilePic] = useState();
+  let [orgInfo,  setOrgInfo] = useState({}); 
 
 
   const ProfilePicChangeHandler = (e) => {
     setProfilePic(e.target.files[0]);
   };
+
+  async function getOrgInfo(channelID) {
+    console.log(channelID)
+    await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/orginization/getOrgInfo/${channelID}`, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    })
+
+        .then(response => response.json())
+        .then(json => {
+            setOrgInfo(json.orgInfo);
+        });
+}
 
 
 
@@ -53,24 +69,7 @@ export default function Settings() {
     }
   }
 
-  let orgInfo = {
-    "orginizationName": "Apple",
-    "channelName": "CV Writing Workshops and seminars",
-    "description": "this is the new description",
-    "expertName": "Ezz Kukhun",
-    "expertPhoneNumber": "059406464111",
-    "category": "Personal Development",
-    "followersNum": 0,
-    "postsNum": 0,
-    "eventsNum": 0,
-    "country": "USA",
-    "city": "New York",
-    "expertEmailAddress": "ezz@gmail.com",
-    "jobsNum": 0,
-    "expertImg": "1670962519107-670025973-images.jfif",
-    "coverImg": "1670962531010-33439908-wp2792980-tony-soprano-wallpaper.jpg"
-  }
-
+  
   // here when the array brackets are blanks, it represents the componentDidMount
   // we can use useEffect for three functions (Mount,DidMount,Unmount)
   useEffect(() => {
@@ -79,19 +78,10 @@ export default function Settings() {
     let id = dataParsed.id;
     channelID = id;
     setChannelID(channelID)
-    //get channel info
-
     getStateItems();
-    // getSkills();
-    // getPersonalInfos();
-    // receiveMedia(); 
-    // getAccountInfos();
-    document.getElementById("channelNameEdit").value = orgInfo.channelName;
-    document.getElementById("channelCategory").value = orgInfo.category;
-    document.getElementById("channelCity").value = orgInfo.city;
-    document.getElementById("channelBio").value = orgInfo.description;
-    document.getElementById("emailAddressEdit").value = orgInfo.expertEmailAddress;
-    document.getElementById("phoneNumberEdit").value = orgInfo.expertPhoneNumber;
+    getOrgInfo(id)
+    
+   
 
   }, []);
 
@@ -156,7 +146,7 @@ export default function Settings() {
           <div class="form-group mb-3">
             <label className='mb-2' for="firstNameEdit">Channel Name</label>
             <input type="text" class="form-control" id="channelNameEdit" aria-describedby="lname" placeholder="Channel Name"
-
+             defaultValue={orgInfo.channelName}
             />
           </div>
 
@@ -167,13 +157,17 @@ export default function Settings() {
               <select id="state_option" className='state-option-settings'>
                 <option selected disabled>Select State</option>
                 {stateItem.map((state) =>
+
+                state.name == orgInfo.country? 
+                  <option selected>
+                    {state.name}
+                  </option>:
                   <option>
                     {state.name}
                   </option>
                 )}
 
               </select>
-              <small id="emailHelp" class="form-text text-danger">Your Old State is {orgInfo.country} </small>
 
             </div>
 
@@ -181,18 +175,18 @@ export default function Settings() {
           <div class="form-group mb-3">
             <label className='mb-2' for="firstNameEdit">City</label>
             <input type="text" class="form-control" id="channelCity" aria-describedby="emailHelp"
-
+              defaultValue={orgInfo.city}
               placeholder="City" />
           </div>
           <div class="form-group mb-3">
             <label className='mb-2' for="firstNameEdit">Channel Category</label>
             <input type="text" class="form-control" id="channelCategory" aria-describedby="Channel Category"
-
+              defaultValue={orgInfo.category}
               placeholder="Channel Category" />
           </div>
           <div class="form-group mb-3">
             <label for="exampleFormControlTextarea1">Bio</label>
-            <textarea
+            <textarea defaultValue={orgInfo.description}
               class="form-control" id="channelBio" rows="3"></textarea>
           </div>
 
@@ -205,9 +199,12 @@ export default function Settings() {
                 var country = document.getElementById("state_option").value;
                 var city = document.getElementById("channelCity").value;
                 var description = document.getElementById("channelBio").value;
+                let _id = channelID; 
+                let orginizationName = orgInfo.orginizationName ;
 
                 var data = {
-                  channelID,
+                  _id,
+                  orginizationName,
                   channelName,
                   country,
                   city,
@@ -215,7 +212,7 @@ export default function Settings() {
                   description
                 }
 
-                await fetch(`http://localhost:5000/api/orginization/updateChannelInfo`, {
+                await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/orginization/updateChannelInfo`, {
                   method: 'PUT',
                   body: JSON.stringify(data),
                   headers: {
@@ -224,13 +221,10 @@ export default function Settings() {
                 }).then(response => response.json())
                   .then(json => {
                     if (json.message == "success") {
-                      swal("Good job!", "Your personal information had been edited successfully!", "success");
+                      swal("Good job!", "Channel information updated successfully!", "success");
 
                     }
-                    else if (json.message == "phone already exists") {
-                      swal("Phone Number is exists!", "Please sure that you enter new phone number!", "error");
-
-                    }
+                   
 
                   });
               }}
@@ -321,11 +315,10 @@ export default function Settings() {
         <section className='settings-tab p-4'>
           <h3 className='text-center'><b>Expert Information</b></h3>
           <div className="upload-new-photo p-4 w-100 h-25 mb-3 d-flex align-items-center">
-            {/* <img src={`data:video/mp4;base64,${mediaFile}`} alt="" /> */}
-            <img className='me-4' src={Profile}></img>
+            <img className='me-4' src={`https://alumnibackend-fathifathallah.onrender.com/api/orginization/getOrginizationProfilePic/${channelID}`}></img>
             <div className="upp">
               <h2><b>Upload New Profile Photo</b></h2>
-              <h6 className='text-muted'>profile.jpg</h6>
+              <h6 className='text-muted'>{orgInfo.expertImg}</h6>
             </div>
             <button className="upload-btn ms-auto">
               <div>
@@ -341,11 +334,13 @@ export default function Settings() {
           <div class="form-group mb-3">
             <label className='mb-2' for="firstNameEdit">Email Address</label>
             <input type="text" class="form-control" id="emailAddressEdit" aria-describedby="lname" placeholder="Email Address"
-            />
+            defaultValue={orgInfo.expertEmailAddress}            />
           </div>
           <div class="form-group mb-3">
             <label className='mb-2' for="firstNameEdit">Phone Number</label>
-            <input type="text" class="form-control" id="phoneNumberEdit" aria-describedby="lname" placeholder="Phone Number"
+            <input
+            defaultValue={orgInfo.expertPhoneNumber}
+             type="text" class="form-control" id="phoneNumberEdit" aria-describedby="lname" placeholder="Phone Number"
             />
           </div>
 

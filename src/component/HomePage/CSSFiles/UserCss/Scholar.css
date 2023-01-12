@@ -175,3 +175,19 @@
 .Files h2{
     font-size: 24px;
 }
+
+.submitScholar button{
+  background-color: #2A4D69;
+  color: white;
+  width: 150px;
+  height: 40px;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+
+}
+
+.submitScholar{
+    display: flex;
+    justify-content: center;
+}

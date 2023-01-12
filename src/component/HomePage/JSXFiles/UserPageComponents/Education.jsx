@@ -3,14 +3,13 @@ import '../../CSSFiles/UserCss/edu.css';
 import { Fade } from 'react-reveal';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import swal from 'sweetalert';
-
+import Swal from 'sweetalert2';
 export default function Education() {
 
   let [edus, setEdus] = useState([]);
   let [modalOpenID, setModalOpenID] = useState(0);
   let [modalDataObject, setModalDataObject] = useState({});
-  let [userID, setUserID] = useState (""); 
+  let [userID, setUserID] = useState("");
 
 
   function setStartMonthEducation() {
@@ -84,32 +83,32 @@ export default function Education() {
       if (modalDataObject.degree == "Diploma") {
         degreeChoices = `
             <option selected value="Diploma">Diploma</option>
-            <option value="Bechlor's">Bachelor's</option>
-            <option value="Master">Master</option>
+            <option value="Bachelor's">Bachelor's</option>
+            <option value="Master's">Master's</option>
             <option value="PhD">PhD</option>`;
 
       }
-      else if (modalDataObject.degree == "Becelor's") {
+      else if (modalDataObject.degree == "Bachelor's") {
         degreeChoices = `
         <option value="Diploma">Diploma</option>
-        <option selected value="Bechlor's">Bachelor's</option>
-        <option value="Master">Master</option>
+        <option selected value="Bachelor's">Bachelor's</option>
+        <option value="Master's">Master's</option>
         <option value="PhD">PhD</option>`;
 
       }
       else if (modalDataObject.degree == "Master's") {
         degreeChoices = `
         <option value="Diploma">Diploma</option>
-        <option value="Bechlor's">Bachelor's</option>
-        <option selected value="Master">Master</option>
+        <option value="Bachelor's">Bachelor's</option>
+        <option selected value="Master's">Master's</option>
         <option value="PhD">PhD</option>`;
 
       }
       else if (modalDataObject.degree == "PhD") {
         degreeChoices = `
         <option value="Diploma">Diploma</option>
-        <option value="Bechlor's">Bachelor's</option>
-        <option value="Master">Master</option>
+        <option value="Bachelor's">Bachelor's</option>
+        <option value="Master's">Master's</option>
         <option selected value="PhD">PhD</option>`;
 
       }
@@ -152,7 +151,7 @@ export default function Education() {
   ]
   let counter = 0;
   async function getEdus(id) {
-    fetch(`http://localhost:5000/getEducation/${id}`, {
+    fetch(`https://alumnibackend-fathifathallah.onrender.com/getEducation/${id}`, {
       method: 'GET',
       headers: {
         "Content-type": "application/json; charset=UTF-8"
@@ -180,12 +179,12 @@ export default function Education() {
     <>
       <div className='outlet ms-auto mt-4'>
         <div className="container">
-          <div className="row justify-content-around">
-            {edu.map((edu) => {
+          <div className="d-flex flex-wrap justify-content-between educationCont   ps-5 pe-5">
+            {edus.map((edu) => {
               return (<Fade delay={0}>
-                <div className="education col-md-5 mb-4  d-flex">
+                <div className="education  mb-4  d-flex">
                   <div className="edu-year">
-                    <section className="year-icon">
+                    <section className="year-icon ">
                       <i className="fa-solid fa-building-columns"></i>
                       <h5 className='mt-3'><b>{edu.endDate.split("-")[0]}-{edu.startDate.split("-")[0]}</b></h5>
                     </section>
@@ -196,6 +195,7 @@ export default function Education() {
                     <h6 className='study'>{edu.specialization}</h6>
                     <h6 className='degree'><b>{edu.degree}</b></h6>
                   </div>
+
                   <div onClick={() => {
                     setModalOpenID(edu.educationId);
                     modalDataObject = edu;
@@ -240,19 +240,19 @@ export default function Education() {
                 <div class="form-group mb-3">
                   <label className='mb-2' for="universityEdit">University</label>
                   <input type="text" class="form-control" id="universityEdit" aria-describedby="fname" placeholder="University"
-                    value={modalDataObject.university}
+                    defaultValue={modalDataObject.university}
                   />
                 </div>
                 <div class="form-group mb-3">
                   <label className='mb-2' for="facultyEdit">Facullty</label>
                   <input type="text" class="form-control" id="facultyEdit" aria-describedby="fname" placeholder="University"
-                    value={modalDataObject.faculty}
+                    defaultValue={modalDataObject.faculty}
                   />
                 </div>
                 <div class="form-group mb-3">
                   <label className='mb-2' for="specializationEdit">Specialization</label>
                   <input type="text" class="form-control" id="specializationEdit" aria-describedby="Specialization" placeholder="Specialization"
-                    value={modalDataObject.specialization}
+                    defaultValue={modalDataObject.specialization}
                   />
                 </div>
                 <div className="field-form w-100 mb-3 ">
@@ -308,7 +308,32 @@ export default function Education() {
 
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button
+                onClick={async () => {
+                  let _id = userID;
+                  let educationId = modalOpenID;
+                  let data = {
+                    _id,
+                    educationId
+                  }
+                  await fetch(`https://alumnibackend-fathifathallah.onrender.com/deleteEducation/update`, {
+                    method: 'DELETE',
+                    body: JSON.stringify(data),
+                    headers: {
+                      "Content-type": "application/json; charset=UTF-8"
+                    }
+                  }).then(response => response.json())
+                    .then(json => {
+                      if (json.message == "success") {
+                        Swal.fire("Good job!", "Education Deleted Successfully!", "success");
+                        setTimeout(() => {
+                          window.location.reload()
+                        }, 2000)
+                      }
+                    });
+
+                }}
+                type="button" className="btn btn-danger">Delete Education</button>
               <button type="button" className="btn btn-primary"
                 onClick={async () => {
 
@@ -320,9 +345,14 @@ export default function Education() {
                   var year_option_edit_start = document.getElementById("year_option_edit_start").value;
                   var month_option_edit_end = document.getElementById("month_option_edit_end").value;
                   var year_option_edit_end = document.getElementById("year_option_edit_end").value;
+                  let _id = userID;
+                  let educationId = modalOpenID;
+
 
 
                   var data = {
+                    _id,
+                    educationId,
                     university,
                     faculty,
                     specialization,
@@ -331,7 +361,9 @@ export default function Education() {
                     endDate: year_option_edit_end + "-" + month_option_edit_end
                   }
 
-                  await fetch(`http://localhost:5000/changeEducation/update`, {
+                  console.log(data);
+
+                  await fetch(`https://alumnibackend-fathifathallah.onrender.com/changeEducation/update`, {
                     method: 'PUT',
                     body: JSON.stringify(data),
                     headers: {
@@ -340,7 +372,7 @@ export default function Education() {
                   }).then(response => response.json())
                     .then(() => {
 
-                      swal("Good job!", "Your Education information had been edited successfully!", "success");
+                      Swal.fire("Good job!", "Your Education information edited successfully!", "success");
 
 
                     });

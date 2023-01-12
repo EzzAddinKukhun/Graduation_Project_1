@@ -1,16 +1,39 @@
 .education{
-    height: 150px;
+    height: 170px;
+    width: 48%;
+
     border-radius: 10px;
     box-shadow: 10px 10px 29px -6px gray;
     position: relative;
 
+
+}
+
+.education:nth-child(1){
 }
 
 .year-icon{
     padding: 15px;
-    border-radius: 30px;
+    border-radius: 10px;
     color: white;
     background-color: #2A4D69;
+}
+
+.year-icon-pos{
+    width: 90%;
+}
+
+.yearPos{
+    font-size: 25px;
+}
+
+.educationCont{
+    width: 95%;
+    margin: auto;
+}
+
+.year-icon h5{
+    font-size: 18px;
 }
 
 .edu-year{
@@ -27,7 +50,7 @@
 }
 
 .edu-year i {
-    font-size: 50px;
+    font-size: 40px;
 }
 
 .edit-edu-btn{

@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
 import Combobox from "react-widgets/Combobox";
+import Swal from 'sweetalert2';
 
 export default function NewScholar() {
     let [skillPt, addSkillPt] = useState([]);
@@ -19,7 +20,7 @@ export default function NewScholar() {
                                 </div>
                                 <div className='w-100'>
                                     <label className='mb-2' for="firstNameEdit">Scholarship Name</label>
-                                    <input type="text" class="form-control" id="city"
+                                    <input type="text" class="form-control" id="scolarshipName"
                                         placeholder="Job Name" />
                                 </div>
                             </div>
@@ -29,7 +30,7 @@ export default function NewScholar() {
                                 </div>
                                 <div className='w-100'>
                                     <label className='mb-2' for="firstNameEdit">Post Date</label>
-                                    <input type="date" class="form-control" id="city"
+                                    <input type="date" class="form-control" id="postDate"
                                     />
                                 </div>
 
@@ -40,7 +41,7 @@ export default function NewScholar() {
                                 </div>
                                 <div className='w-100'>
                                     <label className='mb-2' for="firstNameEdit">Deadline</label>
-                                    <input type="date" class="form-control" placeholder="City" />
+                                    <input type="date" class="form-control" placeholder="deadline" id="deadline" />
                                 </div>
 
                             </div>
@@ -54,7 +55,7 @@ export default function NewScholar() {
 
                                     <div className="row">
                                         <div class="mb-3">
-                                            <textarea rows="6" type="email" placeholder='Write an over view about this job..' class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"></textarea>
+                                            <textarea rows="6" type="email" placeholder='Write an over view about this job..' class="form-control" id="scholarshipDescription" aria-describedby="emailHelp"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -71,7 +72,7 @@ export default function NewScholar() {
                     <div className=" container pt-3">
                         <div className="row">
                             <div class="mb-3">
-                                <textarea rows="6" type="email" placeholder='Write an over view about this job..' class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"></textarea>
+                                <textarea rows="6" type="email" placeholder='Write an over view about this job..' class="form-control" id="scholarshipOverview" aria-describedby="emailHelp"></textarea>
                             </div>
                         </div>
                     </div>
@@ -114,9 +115,68 @@ export default function NewScholar() {
                         </div>
                     </div>
                 </div>
+                <div className='ms-auto submitScholar'>
+                    <div>
+                        <button
+                            onClick={async () => {
+
+                                let scolarshipName = document.getElementById("scolarshipName").value;
+                                let postDate = document.getElementById("postDate").value;
+                                let deadline = document.getElementById("deadline").value;
+                                let scholarshipDescription = document.getElementById("scolarshipName").value;
+                                let scholarshipOverview = document.getElementById("scholarshipOverview").value;
+                                console.log(a);
+                                let scholarshipMissions = [];
+
+                                a.map((mission, key) => {
+                                    scholarshipMissions[key] = mission.skillPointInput;
+                                })
+
+                                let dataFromLocalStorage = localStorage.getItem("ACCOUNT");
+                                let jsonData = JSON.parse(dataFromLocalStorage);
+                                let universityId = jsonData.id;
 
 
+                                let data = {
+                                    universityId,
+                                    scolarshipName,
+                                    postDate,
+                                    deadline,
+                                    scholarshipDescription,
+                                    scholarshipOverview,
+                                    scholarshipMissions
+                                }
+                                console.log(data)
+
+
+                                await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/scholarships/AddScholarships`, {
+                                    method: 'PUT',
+                                    body: JSON.stringify(data),
+                                    headers: {
+                                        "Content-type": "application/json; charset=UTF-8"
+                                    }
+                                }).then(response => response.json())
+                                    .then(json => {
+                                        if (json.message == "success") {
+                                            Swal.fire("Good job!", "Scholarship added successfully!", "success");
+                                            setTimeout(()=>{
+                                                window.location.reload(); 
+                                            },2000)
+
+                                        }
+                                        else {
+                                            Swal.fire("Oh No!", "There is an error, try to republish the job!", "error");
+
+                                        }
+
+
+                                    });
+                            }}
+                        >Add</button>
+                    </div>
+                </div>
             </div>
+
 
         </>
     )

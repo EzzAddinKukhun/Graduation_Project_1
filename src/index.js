@@ -17,7 +17,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 let accountString = localStorage.getItem("ACCOUNT");
 console.log(accountString)
 // let  account = JSON.parse(accountString) ;
-if (accountString == "") {
+if (accountString ==null || accountString == "") {
   console.log(accountString)
   root.render(
     <BrowserRouter>

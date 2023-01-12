@@ -12,11 +12,11 @@ export default function JobsTable() {
     let navigator = useNavigate();
     let [jobIDToNavigate, setJobIDToNavigate] = useState("");
     let [searchToken, setSearchToken] = useState("");
-    // let [jobs, setJobs] = useState ([]); 
+    let [jobs, setJobs] = useState ([]); 
 
 
     async function getJobsOfOrg(id) {
-        await fetch(`http://localhost:5000/api/job/getAllJobs/${id}`, {
+        await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/job/getAllJobs/${id}`, {
             method: 'GET',
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -25,9 +25,9 @@ export default function JobsTable() {
 
             .then(response => response.json())
             .then(json => {
-                let jobsJson = json.applicantsArray;
+                let jobsJson = json.jobs;
                 jobs = jobsJson;
-                // setJobs(jobs);
+                setJobs(jobs);
             });
     }
 
@@ -101,66 +101,68 @@ export default function JobsTable() {
         let adminLoggedIn = localStorage.getItem("ACCOUNT");
         let adminData = JSON.parse(adminLoggedIn);
         let id = adminData.id;
-        // getJobsOfOrg(id);  
+        console.log(id); 
+        getJobsOfOrg(id); 
+        console.log(jobs) 
 
     }, [])
 
-    let jobs = [
-        {
-            "_id": "6390ecb1d782cb68698894d9",
-            "orginizationId": "6390b9a2fbf8669105e238e1",
-            "jobName": "Data Engineering",
-            "jobLevel": "Senior",
-            "industry": "Computer Science",
-            "salary": 3500,
-            "experience": "4 Years",
-            "jobType": "Full Time",
-            "postDate": "2022-01-01",
-            "deadline": "2023-07-01",
-            "jobOverview": "YES YES YES YES YES YES ",
-            "applicants": [],
-            "requiredSkills": [
-                "Sprting Boot",
-                "C",
-                "SQL"
-            ],
-            "preferredExperience": [
-                "GIT",
-                "XML",
-                "Bonto"
-            ],
-            "__v": 0,
-            "createdAt": "2022-12-07T19:42:41.806Z",
-            "updatedAt": "2022-12-10T17:18:20.799Z"
-        },
-        {
-            "_id": "6390ed1bd782cb68698894dc",
-            "orginizationId": "6390b9a2fbf8669105e238e1",
-            "jobName": "MACHINE LEARNING",
-            "jobLevel": "Senior",
-            "industry": "IT",
-            "salary": 5461,
-            "experience": "Back End",
-            "jobType": "Internship",
-            "postDate": "2022-12-07",
-            "deadline": "2023-01-01",
-            "jobOverview": "this is a front end development job",
-            "applicants": [],
-            "requiredSkills": [
-                "java",
-                "c++",
-                "python"
-            ],
-            "preferredExperience": [
-                "git",
-                "github",
-                "jasper"
-            ],
-            "__v": 0,
-            "createdAt": "2022-12-07T19:44:27.566Z",
-            "updatedAt": "2022-12-07T19:44:27.566Z"
-        }
-    ]
+    // let jobs = [
+    //     {
+    //         "_id": "6390ecb1d782cb68698894d9",
+    //         "orginizationId": "6390b9a2fbf8669105e238e1",
+    //         "jobName": "Data Engineering",
+    //         "jobLevel": "Senior",
+    //         "industry": "Computer Science",
+    //         "salary": 3500,
+    //         "experience": "4 Years",
+    //         "jobType": "Full Time",
+    //         "postDate": "2022-01-01",
+    //         "deadline": "2023-07-01",
+    //         "jobOverview": "YES YES YES YES YES YES ",
+    //         "applicants": [],
+    //         "requiredSkills": [
+    //             "Sprting Boot",
+    //             "C",
+    //             "SQL"
+    //         ],
+    //         "preferredExperience": [
+    //             "GIT",
+    //             "XML",
+    //             "Bonto"
+    //         ],
+    //         "__v": 0,
+    //         "createdAt": "2022-12-07T19:42:41.806Z",
+    //         "updatedAt": "2022-12-10T17:18:20.799Z"
+    //     },
+    //     {
+    //         "_id": "6390ed1bd782cb68698894dc",
+    //         "orginizationId": "6390b9a2fbf8669105e238e1",
+    //         "jobName": "MACHINE LEARNING",
+    //         "jobLevel": "Senior",
+    //         "industry": "IT",
+    //         "salary": 5461,
+    //         "experience": "Back End",
+    //         "jobType": "Internship",
+    //         "postDate": "2022-12-07",
+    //         "deadline": "2023-01-01",
+    //         "jobOverview": "this is a front end development job",
+    //         "applicants": [],
+    //         "requiredSkills": [
+    //             "java",
+    //             "c++",
+    //             "python"
+    //         ],
+    //         "preferredExperience": [
+    //             "git",
+    //             "github",
+    //             "jasper"
+    //         ],
+    //         "__v": 0,
+    //         "createdAt": "2022-12-07T19:44:27.566Z",
+    //         "updatedAt": "2022-12-07T19:44:27.566Z"
+    //     }
+    // ]
 
 
 

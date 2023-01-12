@@ -20,7 +20,7 @@ export default function BasicInformation() {
     let [userSkills, setUserSkills] = useState([]); 
 
     async function getUserInformation(id) {
-        await fetch(`http://localhost:5000/AllData/${id}`, {
+        await fetch(`https://alumnibackend-fathifathallah.onrender.com/AllData/${id}`, {
             method: 'GET',
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -28,12 +28,12 @@ export default function BasicInformation() {
         })
             .then(response => response.json())
             .then(json => {
-                setUserInformation(json.personalInfo)
+                setUserInformation(json.user)
             });
     }
 
     async function getUserAccountInformation(id) {
-        await fetch(`http://localhost:5000/accountInfo/${id}`, {
+        await fetch(`https://alumnibackend-fathifathallah.onrender.com/accountInfo/${id}`, {
             method: 'GET',
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -46,7 +46,7 @@ export default function BasicInformation() {
     }
 
     async function getUserSkills (id){
-        await fetch(`http://localhost:5000/getSkills/${id}`, {
+        await fetch(`https://alumnibackend-fathifathallah.onrender.com/getSkills/${id}`, {
             method: 'GET',
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -62,9 +62,9 @@ export default function BasicInformation() {
         let userDataString = localStorage.getItem("ACCOUNT");
         let userData = JSON.parse(userDataString);
         setUserId(userData.id);
-        getUserInformation(userID);
-        getUserAccountInformation(userID);
-        getUserSkills (userID); 
+        getUserInformation(userData.id);
+        getUserAccountInformation(userData.id);
+        getUserSkills (userData.id); 
 
     }, []);
 
@@ -114,7 +114,7 @@ export default function BasicInformation() {
                                         </div>
                                         <div className="field-form ">
                                             <label for="BirthdateTextField" class="form-label">Birthdate</label>
-                                            <h6 name="bdate"><b>{userInformation.birthDate}</b></h6>
+                                            <h6 name="bdate"><b>{ new Date(userInformation.birthDate).toLocaleDateString() }</b></h6>
 
 
                                         </div>

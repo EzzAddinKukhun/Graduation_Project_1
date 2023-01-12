@@ -9,118 +9,121 @@ import Zoom from 'react-reveal/Zoom';
 import { Link, Routes, Route, Outlet } from 'react-router-dom';
 import Settings from './Settings';
 import FileDownload from "js-file-download";
+import Axios from 'axios';
 
 export default function Experience() {
     let month = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
     let [expAllYear, setExpAllYear] = useState([]);
-    let [exp, setExp] = useState ([]); 
-    let [userID, setUserID] = useState("")
+    let [expo, setExp] = useState([]);
+    let [userID, setUserID] = useState("");
+    let [expSelected, setExpSelected] = useState(0);
 
 
-    let expo = [
-        {
-            "experienceId": 1,
-            "orginization": "Apple",
-            "startDate": "2009-04-04",
-            "endDate": "2022-04-04",
-            "details": "this was the best thing i have ever done",
-            "fileName": "1670006852066-675218383-yuchenliang-resume.pdf"
-        },
-        {
-            "experienceId": 2,
-            "orginization": "An najah National University",
-            "startDate": "2019-04-04",
-            "endDate": "2020-03-04",
-            "details": "Assistant Professor",
-            "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
-        },
-        {
-            "experienceId": 3,
-            "orginization": "Asal Tech",
-            "startDate": "2019-04-04",
-            "endDate": "2020-05-04",
-            "details": "Assistant Professor",
-            "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
-        },
-        {
-            "experienceId": 4,
-            "orginization": "Foothill",
-            "startDate": "2019-04-04",
-            "endDate": "2020-10-04",
-            "details": "Assistant Professor",
-            "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
-        },
-        {
-            "experienceId": 4,
-            "orginization": "Foothill",
-            "startDate": "2019-04-04",
-            "endDate": "2021-12-31",
-            "details": "Assistant Professor",
-            "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
-        },
-        {
-            "experienceId": 5,
-            "orginization": "exalt",
-            "startDate": "2019-04-04",
-            "endDate": "2023-02-04",
-            "details": "Assistant Professor",
-            "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
-        },
-        {
-            "experienceId": 6,
-            "orginization": "An najah National University",
-            "startDate": "2019-04-04",
-            "endDate": "2021-06-14",
-            "details": "Assistant Professor",
-            "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
-        },
-        {
-            "experienceId": 7,
-            "orginization": "An najah National University",
-            "startDate": "2019-04-04",
-            "endDate": "2021-08-27",
-            "details": "Assistant Professor",
-            "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
-        },
-        {
-            "experienceId": 8,
-            "orginization": "An najah National University",
-            "startDate": "2019-04-04",
-            "endDate": "2022-01-18",
-            "details": "Assistant Professor",
-            "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
-        },
-        {
-            "experienceId": 9,
-            "orginization": "An najah National University",
-            "startDate": "2019-04-04",
-            "endDate": "2022-08-12",
-            "details": "Assistant Professor",
-            "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
-        }
-    ]
+    // let expo = [
+    //     {
+    //         "experienceId": 1,
+    //         "orginization": "Apple",
+    //         "startDate": "2009-04-04",
+    //         "endDate": "2022-04-04",
+    //         "details": "this was the best thing i have ever done",
+    //         "fileName": "1670006852066-675218383-yuchenliang-resume.pdf"
+    //     },
+    //     {
+    //         "experienceId": 2,
+    //         "orginization": "An najah National University",
+    //         "startDate": "2019-04-04",
+    //         "endDate": "2020-03-04",
+    //         "details": "Assistant Professor",
+    //         "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
+    //     },
+    //     {
+    //         "experienceId": 3,
+    //         "orginization": "Asal Tech",
+    //         "startDate": "2019-04-04",
+    //         "endDate": "2020-05-04",
+    //         "details": "Assistant Professor",
+    //         "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
+    //     },
+    //     {
+    //         "experienceId": 4,
+    //         "orginization": "Foothill",
+    //         "startDate": "2019-04-04",
+    //         "endDate": "2020-10-04",
+    //         "details": "Assistant Professor",
+    //         "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
+    //     },
+    //     {
+    //         "experienceId": 4,
+    //         "orginization": "Foothill",
+    //         "startDate": "2019-04-04",
+    //         "endDate": "2021-12-31",
+    //         "details": "Assistant Professor",
+    //         "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
+    //     },
+    //     {
+    //         "experienceId": 5,
+    //         "orginization": "exalt",
+    //         "startDate": "2019-04-04",
+    //         "endDate": "2023-02-04",
+    //         "details": "Assistant Professor",
+    //         "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
+    //     },
+    //     {
+    //         "experienceId": 6,
+    //         "orginization": "An najah National University",
+    //         "startDate": "2019-04-04",
+    //         "endDate": "2021-06-14",
+    //         "details": "Assistant Professor",
+    //         "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
+    //     },
+    //     {
+    //         "experienceId": 7,
+    //         "orginization": "An najah National University",
+    //         "startDate": "2019-04-04",
+    //         "endDate": "2021-08-27",
+    //         "details": "Assistant Professor",
+    //         "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
+    //     },
+    //     {
+    //         "experienceId": 8,
+    //         "orginization": "An najah National University",
+    //         "startDate": "2019-04-04",
+    //         "endDate": "2022-01-18",
+    //         "details": "Assistant Professor",
+    //         "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
+    //     },
+    //     {
+    //         "experienceId": 9,
+    //         "orginization": "An najah National University",
+    //         "startDate": "2019-04-04",
+    //         "endDate": "2022-08-12",
+    //         "details": "Assistant Professor",
+    //         "fileName": "1670006899716-102174393-yuchenliang-resume.pdf"
+    //     }
+    // ]
 
     async function getExp(id) {
-       await fetch(`http://localhost:5000/experience/${id}`, {
-          method: 'GET',
-          headers: {
-            "Content-type": "application/json; charset=UTF-8"
-          }
+        await fetch(`https://alumnibackend-fathifathallah.onrender.com/experience/${id}`, {
+            method: 'GET',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
         })
-    
-          .then(response => response.json())
-          .then(json => {
-            setExp(json.experience);
-          });
-      }
+
+            .then(response => response.json())
+            .then(json => {
+                setExp(json.experience);
+                displayExperience(json.experience)
+            });
+    }
 
 
-    function displayExperience (){
+    function displayExperience(expo) {
         let year;
         let years = [];
         let experiancesAllYear = [];
-        for (let i = 0; i < exp.length; i++) {
-            years.push(exp[i].endDate.split("-")[0]);
+        for (let i = 0; i < expo.length; i++) {
+            years.push(expo[i].endDate.split("-")[0]);
 
         }
         let setYears = new Set(years);
@@ -131,9 +134,9 @@ export default function Experience() {
                 year: el,
                 data: []
             }
-            for (let i = 0; i < exp.length; i++) {
-                if (el == exp[i].endDate.split("-")[0]) {
-                    experienceInSelectedYear.data.push(exp[i])
+            for (let i = 0; i < expo.length; i++) {
+                if (el == expo[i].endDate.split("-")[0]) {
+                    experienceInSelectedYear.data.push(expo[i])
                 }
             }
             experiancesAllYear.push(experienceInSelectedYear);
@@ -151,15 +154,15 @@ export default function Experience() {
         let id = user.id;
         userID = id;
         setUserID(userID);
-        // getExp(userID); 
-        displayExperience(); 
-        
+        getExp(id);
+
 
 
     }, [])
 
     return (
         <>
+            {console.log(expo)}
             <div className='outlet ms-auto'>
                 <section className=' w-100  p-3'>
                     <h2 className='mb-2 p-3'><b><span className='span-style '>Experiences</span></b></h2>
@@ -167,7 +170,7 @@ export default function Experience() {
                         <span className='exp-line-list d-block'></span>
                         {/* GENERATE YEARS OF EXPERIENCES */}
 
-                        {expo.map((expYear) => {
+                        {expAllYear.map((expYear) => {
 
                             console.log(expYear)
                             return (
@@ -176,12 +179,13 @@ export default function Experience() {
 
                                     {expYear.data.map((element, key) => {
                                         return (
+
                                             <Fade delay={1000}>
                                                 <div className="experience d-flex">
                                                     <div className="experience-month d-flex align-items-center justify-content-center">
                                                         <section className='month-and-day d-flex justify-content-center align-items-center'>
                                                             <div className="number-month text-light">
-                                                                <h6><b>{month[parseInt(element.endDate.split("-")[1])-1]}</b></h6>
+                                                                <h6><b>{month[parseInt(element.endDate.split("-")[1]) - 1]}</b></h6>
                                                                 <h1><b>{parseInt(element.endDate.split("-")[2])}</b></h1>
                                                             </div>
                                                         </section>
@@ -205,7 +209,22 @@ export default function Experience() {
                                                         <p id="experience-explain">
                                                             {element.details}
                                                         </p>
-                                                        <button className='viewExp'>View</button>
+                                                        <button
+                                                            onClick={() => {
+                                                                let _id = userID;
+                                                                let experienceId = "" + element.experienceId;
+
+                                                               
+                                                                Axios({
+                                                                    url: `https://alumnibackend-fathifathallah.onrender.com/experienceFile/${_id}/${experienceId}`,
+                                                                    method: "GET",
+                                                                    responseType: "blob",
+                                                                }).then((response) => {
+                                                                    console.log(response);
+                                                                    FileDownload(response.data, "Exp." + response.data.type.split("/")[1]);
+    });
+                                                            }}
+                                                            className='viewExp'>View</button>
 
                                                     </div>
 
@@ -221,7 +240,7 @@ export default function Experience() {
 
                     </div>
                 </section>
-            </div>
+            </div >
 
         </>
     )

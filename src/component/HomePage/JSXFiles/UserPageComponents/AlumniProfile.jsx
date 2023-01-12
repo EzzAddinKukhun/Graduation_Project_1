@@ -17,8 +17,8 @@ export default function AlumniProfile() {
     let [userID, setUserId] = useState("");
  
     let [userInformation, setUserInformation] = useState({});
-    async function getPosts(id) {
-        await fetch(`http://localhost:5000/personalInfo/${id}`, {
+    async function getUserInfo(id) {
+        await fetch(`https://alumnibackend-fathifathallah.onrender.com/AllData/${id}`, {
             method: 'GET',
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -26,7 +26,7 @@ export default function AlumniProfile() {
         })
             .then(response => response.json())
             .then(json => {
-                setUserInformation(json.personalInfo)
+                setUserInformation(json.user)
             });
     }
 
@@ -34,12 +34,13 @@ export default function AlumniProfile() {
         let userDataString = localStorage.getItem("ACCOUNT");
         let userData = JSON.parse(userDataString);
         setUserId(userData.id);
+        getUserInfo(userData.id);
 
     }, []);
 
     return (
         <>
-     
+     {console.log (userInformation)}
             <div className='outlet ms-auto'>
                 <div className="main-profile-top position-relative">
                     {/* for editting cover page from here */}
@@ -53,15 +54,15 @@ export default function AlumniProfile() {
                             <Fade delay={1000}>
                                 <div id="profile-panel-1" className="main-profile-photo bg-light col-md-5 d-flex">
                                     <section className='photo-account col-md-4  d-flex justify-content-center '>
-                                        <img src={Profile}></img>
+                                        <img src={`https://alumnibackend-fathifathallah.onrender.com/getProfilePicture/${userID}`}></img>
                                     </section>
                                     <section className='account-details   w-100 d-flex align-items-center justify-content-center'>
                                         <div className="name-and-career pt-3">
                                             <h2 className='account-name'><b>{userInformation.firstName}</b> {userInformation.lastName}</h2>
-                                            <h6 className='career-name text-muted'>Front-end intern at Foothill</h6>
-                                            <h6 className='career-name text-muted'>
+                                            <h6 className='career-name text-muted'>{userInformation.specialization}</h6>
+                                            {/* <h6 className='career-name text-muted'>
                                                 An-Najah National University
-                                            </h6>
+                                            </h6> */}
                                             <div className="button-profile-container d-flex justify-content-between">
                                                 <button className='edit-profile-photo mt-4 '><i class="fa-solid fa-pen"></i>
                                                     &nbsp;Profile Photo</button>

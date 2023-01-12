@@ -208,8 +208,13 @@ export default function NewJob() {
                             let postDate = document.getElementById("jobPostDate").value;
                             let deadline = document.getElementById("jobDeadline").value;
                             let jobOverview = document.getElementById("jobOverView").value;
+                            let dataLocal = localStorage.getItem("ACCOUNT"); 
+                            let dataParsed = JSON.parse(dataLocal); 
+                            let orginizationId = dataParsed.id; 
+
 
                             let data = {
+                                orginizationId,
                                 jobName,
                                 jobLevel,
                                 industry,
@@ -222,8 +227,10 @@ export default function NewJob() {
                                 requiredSkills,
                                 preferredExperience
                             }
+                            console.log(data)
 
-                            await fetch(`http://localhost:5000/api/job/addNewJob`, {
+
+                            await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/job/addNewJob`, {
                                 method: 'PUT',
                                 body: JSON.stringify(data),
                                 headers: {
@@ -246,7 +253,6 @@ export default function NewJob() {
 
 
 
-                            console.log(data)
 
                         }} className='addJob'>
                         Add Job

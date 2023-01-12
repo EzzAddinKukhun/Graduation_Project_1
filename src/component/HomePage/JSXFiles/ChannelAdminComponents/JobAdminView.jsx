@@ -8,48 +8,17 @@ import { useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import Swal from 'sweetalert2';
+import { data } from '../TopAdminComp/PieChart';
 
 export default function JobAdminView() {
     const a = [];
     let [searchParam, setSearchParam] = useSearchParams();
-    let [job, setJob] = useState({});
+    let [jobProfile, setJobProfile] = useState({});
     let [jobType, setJobType] = useState("");
-    let [requiredSkills, setRequiredSkills] = useState([]);
-    let [preferredExperience, setPreferredExperience] = useState([]);
-
-
-    let myJob = [
-        {
-            "_id": "6390ecb1d782cb68698894d9",
-            "orginizationId": "6390b9a2fbf8669105e238e1",
-            "jobName": "Data Engineering",
-            "jobLevel": "Senior",
-            "industry": "Computer Science",
-            "salary": 3500,
-            "experience": "4 Years",
-            "jobType": "Full Time",
-            "postDate": "2022-01-01",
-            "deadline": "2023-07-01",
-            "jobOverview": "YES YES YES YES YES YES ",
-            "applicants": [],
-            "requiredSkills": [
-                "Sprting Boot",
-                "C",
-                "SQL"
-            ],
-            "preferredExperience": [
-                "GIT",
-                "XML",
-                "Bonto"
-            ],
-            "__v": 0,
-            "createdAt": "2022-12-07T19:42:41.806Z",
-            "updatedAt": "2022-12-10T17:18:20.799Z"
-        }
-    ]
+    
 
     async function getJobProfile(id) {
-        await fetch(`http://localhost:5000/api/job/getJob/${id}`, {
+        await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/job/getJob/${id}`, {
             method: 'GET',
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -58,39 +27,21 @@ export default function JobAdminView() {
 
             .then(response => response.json())
             .then(json => {
-                setJob(json.job[0]);
+                setJobProfile(json.job[0]);
+           
             });
     }
+
 
     useEffect(() => {
 
         let id = searchParam.get('id');
-
-        // getJobProfile(id);
-        job = myJob[0];
-
-        let rSkills = job.requiredSkills;
-        requiredSkills = rSkills;
-        setRequiredSkills(requiredSkills);
-
-        let pSkills = job.preferredExperience;
-        preferredExperience = pSkills;
-        setPreferredExperience(preferredExperience);
-        document.getElementById("jobName").value = job.jobName
-        document.getElementById("jobIndustry").value = job.industry
-        document.getElementById("jobLevel").value = job.jobLevel
-        document.getElementById("jobSalary").value = job.salary
-        document.getElementById("jobExperience").value = job.experience
-        document.getElementById("jobPostDate").value = job.postDate
-        document.getElementById("jobDeadline").value = job.deadline
-        document.getElementById("jobName").value = job.jobName;
-        document.getElementById("jobOverView").value = job.jobOverview
-        jobType = job.jobType;
-        setJobType(jobType)
-
-
+        console.log(id);
+        getJobProfile(id);
+        
 
     }, [])
+   
 
     return (
         <>
@@ -109,8 +60,8 @@ export default function JobAdminView() {
                             <div>
                                 <button
                                     onClick={async () => {
-                                        let _id = job._id;
 
+                                        let _id = jobProfile._id;
                                         let jobName = document.getElementById("jobName").value;
                                         let industry = document.getElementById("jobIndustry").value;
                                         let jobLevel = document.getElementById("jobLevel").value;
@@ -119,6 +70,9 @@ export default function JobAdminView() {
                                         let postDate = document.getElementById("jobPostDate").value;
                                         let deadline = document.getElementById("jobDeadline").value;
                                         let jobOverview = document.getElementById("jobOverView").value;
+                                        let requiredSkills = jobProfile.requiredSkills; 
+                                        let preferredExperience = jobProfile.preferredExperience; 
+                                        let jobType = jobProfile.jobType; 
 
                                         let data = {
                                             _id,
@@ -135,7 +89,7 @@ export default function JobAdminView() {
                                             preferredExperience
                                         }
 
-                                        await fetch(`http://localhost:5000/api/job/updateJob`, {
+                                        await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/job/updateJob`, {
                                             method: 'PUT',
                                             body: JSON.stringify(data),
                                             headers: {
@@ -179,7 +133,7 @@ export default function JobAdminView() {
                                         <div className='w-100'>
                                             <label className='mb-2' for="firstNameEdit">Job Name</label>
                                             <input type="text" class="form-control" id="jobName"
-                                                placeholder="Job Name" />
+                                                defaultValue={jobProfile.jobName} placeholder="Job Name" />
                                         </div>
                                     </div>
 
@@ -190,11 +144,12 @@ export default function JobAdminView() {
                                         <div className='w-100'>
                                             <label className='mb-2' for="firstNameEdit">Industry</label>
                                             <input type="text" class="form-control" id="jobIndustry" aria-describedby="emailHelp"
-
+                                                defaultValue={jobProfile.industry}
                                                 placeholder="Industry" />
                                         </div>
 
                                     </div>
+
                                     <div class="form-group mb-3 col-md-6 d-flex">
                                         <div className='me-3 job-symbol'>
                                             <i className="fa-solid fa-user-tie"></i>
@@ -202,10 +157,12 @@ export default function JobAdminView() {
                                         <div className='w-100'>
                                             <label className='mb-2' for="firstNameEdit">Job Level</label>
                                             <input type="text" class="form-control" id="jobLevel" aria-describedby="emailHelp"
+                                                defaultValue={jobProfile.jobLevel}
                                                 placeholder="Job Level" />
                                         </div>
 
                                     </div>
+
                                     <div class="form-group mb-3 col-md-6 d-flex">
                                         <div className='me-3 job-symbol'>
                                             <i class="fa-solid fa-dollar-sign"></i>
@@ -213,10 +170,12 @@ export default function JobAdminView() {
                                         <div className='w-100'>
                                             <label className='mb-2' for="firstNameEdit">Salary</label>
                                             <input type="text" class="form-control" id="jobSalary"
+                                                defaultValue={jobProfile.salary}
                                                 placeholder="Salary" />
                                         </div>
 
                                     </div>
+
                                     <div class="form-group mb-3 col-md-6 d-flex">
                                         <div className='me-3 job-symbol'>
                                             <i className="fa-solid fa-medal"></i>
@@ -224,24 +183,30 @@ export default function JobAdminView() {
                                         <div className='w-100'>
                                             <label className='mb-2' for="firstNameEdit">Experience</label>
                                             <input type="text" class="form-control" id="jobExperience" aria-describedby="emailHelp"
+                                                defaultValue={jobProfile.experience}
                                                 placeholder="Experience" />
                                         </div>
 
                                     </div>
+
+
                                     <div class="form-group mb-3 col-md-6 d-flex">
                                         <div className='me-3 job-symbol'>
                                             <i className="fa-solid fa-briefcase"></i>
                                         </div>
                                         <div className='w-100'>
                                             <label className='mb-2' for="firstNameEdit">Job Type</label>
+                                            { jobProfile.jobType &&
                                             <Combobox
                                                 onChange={(e) => {
-                                                    setJobType(e);
+                                                    jobProfile.jobType = e
                                                 }}
-                                                value={jobType} data={["Full Time", "Part Time", "Volunteer", "Freelance", "Internship"]} />
-
+                                                defaultValue={jobProfile.jobType} data={["Full Time", "Part Time", "Volunteer", "Freelance", "Internship"]} />
+                                            }
                                         </div>
                                     </div>
+
+
                                     <div class="form-group mb-3 col-md-6 d-flex">
                                         <div className='me-3 job-symbol'>
                                             <i class="fa-solid fa-calendar-days"></i>
@@ -249,6 +214,8 @@ export default function JobAdminView() {
                                         <div className='w-100'>
                                             <label className='mb-2' for="firstNameEdit">Post Date</label>
                                             <input type="date" class="form-control" id="jobPostDate"
+                                                defaultValue={jobProfile.postDate}
+
                                             />
                                         </div>
 
@@ -259,7 +226,9 @@ export default function JobAdminView() {
                                         </div>
                                         <div className='w-100'>
                                             <label className='mb-2' for="firstNameEdit">Deadline</label>
-                                            <input id="jobDeadline" type="date" class="form-control" placeholder="City" />
+                                            <input
+                                                defaultValue={jobProfile.deadline}
+                                                id="jobDeadline" type="date" class="form-control" placeholder="City" />
                                         </div>
 
                                     </div>
@@ -276,7 +245,9 @@ export default function JobAdminView() {
                                 <div className=" container pt-3">
                                     <div className="row">
                                         <div class="mb-3">
-                                            <textarea rows="6" type="email" placeholder='Write an over view about this job..' class="form-control" id="jobOverView" aria-describedby="emailHelp"></textarea>
+                                            <textarea
+                                            defaultValue={jobProfile.jobOverview}
+                                             rows="6" type="email" placeholder='Write an over view about this job..' class="form-control" id="jobOverView" aria-describedby="emailHelp"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -299,12 +270,12 @@ export default function JobAdminView() {
                                                         let skill = document.getElementById("addSkillPoint").value;
                                                         let skillContainer = document.getElementById("skillList");
                                                         let skillsConcatenate = "";
-                                                        requiredSkills.push(skill);
-                                                        setRequiredSkills(requiredSkills);
-                                                        requiredSkills.map((skill) => {
+                                                        jobProfile.requiredSkills.push(skill);
+                                                        jobProfile.requiredSkills.map((skill) => {
                                                             skillsConcatenate += `<li>${skill}</li>`
                                                         })
                                                         skillContainer.innerHTML = skillsConcatenate;
+
                                                     }}
                                                 >Add  </button>
                                             </div>
@@ -312,9 +283,11 @@ export default function JobAdminView() {
                                         <div id="skill-point-container">
                                             <ul id="skillList" >
                                                 {
-                                                    requiredSkills.map((skill) => {
+                                                    
+                                                    jobProfile.requiredSkills?.map((skill) => {
                                                         return <li>{skill}</li>
                                                     })
+                                                    
                                                 }
 
                                             </ul>
@@ -341,12 +314,13 @@ export default function JobAdminView() {
                                                         let skill = document.getElementById("addPreferredSkillPoint").value;
                                                         let skillContainer = document.getElementById("preferredSkillsContainer");
                                                         let skillsConcatenate = "";
-                                                        preferredExperience.push(skill);
-                                                        setPreferredExperience(preferredExperience);
-                                                        preferredExperience.map((skill) => {
+                                                        jobProfile.preferredExperience.push(skill);
+                                                        jobProfile.preferredExperience.map((skill) => {
                                                             skillsConcatenate += `<li>${skill}</li>`
                                                         })
+
                                                         skillContainer.innerHTML = skillsConcatenate;
+                                                        
                                                     }
 
                                                     }
@@ -356,7 +330,7 @@ export default function JobAdminView() {
                                         <div id="skill-point">
                                             <ul className='d-block' id="preferredSkillsContainer">
                                                 {
-                                                    preferredExperience.map((skill) => {
+                                                    jobProfile.preferredExperience?.map((skill) => {
                                                         return <li>{skill}</li>
                                                     })
                                                 }
@@ -379,3 +353,5 @@ export default function JobAdminView() {
         </>
     )
 }
+
+
