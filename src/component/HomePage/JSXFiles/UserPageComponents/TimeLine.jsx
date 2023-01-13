@@ -49,7 +49,7 @@ export default function TimeLine() {
                 <div className="timeline">
                     <div className="inner-timeline">
                         {/* GENERATE ALL POSTS START FROM HERE */}
-                        {posts.map((post) => {
+                        {posts.map((post, key) => {
                             return (
                                 <Fade>
                                     <div className="post mb-3">
@@ -86,7 +86,7 @@ export default function TimeLine() {
                                             </div>
                                             <div className="post-img">
                                                 {
-                                                    post.type == "img" ? <img className='w-100 h-100' src={`https://alumnibackend-fathifathallah.onrender.com/api/posts/getPostMedia/${post._id}`} ></img>
+                                                    post.mediaType == "img" ? <img className='w-100 h-100' src={`https://alumnibackend-fathifathallah.onrender.com/api/posts/getPostMedia/${post._id}`} ></img>
                                                         : <video controls className='w-100 h-100' src={`https://alumnibackend-fathifathallah.onrender.com/api/posts/getPostMedia/${post._id}`} ></video>
 
                                                 }
@@ -97,7 +97,7 @@ export default function TimeLine() {
                                                         <i className="fa-solid fa-heart "></i>
                                                     </div>
                                                     <div className="rs-div">
-                                                        <button id="likesCounterBtn" data-bs-toggle="modal" data-bs-target="#likePost0000"
+                                                        <button className="likesCounterBtn" data-bs-toggle="modal" data-bs-target="#likePost0000"
                                                             onClick={async () => {
                                                                 await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/posts/getPostLikes/${post._id}`, {
                                                                     method: 'GET',
@@ -146,35 +146,11 @@ export default function TimeLine() {
                                                             postId: post._id
                                                         }
 
-                                                        let icon = document.getElementById("likeBtn");
-                                                        let liked = false;
 
 
-                                                        console.log(post._id)
-
-                                                        // GET LIKES ON POST TO CHECK IF LIKED ON OR OFF 
-                                                        await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/posts/getPostLikes/${post._id}`, {
-                                                            method: 'GET',
-                                                            headers: {
-                                                                "Content-type": "application/json; charset=UTF-8"
-                                                            }
-                                                        })
-                                                            .then(response => response.json())
-                                                            .then(json => {
-                                                                setLikes(json.postLikes);
-                                                                console.log(json.postLikes)
-                                                                document.getElementById("likesCounterBtn").innerHTML = json.postLikes.length
-                                                                for (let i = 0; i < json.postLikes.length; i++) {
-                                                                    if (json.postLikes[i]._id == _id) {
-                                                                        liked = true;
-                                                                    }
-                                                                }
-                                                            });
-
-                                                        console.log(liked)
-
-                                                        if (liked == true) {
+                                                        if (post.liked == true) {
                                                             // dislike  On Post
+                                                            console.log("INSIDE DISLIKE" + post._id)
                                                             await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/user/removeLike`, {
                                                                 method: 'DELETE',
                                                                 body: JSON.stringify(data),
@@ -183,7 +159,7 @@ export default function TimeLine() {
                                                                 }
                                                             }).then(response => response.json())
                                                                 .then(json => {
-                                                                    icon.style.color = "#2A4D69";
+                                                
 
                                                                 });
 
@@ -197,13 +173,27 @@ export default function TimeLine() {
                                                                 .then(response => response.json())
                                                                 .then(json => {
                                                                     setLikes(json.postLikes);
-                                                                    document.getElementById("likesCounterBtn").innerHTML = json.postLikes.length
+                                                                    document.getElementsByClassName("likesCounterBtn")[key].innerHTML = json.postLikes.length
                                                                     console.log(json.postLikes)
+                                                                });
+
+                                                            await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/user/getTimelinePosts/${_id}`, {
+                                                                method: 'GET',
+                                                                headers: {
+                                                                    "Content-type": "application/json; charset=UTF-8"
+                                                                }
+                                                            })
+
+                                                                .then(response => response.json())
+                                                                .then(json => {
+                                                                    setPosts(json.postsResponse);
                                                                 });
 
                                                         }
                                                         else {
                                                             // Put Like On Post
+                                                            console.log("INSIDE LIKE" + post._id)
+
                                                             await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/user/addLike`, {
                                                                 method: 'PUT',
                                                                 body: JSON.stringify(data),
@@ -212,8 +202,7 @@ export default function TimeLine() {
                                                                 }
                                                             }).then(response => response.json())
                                                                 .then(json => {
-                                                                    icon.style.color = "red";
-
+                                                         
                                                                 });
 
                                                             await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/posts/getPostLikes/${post._id}`, {
@@ -226,8 +215,20 @@ export default function TimeLine() {
                                                                 .then(json => {
                                                                     setLikes(json.postLikes);
                                                                     console.log(json.postLikes)
-                                                                    document.getElementById("likesCounterBtn").innerHTML = json.postLikes.length
+                                                                    document.getElementsByClassName("likesCounterBtn")[key].innerHTML = json.postLikes.length
 
+                                                                });
+
+                                                            await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/user/getTimelinePosts/${_id}`, {
+                                                                method: 'GET',
+                                                                headers: {
+                                                                    "Content-type": "application/json; charset=UTF-8"
+                                                                }
+                                                            })
+
+                                                                .then(response => response.json())
+                                                                .then(json => {
+                                                                    setPosts(json.postsResponse);
                                                                 });
 
 
@@ -238,7 +239,8 @@ export default function TimeLine() {
 
 
 
-                                                    className='w-50'><i id="likeBtn" class="fa-solid fa-thumbs-up"></i> Like</button>
+                                                    className='w-50'><i style={post.liked==true?{color:"red"}:{color:"#2A4D69"}} className="likeBtn" class="fa-solid fa-thumbs-up"></i>
+                                                     &nbsp; Like</button>
                                                 <button className='w-50' onClick={() => {
                                                     var comment_pane = document.getElementById("comment_pane");
                                                     console.log(comment_pane);
