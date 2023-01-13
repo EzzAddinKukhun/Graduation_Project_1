@@ -9,324 +9,148 @@ import test5 from '../../../../imgs/ch8.jpg'
 import test6 from '../../../../imgs/ch9.jpg'
 import test7 from '../../../../imgs/ch10.jpg'
 import { Fade } from 'react-reveal';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import Swal  from 'sweetalert2';
 
 export default function NewEvents() {
+    const [events, setEvents] = useState([]);
+    let month = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+    let [eventId, setEventId] = useState("");
+    let [userID, setUserId]= useState(""); 
+
+
+
+
+    async function getUpcomingEvents() {
+        await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/event/getUpcomingEvents`, {
+            method: 'GET',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+
+            .then(response => response.json())
+            .then(json => {
+                setEvents(json.events);
+
+            });
+
+
+    }
+
+    useEffect(() => {
+        let dataFromLocalStorage = localStorage.getItem("ACCOUNT");
+        let jsonData = JSON.parse(dataFromLocalStorage);
+        let id = jsonData.id;
+        setUserId(id); 
+        getUpcomingEvents();
+
+
+
+
+
+    }, [])
+
+
     return (
         <>
+            {console.log(events)}
             <div className="outlet ms-auto">
                 <div className="container">
                     <div className="row">
                         {/* GENERATE EVENTS */}
-                        <Fade>
-                            <div className="col-md-6 event-reg">
-                                <div className='event-container d-flex'>
-                                    <Fade delay={500} >
 
-                                        <div className="event-thumb">
-                                            <img src={test}></img>
-                                            <div className="overlay-event"></div>
-                                            <div className="event-date text-light text-center  w-50">
-                                                <h6 className='event-year'><b>2022</b></h6>
-                                                <h2><b>16</b></h2>
-                                                <h6 className='event-month'><b>JUN</b></h6>
+                        {events.map((event) => {
+                            return (<Fade>
+                                <div className="col-md-6 event-reg">
+                                    <div className='event-container d-flex'>
+                                        <Fade delay={500} >
+
+                                            <div className="event-thumb">
+                                                <img src={`https://alumnibackend-fathifathallah.onrender.com/api/event/getEventThumbnail/${event._id}`}></img>
+                                                <div className="overlay-event"></div>
+                                                <div className="event-date text-light text-center  w-50">
+                                                    <h6><b>{month[new Date(event.startDate).toLocaleDateString().split("/")[0] - 1]}</b></h6>
+                                                    <h1><b>{new Date(event.startDate).toLocaleDateString().split("/")[1]}</b></h1>
+                                                    <h6><b>{new Date(event.startDate).toLocaleDateString().split("/")[2]}</b></h6>
+                                                </div>
+
                                             </div>
+                                        </Fade>
 
-                                        </div>
-                                    </Fade>
-
-                                    <Fade delay={1000} >
-                                        <div className="event-info p-3">
-                                            <h3 className='event-name'><b>AI Conference For Alumni</b></h3>
-                                            <div className='event-type d-flex '>
-                                                <div className=' w-15 text-center'>
-                                                    <i className="fa-solid fa-handshake-angle"></i>                            </div>
-                                                <div className='w-85'>
-                                                    <h5>Workshop</h5>
+                                        <Fade delay={1000} >
+                                            <div className="event-info p-3">
+                                                <h3 className='event-name'><b>{event.eventName}</b></h3>
+                                                <div className='event-type mb-2 d-flex '>
+                                                    <div className=' w-15 text-center'>
+                                                        <i className="fa-solid fa-handshake-angle"></i>                            </div>
+                                                    <div className='w-85'>
+                                                        <h5>{event.eventType}</h5>
+                                                    </div>
                                                 </div>
+                                                <div className='event-location mb-2 d-flex '>
+                                                    <div className=' w-15 text-center'>
+                                                        <i className="fa-solid fa-location-dot"></i>
+                                                    </div>
+                                                    <div className='w-85 '>
+                                                        <h5>{event.eventLocation}</h5>
+                                                    </div>
+                                                </div>
+                                                <div className='event-time mb-2 d-flex '>
+                                                    <div className=' w-15 text-center'>
+                                                        <i className="fa-solid fa-clock"></i>
+                                                    </div>
+                                                    <div className='w-85'>
+                                                        <h5>{new Date(event.startDate).toLocaleTimeString()}</h5>
+                                                    </div>
+                                                </div>
+
+                                                <button
+                                                    onClick={async () => {
+                                                        setEventId(event._id);
+
+
+                                                        await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/orginization/getOrgInfo/${event.orginizationId}`, {
+                                                            method: 'GET',
+                                                            headers: {
+                                                                "Content-type": "application/json; charset=UTF-8"
+                                                            }
+                                                        })
+
+                                                            .then(response => response.json())
+                                                            .then(json => {
+                                                                document.getElementById("eventNamePopUp").innerHTML = event.eventName;
+                                                                document.getElementById("eventOrganizationPopUp").innerHTML = json.orgInfo.orginizationName;
+                                                                document.getElementById("eventTypePopUp").innerHTML = event.eventType;
+                                                                document.getElementById("eventDatePopUp").innerHTML = new Date(event.startDate).toLocaleDateString() + " - " + new Date(event.endDate).toLocaleDateString()
+                                                                document.getElementById("eventTimePopUp").innerHTML = new Date(event.startDate).toLocaleTimeString() + " - " + new Date(event.endDate).toLocaleTimeString()
+                                                                document.getElementById("eventLocationPopUp").innerHTML = event.eventLocation;
+                                                                document.getElementById("eventAttendancePopUp").innerHTML = event.attendance.length;
+                                                                document.getElementById("eventDescriptionPopUp").innerHTML = event.eventDescription;
+                                                            });
+
+
+
+
+
+
+                                                    }}
+                                                    data-bs-toggle="modal" data-bs-target="#exampleModal" className='mt-2 view-event-details'>
+                                                    View More..
+                                                </button>
+
+
                                             </div>
-                                            <div className='event-location d-flex '>
-                                                <div className=' w-15 text-center'>
-                                                    <i className="fa-solid fa-location-dot"></i>
-                                                </div>
-                                                <div className='w-85 '>
-                                                    <h5>Palestine/Nablus</h5>
-                                                </div>
-                                            </div>
-                                            <div className='event-time  d-flex '>
-                                                <div className=' w-15 text-center'>
-                                                    <i className="fa-solid fa-clock"></i>
-                                                </div>
-                                                <div className='w-85'>
-                                                    <h5>01:00 PM Jerusalem</h5>
-                                                </div>
-                                            </div>
-                                            <div className='event-hosts  d-flex '>
-                                                <div className=' w-15 text-center'>
-                                                    <i className="fa-solid fa-people-group"></i>                                        </div>
-                                                <div className='w-85 '>
-                                                    <h5>Mohammad Ahmad</h5>
-                                                </div>
-                                            </div>
-
-
-                                            <button data-bs-toggle="modal" data-bs-target="#exampleModal" className='mt-2 view-event-details'>
-                                                View More..
-                                            </button>
-
-
-                                        </div>
-                                    </Fade>
+                                        </Fade>
+                                    </div>
                                 </div>
-                            </div>
-                        </Fade>
-                        <Fade>
-                            <div className="col-md-6 event-reg">
-                                <div className='event-container d-flex'>
-                                    <Fade delay={500} >
+                            </Fade>
+                            );
 
-                                        <div className="event-thumb">
-                                            <img src={test1}></img>
-                                            <div className="overlay-event"></div>
-                                            <div className="event-date text-light text-center  w-50">
-                                                <h6 className='event-year'><b>2022</b></h6>
-                                                <h2><b>24</b></h2>
-                                                <h6 className='event-month'><b>JUN</b></h6>
-                                            </div>
-
-                                        </div>
-                                    </Fade>
-
-                                    <Fade delay={1000} >
-                                        <div className="event-info p-3">
-                                            <h3 className='event-name'><b>Social Skills Alumni</b></h3>
-                                            <div className='event-type d-flex '>
-                                                <div className=' w-15 text-center'>
-                                                    <i className="fa-solid fa-handshake-angle"></i>                            </div>
-                                                <div className='w-85'>
-                                                    <h5>Workshop</h5>
-                                                </div>
-                                            </div>
-                                            <div className='event-location d-flex '>
-                                                <div className=' w-15 text-center'>
-                                                    <i className="fa-solid fa-location-dot"></i>
-                                                </div>
-                                                <div className='w-85 '>
-                                                    <h5>Palestine/Nablus</h5>
-                                                </div>
-                                            </div>
-                                            <div className='event-time  d-flex '>
-                                                <div className=' w-15 text-center'>
-                                                    <i className="fa-solid fa-clock"></i>
-                                                </div>
-                                                <div className='w-85'>
-                                                    <h5>01:00 PM Jerusalem</h5>
-                                                </div>
-                                            </div>
-                                            <div className='event-hosts  d-flex '>
-                                                <div className=' w-15 text-center'>
-                                                    <i className="fa-solid fa-people-group"></i>                                        </div>
-                                                <div className='w-85 '>
-                                                    <h5>Mohammad Ahmad</h5>
-                                                </div>
-                                            </div>
+                        })}
 
 
-                                            <button data-bs-toggle="modal" data-bs-target="#exampleModal" className='mt-2 view-event-details'>
-                                                View More..
-                                            </button>
-
-
-                                        </div>
-                                    </Fade>
-                                </div>
-                            </div>
-                        </Fade>
-                        <Fade>
-                            <div className="col-md-6 event-reg">
-                                <div className='event-container d-flex'>
-                                    <Fade delay={500} >
-
-                                        <div className="event-thumb">
-                                            <img src={test3}></img>
-                                            <div className="overlay-event"></div>
-                                            <div className="event-date text-light text-center  w-50">
-                                                <h6 className='event-year'><b>2022</b></h6>
-                                                <h2><b>28</b></h2>
-                                                <h6 className='event-month'><b>JUN</b></h6>
-                                            </div>
-
-                                        </div>
-                                    </Fade>
-
-                                    <Fade delay={1000} >
-                                        <div className="event-info p-3">
-                                            <h3 className='event-name'><b>Start Your Own Project</b></h3>
-                                            <div className='event-type d-flex '>
-                                                <div className=' w-15 text-center'>
-                                                    <i className="fa-solid fa-handshake-angle"></i>                            </div>
-                                                <div className='w-85'>
-                                                    <h5>Workshop</h5>
-                                                </div>
-                                            </div>
-                                            <div className='event-location d-flex '>
-                                                <div className=' w-15 text-center'>
-                                                    <i className="fa-solid fa-location-dot"></i>
-                                                </div>
-                                                <div className='w-85 '>
-                                                    <h5>Palestine/Nablus</h5>
-                                                </div>
-                                            </div>
-                                            <div className='event-time  d-flex '>
-                                                <div className=' w-15 text-center'>
-                                                    <i className="fa-solid fa-clock"></i>
-                                                </div>
-                                                <div className='w-85'>
-                                                    <h5>01:00 PM Jerusalem</h5>
-                                                </div>
-                                            </div>
-                                            <div className='event-hosts  d-flex '>
-                                                <div className=' w-15 text-center'>
-                                                    <i className="fa-solid fa-people-group"></i>                                        </div>
-                                                <div className='w-85 '>
-                                                    <h5>Mohammad Ahmad</h5>
-                                                </div>
-                                            </div>
-
-
-                                            <button data-bs-toggle="modal" data-bs-target="#exampleModal" className='mt-2 view-event-details'>
-                                                View More..
-                                            </button>
-
-
-                                        </div>
-                                    </Fade>
-                                </div>
-                            </div>
-                        </Fade>
-                        <Fade>
-                            <div className="col-md-6 event-reg">
-                                <div className='event-container d-flex'>
-                                    <Fade delay={500} >
-
-                                        <div className="event-thumb">
-                                            <img className='ttt' src={test7}></img>
-                                            <div className="overlay-event"></div>
-                                            <div className="event-date text-light text-center  w-50">
-                                                <h6 className='event-year'><b>2022</b></h6>
-                                                <h2><b>13</b></h2>
-                                                <h6 className='event-month'><b>JUL</b></h6>
-                                            </div>
-
-                                        </div>
-                                    </Fade>
-
-                                    <Fade delay={1000} >
-                                        <div className="event-info p-3">
-                                            <h3 className='event-name'><b>IBM Robot Event</b></h3>
-                                            <div className='event-type d-flex '>
-                                                <div className=' w-15 text-center'>
-                                                    <i className="fa-solid fa-handshake-angle"></i>                            </div>
-                                                <div className='w-85'>
-                                                    <h5>Workshop</h5>
-                                                </div>
-                                            </div>
-                                            <div className='event-location d-flex '>
-                                                <div className=' w-15 text-center'>
-                                                    <i className="fa-solid fa-location-dot"></i>
-                                                </div>
-                                                <div className='w-85 '>
-                                                    <h5>Palestine/Nablus</h5>
-                                                </div>
-                                            </div>
-                                            <div className='event-time  d-flex '>
-                                                <div className=' w-15 text-center'>
-                                                    <i className="fa-solid fa-clock"></i>
-                                                </div>
-                                                <div className='w-85'>
-                                                    <h5>01:00 PM Jerusalem</h5>
-                                                </div>
-                                            </div>
-                                            <div className='event-hosts  d-flex '>
-                                                <div className=' w-15 text-center'>
-                                                    <i className="fa-solid fa-people-group"></i>                                        </div>
-                                                <div className='w-85 '>
-                                                    <h5>Mohammad Ahmad</h5>
-                                                </div>
-                                            </div>
-
-
-                                            <button data-bs-toggle="modal" data-bs-target="#exampleModal" className='mt-2 view-event-details'>
-                                                View More..
-                                            </button>
-
-
-                                        </div>
-                                    </Fade>
-                                </div>
-                            </div>
-                        </Fade>
-                        <Fade>
-                            <div className="col-md-6 event-reg">
-                                <div className='event-container d-flex'>
-                                    <Fade delay={500} >
-
-                                        <div className="event-thumb">
-                                            <img src={test}></img>
-                                            <div className="overlay-event"></div>
-                                            <div className="event-date text-light text-center  w-50">
-                                                <h6 className='event-year'><b>2022</b></h6>
-                                                <h2><b>16</b></h2>
-                                                <h6 className='event-month'><b>JUN</b></h6>
-                                            </div>
-
-                                        </div>
-                                    </Fade>
-
-                                    <Fade delay={1000} >
-                                        <div className="event-info p-3">
-                                            <h3 className='event-name'><b>AI Conference For Alumni</b></h3>
-                                            <div className='event-type d-flex '>
-                                                <div className=' w-15 text-center'>
-                                                    <i className="fa-solid fa-handshake-angle"></i>                            </div>
-                                                <div className='w-85'>
-                                                    <h5>Workshop</h5>
-                                                </div>
-                                            </div>
-                                            <div className='event-location d-flex '>
-                                                <div className=' w-15 text-center'>
-                                                    <i className="fa-solid fa-location-dot"></i>
-                                                </div>
-                                                <div className='w-85 '>
-                                                    <h5>Palestine/Nablus</h5>
-                                                </div>
-                                            </div>
-                                            <div className='event-time  d-flex '>
-                                                <div className=' w-15 text-center'>
-                                                    <i className="fa-solid fa-clock"></i>
-                                                </div>
-                                                <div className='w-85'>
-                                                    <h5>01:00 PM Jerusalem</h5>
-                                                </div>
-                                            </div>
-                                            <div className='event-hosts  d-flex '>
-                                                <div className=' w-15 text-center'>
-                                                    <i className="fa-solid fa-people-group"></i>                                        </div>
-                                                <div className='w-85 '>
-                                                    <h5>Mohammad Ahmad</h5>
-                                                </div>
-                                            </div>
-
-
-                                            <button data-bs-toggle="modal" data-bs-target="#exampleModal" className='mt-2 view-event-details'>
-                                                View More..
-                                            </button>
-
-
-                                        </div>
-                                    </Fade>
-                                </div>
-                            </div>
-                        </Fade>
                     </div>
                 </div>
 
@@ -344,40 +168,75 @@ export default function NewEvents() {
                                 <tbody>
                                     <tr>
                                         <th className='w-25' scope="row"> Name</th>
-                                        <td>AI Conference For Alumni</td>
+                                        <td id="eventNamePopUp">AI Conference For Alumni</td>
 
                                     </tr>
                                     <tr>
                                         <th className="event-comp w-25" scope="row"> Channel/Organization</th>
-                                        <td>Future Engineers</td>
+                                        <td id="eventOrganizationPopUp">Future Engineers</td>
 
                                     </tr>
                                     <tr>
                                         <th scope="row"> Type</th>
-                                        <td>Workshop</td>
+                                        <td id="eventTypePopUp">Workshop</td>
 
                                     </tr>
                                     <tr>
                                         <th scope="row"> Date</th>
-                                        <td colspan="2">22 JUN 2022</td>
+                                        <td id="eventDatePopUp" colspan="2">22 JUN 2022</td>
                                     </tr>
                                     <tr>
                                         <th scope="row"> Time</th>
-                                        <td colspan="2">01:00 PM Jerusalem</td>
+                                        <td id="eventTimePopUp" colspan="2">01:00 PM Jerusalem</td>
                                     </tr>
                                     <tr>
                                         <th scope="row">Location</th>
-                                        <td colspan="2">Palestine/Nablus</td>
+                                        <td id="eventLocationPopUp" colspan="2">Palestine/Nablus</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Attendance</th>
+                                        <td id="eventAttendancePopUp" colspan="2">Palestine/Nablus</td>
                                     </tr>
                                     <tr>
                                         <th scope="row">Description</th>
-                                        <td className='desc-event' colspan="2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur ab illo doloremque delectus, officia perspiciatis aperiam sequi placeat distinctio commodi modi hic, minima explicabo natus accusamus similique corporis iusto ex repellat amet! Ipsum voluptatum dicta debitis, ullam modi consequuntur natus.</td>
+                                        <td id="eventDescriptionPopUp" className='desc-event' colspan="2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur ab illo doloremque delectus, officia perspiciatis aperiam sequi placeat distinctio commodi modi hic, minima explicabo natus accusamus similique corporis iusto ex repellat amet! Ipsum voluptatum dicta debitis, ullam modi consequuntur natus.</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-primary">Booking</button>
+                            <button
+                                onClick={async () => {
+                                    console.log(eventId)
+
+                                    let _id = eventId; 
+                                    let userId = userID; 
+                                    let data = {
+                                        _id,
+                                        userId
+                                    }
+
+                                    await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/eventUser/userBookingEvent`, {
+                                        method: 'PUT',
+                                        body: JSON.stringify(data),
+                                        headers: {
+                                            "Content-type": "application/json; charset=UTF-8"
+                                        }
+                                    }).then(response => response.json())
+                                        .then(json => {
+                                            if (json.message == "success") {
+                                                Swal.fire("Good job!", "The Event Booked Successfully!", "success");
+
+                                            }
+                                            else {
+                                                Swal.fire("Oh No!", "There is an error, try to republish the job!", "error");
+
+                                            }
+
+
+                                        });
+                                }}
+                                type="button" className="btn btn-primary">Booking</button>
                         </div>
                     </div>
                 </div>

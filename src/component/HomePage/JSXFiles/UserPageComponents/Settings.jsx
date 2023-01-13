@@ -38,33 +38,6 @@ export default function Settings() {
     setFileData4(e.target.files[0]);
   };
 
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
-
-    // Handle File Data from the state Before Sending
-    const data = new FormData();
-    let _id = userID
-    data.append("documentFiles", fileData1);
-    data.append("documentFiles", fileData2);
-    data.append("documentFiles", fileData3);
-    data.append("documentFiles", fileData4);
-    data.append("_id", _id);
-    data.append("updateArrayFiles", typeof fileData1);
-    data.append("updateArrayFiles", typeof fileData2);
-    data.append("updateArrayFiles", typeof fileData3);
-    data.append("updateArrayFiles", typeof fileData4);
-
-    fetch("http://localhost:5000/uploadDocuments/update", {
-      method: "PUT",
-      body: data,
-    })
-      .then((result) => {
-        console.log("File Sent Successful");
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  };
 
 
 
@@ -971,7 +944,7 @@ export default function Settings() {
                               skillId
                             }
 
-                            console.log(data); 
+                            console.log(data);
 
 
 
@@ -1068,6 +1041,42 @@ export default function Settings() {
 
             <div className="divv d-flex justify-content-end">
               <button
+                onClick={async (e) => {
+                  e.preventDefault();
+
+                  // Handle File Data from the state Before Sending
+                  const data = new FormData();
+                  let _id = userID
+                  data.append("documentFiles", fileData1);
+                  data.append("documentFiles", fileData2);
+                  data.append("documentFiles", fileData3);
+                  data.append("documentFiles", fileData4);
+                  data.append("_id", _id);
+                  data.append("updateArrayFiles", typeof fileData1);
+                  data.append("updateArrayFiles", typeof fileData2);
+                  data.append("updateArrayFiles", typeof fileData3);
+                  data.append("updateArrayFiles", typeof fileData4);
+
+                  await fetch("https://alumnibackend-fathifathallah.onrender.com/uploadDocuments/update", {
+                    method: "PUT",
+                    body: data,
+                  })
+                    .then((result) => {
+                      Swal.fire(
+                        'Good job!',
+                        'Your Files Uploaded Successfully!',
+                        'success'
+                      )
+                      setTimeout(() => {
+                        window.location.reload();
+                      }, 2000)
+
+                    })
+                    .catch((err) => {
+                      console.log(err.message);
+                    });
+
+                }}
 
                 id='saveInfoBtn'><i class="fa-solid fa-floppy-disk"></i> Save</button>
 

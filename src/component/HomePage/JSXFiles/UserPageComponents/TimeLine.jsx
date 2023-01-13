@@ -12,6 +12,7 @@ export default function TimeLine() {
     let [posts, setPosts] = useState([]);
     const [likes, setLikes] = useState([]);
     const [comments, setComments] = useState([]);
+    const [commentToSend, setCommentToSend] = useState("");
 
     async function getPosts(id) {
         await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/user/getTimelinePosts/${id}`, {
@@ -132,7 +133,7 @@ export default function TimeLine() {
                                                                         setComments(json.comments);
                                                                     });
                                                             }}
-                                                            data-bs-target="#commentPost0000" data-bs-toggle="modal" >{post.comments}</button>
+                                                            data-bs-target="#commentPost0000" className= "commentsCounter" data-bs-toggle="modal" >{post.comments}</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -159,7 +160,7 @@ export default function TimeLine() {
                                                                 }
                                                             }).then(response => response.json())
                                                                 .then(json => {
-                                                
+
 
                                                                 });
 
@@ -202,7 +203,7 @@ export default function TimeLine() {
                                                                 }
                                                             }).then(response => response.json())
                                                                 .then(json => {
-                                                         
+
                                                                 });
 
                                                             await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/posts/getPostLikes/${post._id}`, {
@@ -239,8 +240,8 @@ export default function TimeLine() {
 
 
 
-                                                    className='w-50'><i style={post.liked==true?{color:"red"}:{color:"#2A4D69"}} className="likeBtn" class="fa-solid fa-thumbs-up"></i>
-                                                     &nbsp; Like</button>
+                                                    className='w-50'><i style={post.liked == true ? { color: "red" } : { color: "#2A4D69" }} className="likeBtn" class="fa-solid fa-thumbs-up"></i>
+                                                    &nbsp; Like</button>
                                                 <button className='w-50' onClick={() => {
                                                     var comment_pane = document.getElementById("comment_pane");
                                                     console.log(comment_pane);
@@ -251,17 +252,17 @@ export default function TimeLine() {
                                                 ><i className="fa-solid fa-comment"></i> Comment</button>
 
                                             </div>
-                                            <div id="comment_pane">
-                                                <div className="comment-write d-flex" >
+                                            <div id="comment_pane ">
+                                                <div className="comment-write d-flex " >
                                                     <div className="comment-img text-center">
-                                                        {/* <img src={`https://alumnibackend-fathifathallah.onrender.com/api/orginization/getOrginizationProfilePic/${id}`} ></img> */}
+                                                        <img src={`https://alumnibackend-fathifathallah.onrender.com/api/orginization/getOrginizationProfilePic/${userID}`} ></img>
                                                     </div>
                                                     <div id="comment-input" className="comment-input  d-flex align-items-center   ms-auto">
-                                                        <div id="comment" className="comment d-flex justify-content-center border-color">
-                                                            <input
+                                                        <div id="comment" className="comment d-flex justify-content-around border-color ">
+                                                            <input className="commentInput"
                                                                 onKeyUp={(e) => {
                                                                     var comment = document.getElementById("comment");
-                                                                    console.log(e.target.value.length);
+                                                                    setCommentToSend(e.target.value)
                                                                     if (e.target.value.length == 0) {
                                                                         comment.classList.add("border-color");
                                                                         comment.classList.remove("border-double-color")
@@ -275,13 +276,54 @@ export default function TimeLine() {
 
                                                                 placeholder='Write a comment..' type="text"></input>
 
+                                                            <div
+                                                                onClick={async () => {
+                                                                    console.log(commentToSend);
+                                                                    let comment = commentToSend;
+                                                                    let _id = userID;
+                                                                    let postId = post._id;
+
+                                                                    let data = {
+                                                                        _id,
+                                                                        postId,
+                                                                        comment
+                                                                    }
 
 
-                                                            <div className="emoji d-flex justify-content-center align-items-center">
+                                                                    await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/posts/addComment`, {
+                                                                        method: 'PUT',
+                                                                        body: JSON.stringify(data),
+                                                                        headers: {
+                                                                            "Content-type": "application/json; charset=UTF-8"
+                                                                        }
+                                                                    }).then(response => response.json())
+                                                                        .then(json => {
+                                                                        });
+
+                                                                    //update comments counter 
+
+                                                                    await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/posts/getPostComments/${post._id}`, {
+                                                                        method: 'GET',
+                                                                        headers: {
+                                                                            "Content-type": "application/json; charset=UTF-8"
+                                                                        }
+                                                                    })
+                                                                        .then(response => response.json())
+                                                                        .then(json => {
+                                                                            setComments(json.comments);
+                                                                            document.getElementsByClassName("commentsCounter")[key].innerHTML = json.comments.length; 
+                                                                            document.getElementsByClassName("commentInput")[key].value = ""; 
+                                                                        });
+
+
+                                                                }}
+                                                                className="emoji d-flex justify-content-center align-items-center">
                                                                 <div>
-                                                                    <i className="fa-regular fa-face-smile-beam"></i>
+                                                                    <i class="fa-solid fa-paper-plane"></i>
                                                                 </div>
                                                             </div>
+
+
                                                         </div>
 
                                                     </div>
