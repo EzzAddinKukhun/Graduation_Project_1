@@ -24,14 +24,7 @@ export default function Sidebar() {
                                 <Link to="statistics">Statistics</Link>
                             </div>
                         </div>
-                        <div className="user-nav p-4">
-                            <div className="nav-icon me-4">
-                                <i class="fa-solid fa-timeline"></i>
-                            </div>
-                            <div className="nav-name">
-                                <Link to="statistics">Settings</Link>
-                            </div>
-                        </div>
+                        
                         <div className="user-nav p-4">
                             <div className="nav-icon me-4">
                                 <i class="fa-solid fa-briefcase"></i>

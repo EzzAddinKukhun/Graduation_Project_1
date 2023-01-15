@@ -134,8 +134,16 @@
 
 .header-scholar {
     width: 100%;
-    height: 30vh;
-    /* background-image: url(../../../../imgs/OIP.jpg); */
+    height: 40vh;
+    background-image: url(../../../../imgs/OIP.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+.header-scholar-2 {
+    width: 100%;
+    height: 45vh;
+    background-image: url(../../../../imgs/harvard.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;
@@ -146,6 +154,12 @@
 }
 .header-scholar h6:nth-child(2){
     font-size: 30px;
+}
+.header-scholar-2 h6:nth-child(1){
+    font-size: 50px;
+}
+.header-scholar-2 h6:nth-child(2){
+    font-size: 22px;
 }
 
 .side-bar-scholar{

@@ -66,10 +66,10 @@ export default function UserNavbar() {
 
                 </div>
                 
-                <div className="notifications">
+                {/* <div className="notifications">
                     <i class="fa-regular fa-bell me-4"></i>
                     <i class="fa-regular fa-comments"></i>
-                </div>
+                </div> */}
             </div>
             <Outlet/>
         </>

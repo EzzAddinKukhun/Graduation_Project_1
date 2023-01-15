@@ -22,6 +22,8 @@ import ScholarFilesToUpload from './UserPageComponents/ScholarFilesToUpload';
 import Jobs from './UserPageComponents/Jobs';
 import JopDetailsPage from './UserPageComponents/JopDetailsPage';
 import MemberShips from './UserPageComponents/MemberShips';
+import ChannelViewProfile from './UserPageComponents/ChannelViewProfile';
+import MembershipsViewProfile from './UserPageComponents/MembershipsViewProfile';
 
 export default class User extends Component {
   render() {
@@ -36,20 +38,21 @@ export default class User extends Component {
           <Route path="profile" element={<Profile />}></Route>
             <Route  path="alumniProf" element={<AlumniProfile />} ></Route>
           </Route>
-          <Route path="channels" element={<Channels />}></Route>
-          <Route path="scholars" element={<Scholarships />}>
+          <Route path="channels" element={<Channels />}>
           </Route>
+          <Route path="channels/channel" element={<ChannelViewProfile/>}></Route>
 
-          <Route path="scholarsf" element={<ScholarshipsForm />} >
-            <Route path="" element={<ScholarOverview />} ></Route>
-            <Route path="ScholarReq" element={<ScholarReq/>} ></Route>
-            <Route path="ScholarFilesToUpload" element={<ScholarFilesToUpload/>} ></Route>
+          <Route path="scholars" element={<Scholarships />}></Route>
+
+          <Route path="" element={<ScholarshipsForm />} >
+            <Route path="scholars/scholarsForm" element={<ScholarOverview />} ></Route>
           </Route>
 
             {/* {THIS IS THE USER JSX} */}
 
           <Route path="alumniProf" element={<AlumniProfile />}></Route>
           <Route path="mem" element={<MemberShips />}></Route>
+          <Route path="mem/memprofile" element={<MembershipsViewProfile />}></Route>
           <Route path="job_apply_page" element={<JopDetailsPage />}></Route>
           <Route path="alumniProf" element={<AlumniProfile />}>
             <Route path="exp" element={<Experience />}></Route>
