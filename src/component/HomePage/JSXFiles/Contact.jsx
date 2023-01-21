@@ -4,8 +4,9 @@ import '../CSSFiles/contact.css'
 import Zoom from 'react-reveal/Zoom';
 import Fade from 'react-reveal/Fade';
 import Bounce from 'react-reveal/Bounce';
+import Swal from 'sweetalert2';
 
-import Scroll from './Scroll'; 
+import Scroll from './Scroll';
 
 
 
@@ -25,7 +26,7 @@ export default function Contact() {
                     <div className="overlay-div"></div>
                 </div>
             </Fade>
-            <Scroll/>
+            <Scroll />
             <div className="contact">
                 <div className="container">
                     <Fade>
@@ -35,6 +36,7 @@ export default function Contact() {
                         <div className="col-md-8">
                             <p className='ps-5 pe-5 pb-3 text-dark'>
                                 <Bounce left cascade delay={1000}>
+                                    <b>For universities, organizations and associations</b>,
                                     You can ask about anything in your mind,
                                     enter your email and name, and write your message,
                                     you can also visit us in the attached address.
@@ -42,39 +44,39 @@ export default function Contact() {
                             </p>
                             <div className="form">
                                 <div class="form-floating mb-3">
-                                    <Fade left delay={1300}>
-                                        <input type="email" className="form-control" id="emailAddress" placeholder="name@example.com"></input>
-                                        <label for="floatingInput">Email address</label>
-                                    </Fade>
+                                    <input type="email" className="form-control" id="emailAddress" placeholder="name@example.com"></input>
+                                    <label for="floatingInput">Email address</label>
 
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <Fade left delay={1600}>
-                                        <input type="text" className="form-control" id="name" placeholder="Name"></input>
-                                        <label for="floatingInput">Name</label>
-                                    </Fade>
+                                    <input type="text" className="form-control" id="name" placeholder="Name"></input>
+                                    <label for="floatingInput">Name</label>
 
                                 </div>
 
 
                                 <div class="text-area-height form-floating ">
-                                    <Fade left delay={1800}>
-                                        <textarea className=" h-100 form-control " placeholder="Leave a comment here" id="comments" ></textarea>
-                                        <label for="floatingTextarea2">Comments</label>
-                                    </Fade>
+                                    <textarea className=" h-100 form-control " placeholder="Leave a comment here" id="comments" ></textarea>
+                                    <label for="floatingTextarea2">Comments</label>
 
                                 </div>
                             </div>
                             <Fade>
                                 <button
-                                onClick={async ()=>{
+                                    onClick={async () => {
 
-                                    let emailAddress = document.getElementById("emailAddress").value; 
-                                    let name = document.getElementById("name").value; 
-                                    let comments = document.getElementById("comments").value; 
-                                    
-                 
-                                    await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/contactUsForm/contactWebsiteManagers`, {
+                                        let emailAddress = document.getElementById("emailAddress").value;
+                                        let name = document.getElementById("name").value;
+                                        let comments = document.getElementById("comments").value;
+
+                                        let data = {
+                                            emailAddress,
+                                            name,
+                                            comments
+                                        }
+
+
+                                        await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/contactUsForm/contactWebsiteManagers`, {
                                             method: 'PUT',
                                             body: JSON.stringify(data),
                                             headers: {
@@ -93,8 +95,8 @@ export default function Contact() {
 
 
                                             });
-                                }}
-                                 className='send-message'>Send Message</button>
+                                    }}
+                                    className='send-message'>Send Message</button>
                             </Fade>
 
                         </div>

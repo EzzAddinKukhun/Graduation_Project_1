@@ -50,7 +50,7 @@ export default function Sidebar() {
                                 </div>
                                 <div className="user-nav p-4">
                                     <div className="nav-icon me-4">
-                                        <i class="fa-solid fa-people-roof"></i>
+                                        <i class="fa-solid fa-briefcase"></i>
                                     </div>
                                     <div className="nav-name">
                                         <Link to="jobstable">Jobs</Link>
@@ -67,7 +67,7 @@ export default function Sidebar() {
 
                         <div className="user-nav p-4">
                             <div className="nav-icon me-4">
-                                <i class="fa-solid fa-people-roof"></i>
+                                <i class="fa-solid fa-handshake-simple"></i>
                             </div>
                             <div className="nav-name">
                                 <Link to="newEvent">New Event</Link>
@@ -75,7 +75,7 @@ export default function Sidebar() {
                         </div>
                         <div className="user-nav p-4">
                             <div className="nav-icon me-4">
-                                <i class="fa-solid fa-people-roof"></i>
+                                <i class="fa-solid fa-handshake-simple"></i>
                             </div>
                             <div className="nav-name">
                                 <Link to="eventsList">Events</Link>
