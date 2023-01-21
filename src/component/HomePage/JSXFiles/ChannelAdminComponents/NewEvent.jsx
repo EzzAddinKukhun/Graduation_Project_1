@@ -348,9 +348,12 @@ export default class NewEvent extends React.Component {
     // console.log("EVENTS_TOTAL_INFO"); // array of events
     // console.log(events[events.length-1]);
     console.log(events.length);
+    console.log(events);
 
     if (this.state.updateSelectedEvent == "Update" && events.length > 0) {
+      console.log (this.state.eventIDToUpdate); 
       let eventUpdate = events[this.state.eventIDToUpdate - 1];//GET old EVENT FROM CALENDAR 
+      console.log(eventUpdate); 
       let newStartTime = eventUpdate.start; //GET START TIME
       let newEndTime = eventUpdate.end; // GET END TIME
 

@@ -1,9 +1,60 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import '../../CSSFiles/UserCss/jobs.css'
 import coverApplyPage from '../../../../imgs/cover_apply.png'
 import { Fade, Zoom } from 'react-reveal';
+import { useSearchParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
+
 
 export default function JopDetailsPage() {
+    let [searchParam, setSearchParam] = useSearchParams();
+    let [job, setJob] = useState({});
+    let [org, setOrg] = useState({}); 
+
+
+    async function getJobInformation(id) {
+        await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/job/getJob/${id}`, {
+            method: 'GET',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+
+            .then(response => response.json())
+            .then(json => {
+                setJob(json.job[0]);
+                console.log(json.job[0])
+                // console.log(json.json.jobs)
+            });
+
+
+    }
+
+    async function getOrgInfo(channelID) {
+        console.log(channelID)
+        await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/orginization/getOrgInfo/${channelID}`, {
+            method: 'GET',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+
+            .then(response => response.json())
+            .then(json => {
+                setOrg(json.orgInfo);
+            });
+    }
+
+
+
+    useEffect(() => {
+        let id = searchParam.get('id');
+        let orgId = searchParam.get('orgId');
+        getJobInformation(id);
+        getOrgInfo(orgId)
+        console.log(orgId);
+
+    }, [])
     return (
         <>
             <div className="outlet ms-auto">
@@ -17,21 +68,56 @@ export default function JopDetailsPage() {
                         <div className="job-apply-title d-flex">
                             <div className="job-apply-title-child w-50 h-100  d-flex align-items-center ">
                                 <div>
-                                    <h2><b>Lead Quality Control QA</b></h2>
+                                    <h2><b>{job.jobName}</b></h2>
                                     <div className="meta-job-data d-flex justify-content-start text-muted">
                                         <div className="job-type-card d-flex me-4">
                                             <i className="fa-solid fa-briefcase me-1"></i>
-                                            <h6>Full Time</h6>
+                                            <h6>{job.jobType}</h6>
                                         </div>
                                         <div className="job-type-time d-flex">
                                             <i className="fa-solid fa-clock me-1"></i>
-                                            <h6>Posted 2 months ago</h6>
+                                            <h6>Posted At:{new Date(job.postDate).toLocaleDateString()}</h6>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="job-apply-title-child d-flex align-items-center justify-content-end  w-100">
-                                <button className='job-apply-btn-final'>
+                                <button
+                                onClick={async ()=>{
+                                    let userData = localStorage.getItem("ACCOUNT"); 
+                                    let dataParsed = JSON.parse(userData); 
+                                    let _id = dataParsed.id; 
+                                    let jobId = job._id; 
+                                
+
+                                    let data = {
+                                        _id,
+                                        jobId
+                                    }
+                                    
+                                    await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/job/applyToJob`, {
+                                            method: 'PUT',
+                                            body: JSON.stringify(data),
+                                            headers: {
+                                                "Content-type": "application/json; charset=UTF-8"
+                                            }
+                                        }).then(response => response.json())
+                                            .then(json => {
+
+                                                if (json.message == "success"){
+                                                    Swal.fire("Good Job", "Your Application Send Successfully", "success")
+
+                                                }
+                                                else if (json.message == "user cv needed"){ 
+                                                    Swal.fire("Ops!", "Your CV needed", "error")  
+                                                }
+
+                                            
+
+
+                                            });
+                                }}
+                                 className='job-apply-btn-final'>
                                     Apply Now!
                                 </button>
                             </div>
@@ -51,7 +137,7 @@ export default function JopDetailsPage() {
                                                 <i className="fa-solid fa-industry"></i>                                        </div>
                                             <div className="field-form ">
                                                 <label for="Industry" className="form-label">Industry</label>
-                                                <h6 name="Industry"><b>Web Developer</b></h6>
+                                                <h6 name="Industry"><b>{job.industry}</b></h6>
                                             </div>
                                         </div>
 
@@ -61,7 +147,7 @@ export default function JopDetailsPage() {
                                             </div>
                                             <div className="field-form ">
                                                 <label for="Salary" className="form-label">Salary</label>
-                                                <h6 name="Salary"><b>500</b></h6>
+                                                <h6 name="Salary"><b>{job.salary}</b></h6>
                                             </div>
 
                                         </div>
@@ -71,19 +157,9 @@ export default function JopDetailsPage() {
                                                 <i className="fa-solid fa-briefcase"></i>                                        </div>
                                             <div className="field-form ">
                                                 <label for="JobType" className="form-label">Job Type</label>
-                                                <h6 name="JobType"><b>Full Time</b></h6>
+                                                <h6 name="JobType"><b>{job.jobType}</b></h6>
 
 
-                                            </div>
-                                        </div>
-
-
-                                        <div className="sign-up-field mb-4 d-flex">
-                                            <div className="icon-form text-center">
-                                                <i className="fa-solid fa-location-dot"></i>                                        </div>
-                                            <div className="field-form ">
-                                                <label for="lastNameTextField" className="form-label">Location</label>
-                                                <h6 name="studystate"><b>France</b></h6>
                                             </div>
                                         </div>
 
@@ -102,7 +178,7 @@ export default function JopDetailsPage() {
                                                 <div className="field-form ">
                                                     <label for="Joblevel" className="form-label">
                                                         Job level</label>
-                                                    <h6 name="Joblevel"><b>Experienced</b></h6>
+                                                    <h6 name="Joblevel"><b>{job.jobLevel}</b></h6>
                                                 </div>
 
                                             </div>
@@ -114,7 +190,7 @@ export default function JopDetailsPage() {
                                             <div className="field-form ">
                                                 <label for="lastNameTextField" className="form-label">Experience</label>
                                                 <h6 name="phone"><b>
-                                                    1-2 Years</b></h6>
+                                                    {job.experience}</b></h6>
 
                                             </div>
                                         </div>
@@ -124,7 +200,7 @@ export default function JopDetailsPage() {
                                                 <i className="fa-solid fa-clock"></i>                                        </div>
                                             <div className="field-form ">
                                                 <label for="Deadline" className="form-label">Deadline</label>
-                                                <h6 name="Deadline"><b>30/12/2024</b></h6>
+                                                <h6 name="Deadline"><b>{new Date(job.deadline).toLocaleDateString()}</b></h6>
                                             </div>
                                         </div>
 
@@ -137,10 +213,9 @@ export default function JopDetailsPage() {
                                     <div className="job-address-info b-r col-md-4 text-light  p-3">
                                         <h2><b>Our Location</b></h2>
                                         <ul>
-                                            <li>Location: Palestine/Nablus</li>
-                                            <li>Street:   Aseera Street</li>
-                                            <li>Phone: +970 599836899</li>
-                                            <li>Email: ezkukhun2000@gmail.com</li>
+                                            <li>Location: {org.country + "/" + org.city} </li>
+                                            <li>Phone: {org.expertPhoneNumber}</li>
+                                            <li>Email: {org.expertEmailAddress}</li>
                                         </ul>
                                     </div>
 
@@ -153,15 +228,14 @@ export default function JopDetailsPage() {
                         <div className="skills container mb-4 ">
                             <h2 className='mb-2 p-3'><b><span className='span-style '>Essential Knowledge, Skills, and Experience</span></b></h2>
                             <ul className='ps-5'>
-                                <li>A portfolio demonstrating well thought through and polished end to end customer journeys</li>
-                                <li>5+ years of industry experience in interactive design and / or visual design</li>
-                                <li> Excellent interpersonal skills</li>
-                                <li>Aware of trends in mobile, communications, and collaboration</li>
-                                <li>Ability to create highly polished design prototypes, mockups, and other communication artifacts</li>
-                                <li>The ability to scope and estimate efforts accurately and prioritize tasks and goals independently</li>
-                                <li> History of impacting shipping products with your work</li>
-                                <li> A Bachelor’s Degree in Design (or related field) or equivalent professional experience</li>
-                                <li>  Proficiency in a variety of design tools such as Figma, Photoshop, Illustrator, and Sketch</li>
+                                {
+                                    job.requiredSkills?.map((skill) => {
+                                        return (
+                                            <li>{skill}</li>
+                                        );
+                                    })
+                                }
+
                             </ul>
                         </div>
                     </Fade>
@@ -170,9 +244,13 @@ export default function JopDetailsPage() {
                         <div className="skills container mb-4 ">
                             <h2 className='mb-2 p-3'><b><span className='span-style '>Preferred Experience</span></b></h2>
                             <ul className='ps-5'>
-                                <li>Designing user experiences for enterprise software / services</li>
-                                <li>Creating and applying established design principles and interaction patterns</li>
-                                <li>Aligning or influencing design thinking with teams working in other geographies</li>
+                                {
+                                    job.preferredExperience?.map((skill) => {
+                                        return (
+                                            <li>{skill}</li>
+                                        );
+                                    })
+                                }
 
                             </ul>
                         </div>

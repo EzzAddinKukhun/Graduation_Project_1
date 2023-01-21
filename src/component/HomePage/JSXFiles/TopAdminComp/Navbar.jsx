@@ -6,18 +6,14 @@ import { Link, Outlet } from 'react-router-dom';
 export default function Navbar() {
     return (
         <>
-            <div className="user-search-nav ms-auto p-3 d-flex justify-content-between ">
-                <div className="search-field w-50  h-100 me-5 ">
-                    <input placeholder='Search..' className='search-text-field h-100 me-2' type="text"></input>
-                    <i className="fa-solid fa-magnifying-glass"></i>
-                </div>
+            <div className="user-search-nav ms-auto p-3 d-flex justify-content-end ">
+               
                 <div className="profile-photo me-2 position-relative">
                     <div className="basic-pop-up-data text-center">
-                        <img className='me-3 ' src={Profile}></img>
+                        {/* <img className='me-3 ' src={Profile}></img> */}
                         <span className='me-2'><b>
-                            <Link to="profile">Ezz Addin H. Kukhun</Link>
+                            <Link to="profile">Top Admin</Link>
                         </b></span>
-                        <i class="fa-solid fa-chevron-down ms-auto"></i>
                     </div>
 
                     {/* POP UP MENU IN NAVBAR */}
@@ -64,11 +60,6 @@ export default function Navbar() {
 
                     </section> */}
 
-                </div>
-
-                <div className="notifications">
-                    <i class="fa-regular fa-bell me-4"></i>
-                    <i class="fa-regular fa-comments"></i>
                 </div>
             </div>
             <Outlet />

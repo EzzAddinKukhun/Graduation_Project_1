@@ -13,12 +13,14 @@ import test5 from '../../../../imgs/ch8.jpg'
 import test6 from '../../../../imgs/ch9.jpg'
 import test7 from '../../../../imgs/ch10.jpg'
 import { useEffect } from 'react';
+import Swal from 'sweetalert2';
 
 
 export default function HistEvents() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [userEvents, setUserEvents] = useState([]);
-  const [eventId, setEventId] = useState(""); 
+  const [eventId, setEventId] = useState("");
+  let [userId, setUserId] = useState("");
   let month = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
   async function getUserEvents(id) {
@@ -42,6 +44,7 @@ export default function HistEvents() {
     let dataFromLocalStorage = localStorage.getItem("ACCOUNT");
     let jsonData = JSON.parse(dataFromLocalStorage);
     let id = jsonData.id;
+    setUserId(id);
     getUserEvents(id);
 
 
@@ -81,7 +84,7 @@ export default function HistEvents() {
                   <div className="booked-event-find-more-btn d-flex align-items-center justify-content-center">
                     <button
                       onClick={() => {
-                        setEventId(event._id); 
+                        setEventId(event._id);
                         document.getElementById("eventNamePopUp").innerHTML = event.eventName;
                         document.getElementById("eventOrganizationPopUp").innerHTML = "ORGANIZATION";
                         document.getElementById("eventTypePopUp").innerHTML = event.eventType;
@@ -162,23 +165,33 @@ export default function HistEvents() {
               </table>
             </div>
             <div className="modal-footer">
-              <button onClick={function () {
-                swal({
-                  title: "Are you sure?",
-                  text: "Once deleted, you will not be able to recover this imaginary file!",
-                  icon: "warning",
-                  buttons: true,
-                  dangerMode: true,
-                })
-                  .then((willDelete) => {
-                    if (willDelete) {
-                      swal("You deleted your booking for this event!", {
+              <button onClick={async function () {
+                let _id = userId;
+                let data = {
+                  _id,
+                  eventId
+                }
+                await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/event/unbookEventforUser/`, {
+                  method: 'DELETE',
+                  body: JSON.stringify(data),
+                  headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                  }
+                }).then(response => response.json())
+                  .then(json => {
+                    if (json.message == "success") {
+
+                      Swal.fire("You deleted your booking for this event!", {
                         icon: "success",
                       });
-                    } else {
-                      swal("Your imaginary file is safe!");
+
+
+                      setTimeout(() => {
+                        window.location.reload()
+                      }, 2000)
                     }
                   });
+
               }} type="button" className="btn btn-danger">Delete Booking</button>
             </div>
           </div>

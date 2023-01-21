@@ -29,18 +29,18 @@ export default class User extends Component {
   render() {
     return (
       <>
-      {console.log(this.props.id)}
+        {console.log(this.props.id)}
         <Sidebar />
         <UserNavbar />
         <Routes>
           <Route path="/" element={<TimeLine />}></Route>
           <Route path="timeLine" element={<TimeLine />}>
-          <Route path="profile" element={<Profile />}></Route>
-            <Route  path="alumniProf" element={<AlumniProfile />} ></Route>
+            <Route path="profile" element={<Profile />}></Route>
+            <Route path="alumniProf" element={<AlumniProfile />} ></Route>
           </Route>
           <Route path="channels" element={<Channels />}>
           </Route>
-          <Route path="channels/channel" element={<ChannelViewProfile/>}></Route>
+          <Route path="channels/channel" element={<ChannelViewProfile />}></Route>
 
           <Route path="scholars" element={<Scholarships />}></Route>
 
@@ -48,13 +48,13 @@ export default class User extends Component {
             <Route path="scholars/scholarsForm" element={<ScholarOverview />} ></Route>
           </Route>
 
-            {/* {THIS IS THE USER JSX} */}
+          {/* {THIS IS THE USER JSX} */}
 
           <Route path="alumniProf" element={<AlumniProfile />}></Route>
           <Route path="mem" element={<MemberShips />}></Route>
           <Route path="mem/memprofile" element={<MembershipsViewProfile />}></Route>
-          <Route path="job_apply_page" element={<JopDetailsPage />}></Route>
           <Route path="alumniProf" element={<AlumniProfile />}>
+            {/* <Route path="" element={<BasicInformation />}></Route> */}
             <Route path="exp" element={<Experience />}></Route>
             <Route path="basicInfo" element={<BasicInformation />}></Route>
             <Route path="education" element={<Education />}></Route>
@@ -63,6 +63,8 @@ export default class User extends Component {
 
           <Route path="settings" element={<Settings />}></Route>
           <Route path="jobs" element={<Jobs />}></Route>
+          <Route path="jobs/job_apply_page" element={<JopDetailsPage />}></Route>
+
           <Route path="alumniProf/settings" element={<Settings />}></Route>
           <Route path="events" element={<Events />}>
             <Route path="" element={<NewEvents />}></Route>

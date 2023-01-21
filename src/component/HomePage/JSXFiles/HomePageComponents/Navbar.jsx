@@ -152,7 +152,35 @@ export default function Navbar() {
                                             else if (json.message == "success channel admin") {
                                                 let dataUser = {
                                                     id: json._id,
-                                                    type: "adminPage"
+                                                    type: "channelAdminPage"
+                                                }
+                                                localStorage.setItem("ACCOUNT", JSON.stringify(dataUser));
+
+                                                Swal.fire("Log In Successfully!", "Welcome to your account", "success");
+                                                setTimeout(() => {
+                                                    window.location.reload();
+                                                }, 2000)
+
+
+                                            }
+                                            else if (json.message == "success membership admin") {
+                                                let dataUser = {
+                                                    id: json._id,
+                                                    type: "memAdminPage"
+                                                }
+                                                localStorage.setItem("ACCOUNT", JSON.stringify(dataUser));
+
+                                                Swal.fire("Log In Successfully!", "Welcome to your account", "success");
+                                                setTimeout(() => {
+                                                    window.location.reload();
+                                                }, 2000)
+
+
+                                            }
+                                            else if (json.message == "success university admin") {
+                                                let dataUser = {
+                                                    id: json._id,
+                                                    type: "uniAdminPage"
                                                 }
                                                 localStorage.setItem("ACCOUNT", JSON.stringify(dataUser));
 

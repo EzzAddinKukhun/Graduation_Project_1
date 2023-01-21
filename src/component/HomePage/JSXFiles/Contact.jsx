@@ -43,14 +43,14 @@ export default function Contact() {
                             <div className="form">
                                 <div class="form-floating mb-3">
                                     <Fade left delay={1300}>
-                                        <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com"></input>
+                                        <input type="email" className="form-control" id="emailAddress" placeholder="name@example.com"></input>
                                         <label for="floatingInput">Email address</label>
                                     </Fade>
 
                                 </div>
                                 <div class="form-floating mb-3">
                                     <Fade left delay={1600}>
-                                        <input type="text" className="form-control" id="floatingInput" placeholder="Name"></input>
+                                        <input type="text" className="form-control" id="name" placeholder="Name"></input>
                                         <label for="floatingInput">Name</label>
                                     </Fade>
 
@@ -59,14 +59,42 @@ export default function Contact() {
 
                                 <div class="text-area-height form-floating ">
                                     <Fade left delay={1800}>
-                                        <textarea className=" h-100 form-control " placeholder="Leave a comment here" id="floatingTextarea2" ></textarea>
+                                        <textarea className=" h-100 form-control " placeholder="Leave a comment here" id="comments" ></textarea>
                                         <label for="floatingTextarea2">Comments</label>
                                     </Fade>
 
                                 </div>
                             </div>
                             <Fade>
-                                <button className='send-message'>Send Message</button>
+                                <button
+                                onClick={async ()=>{
+
+                                    let emailAddress = document.getElementById("emailAddress").value; 
+                                    let name = document.getElementById("name").value; 
+                                    let comments = document.getElementById("comments").value; 
+                                    
+                 
+                                    await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/contactUsForm/contactWebsiteManagers`, {
+                                            method: 'PUT',
+                                            body: JSON.stringify(data),
+                                            headers: {
+                                                "Content-type": "application/json; charset=UTF-8"
+                                            }
+                                        }).then(response => response.json())
+                                            .then(json => {
+                                                if (json.message == "success") {
+                                                    Swal.fire("Good job!", "Your Message sent successfully!", "success");
+
+                                                }
+                                                else {
+                                                    Swal.fire("Oh No!", "There is an error, try to republish the job!", "error");
+
+                                                }
+
+
+                                            });
+                                }}
+                                 className='send-message'>Send Message</button>
                             </Fade>
 
                         </div>

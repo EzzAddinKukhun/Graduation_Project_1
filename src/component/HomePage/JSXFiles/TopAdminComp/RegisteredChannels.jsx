@@ -10,13 +10,13 @@ export default function RegisteredChannels() {
   UNCOMMENT THE Channels HOOK, AND CHANNELS INSIDE GETCHANNELS FUNCTION AND GET INISDE USEEFFECT
   */
   let navigator = useNavigate();
-  let [jobIDToNavigate, setJobIDToNavigate] = useState("");
+  let [channelIdToNavigate, setChannelIDToNavigate] = useState("");
   let [searchToken, setSearchToken] = useState("");
-  // let [channels, setChannels] = useState ([]); 
+  let [channels, setChannels] = useState([]);
 
 
-  async function getChannels(id) {
-    await fetch(`http://localhost:5000/api/job/getAllJobs/${id}`, {
+  async function getChannels() {
+    await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/orginization/getAllOrginizations`, {
       method: 'GET',
       headers: {
         "Content-type": "application/json; charset=UTF-8"
@@ -25,9 +25,9 @@ export default function RegisteredChannels() {
 
       .then(response => response.json())
       .then(json => {
-        let channelsJson = json.applicantsArray;
-        channels = channelsJson;
-        // setChannels(channels);
+
+        setChannels(json.org);
+        console.log(json.org)
       });
   }
 
@@ -44,32 +44,31 @@ export default function RegisteredChannels() {
 
   function renderChannels() {
     return (
-      channels.filter((channels) =>
-        channels.jobName.toLocaleLowerCase().includes(searchToken)
-      ).map((job, key) => {
+      channels?.filter((channel) =>
+        channel.channelName.toLocaleLowerCase().includes(searchToken)
+      ).map((channel, key) => {
         return (
           <tr>
             <th scope="row">{key}</th>
             <td>
-              {job.jobName}
+              {channel.channelName}
             </td>
 
             <td>
               <div
                 onClick={() => {
-                  jobIDToNavigate = job._id;
-                  setJobIDToNavigate(jobIDToNavigate)
-                  navigateToUpdateJobApplication(jobIDToNavigate);
+                  channelIdToNavigate = channel._id;
+                  setChannelIDToNavigate(channelIdToNavigate)
+                  navigateToUpdateJobApplication(channelIdToNavigate);
 
                 }}
                 className='updateJobBtn'>
-                <i class="fa-solid fa-pen-to-square"></i>
-
+                <i class="fa-solid fa-id-badge"></i>
               </div>
             </td>
             <td >
               <button onClick={() => {
-                deleteJobAPI(job._id)
+                // deleteJobAPI(job._id)
               }} type="button" class="btn btn-danger">
                 <i class="fa-solid fa-trash-can"></i>
               </button>
@@ -83,68 +82,11 @@ export default function RegisteredChannels() {
 
 
   useEffect(() => {
-    // getChannels();  
+    getChannels();
 
   }, [])
 
 
-
-  let channels = [
-    {
-      "_id": "6390ecb1d782cb68698894d9",
-      "orginizationId": "6390b9a2fbf8669105e238e1",
-      "jobName": "Data Engineering",
-      "jobLevel": "Senior",
-      "industry": "Computer Science",
-      "salary": 3500,
-      "experience": "4 Years",
-      "jobType": "Full Time",
-      "postDate": "2022-01-01",
-      "deadline": "2023-07-01",
-      "jobOverview": "YES YES YES YES YES YES ",
-      "applicants": [],
-      "requiredSkills": [
-        "Sprting Boot",
-        "C",
-        "SQL"
-      ],
-      "preferredExperience": [
-        "GIT",
-        "XML",
-        "Bonto"
-      ],
-      "__v": 0,
-      "createdAt": "2022-12-07T19:42:41.806Z",
-      "updatedAt": "2022-12-10T17:18:20.799Z"
-    },
-    {
-      "_id": "6390ed1bd782cb68698894dc",
-      "orginizationId": "6390b9a2fbf8669105e238e1",
-      "jobName": "MACHINE LEARNING",
-      "jobLevel": "Senior",
-      "industry": "IT",
-      "salary": 5461,
-      "experience": "Back End",
-      "jobType": "Internship",
-      "postDate": "2022-12-07",
-      "deadline": "2023-01-01",
-      "jobOverview": "this is a front end development job",
-      "applicants": [],
-      "requiredSkills": [
-        "java",
-        "c++",
-        "python"
-      ],
-      "preferredExperience": [
-        "git",
-        "github",
-        "jasper"
-      ],
-      "__v": 0,
-      "createdAt": "2022-12-07T19:44:27.566Z",
-      "updatedAt": "2022-12-07T19:44:27.566Z"
-    }
-  ]
 
 
 
@@ -170,7 +112,7 @@ export default function RegisteredChannels() {
               <tr>
                 <th className='JT-H1' scope="col">Channel ID</th>
                 <th className='JT-H2' scope="col">Channel Name</th>
-                <th className='JT-H4' scope="col">Update</th>
+                <th className='JT-H4' scope="col">View</th>
                 <th className='JT-H5' scope="col">Remove</th>
               </tr>
             </thead>

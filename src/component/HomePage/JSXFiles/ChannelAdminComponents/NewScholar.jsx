@@ -21,7 +21,7 @@ export default function NewScholar() {
                                 <div className='w-100'>
                                     <label className='mb-2' for="firstNameEdit">Scholarship Name</label>
                                     <input type="text" class="form-control" id="scolarshipName"
-                                        placeholder="Job Name" />
+                                        placeholder="Scholarship  Name" />
                                 </div>
                             </div>
                             <div class="form-group mb-3 col-md-6 d-flex">
@@ -55,7 +55,7 @@ export default function NewScholar() {
 
                                     <div className="row">
                                         <div class="mb-3">
-                                            <textarea rows="6" type="email" placeholder='Write an over view about this job..' class="form-control" id="scholarshipDescription" aria-describedby="emailHelp"></textarea>
+                                            <textarea rows="6" type="email" placeholder='Write an over view about this Scholarship ..' class="form-control" id="scholarshipDescription" aria-describedby="emailHelp"></textarea>
                                         </div>
                                     </div>
                                 </div>

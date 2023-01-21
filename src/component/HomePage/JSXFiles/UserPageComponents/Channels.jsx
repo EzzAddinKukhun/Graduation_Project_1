@@ -83,7 +83,7 @@ export default function Channels() {
 
       .then(response => response.json())
       .then(json => {
-        setRecommendedChannels(json.org);
+        setRecommendedChannels(json.recommendedChannels);
       });
   }
 

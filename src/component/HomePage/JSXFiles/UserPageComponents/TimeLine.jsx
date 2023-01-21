@@ -13,6 +13,7 @@ export default function TimeLine() {
     const [likes, setLikes] = useState([]);
     const [comments, setComments] = useState([]);
     const [commentToSend, setCommentToSend] = useState("");
+    const[postIdComment, setPostIdComment] = useState(""); 
 
     async function getPosts(id) {
         await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/user/getTimelinePosts/${id}`, {
@@ -24,6 +25,7 @@ export default function TimeLine() {
 
             .then(response => response.json())
             .then(json => {
+                console.log(json.postsResponse)
                 setPosts(json.postsResponse);
             });
 
@@ -47,8 +49,8 @@ export default function TimeLine() {
         <>
 
             <div className='d-flex outlet ms-auto'>
-                <div className="timeline">
-                    <div className="inner-timeline">
+                <div className="timeline ">
+                    <div className="inner-timeline  ">
                         {/* GENERATE ALL POSTS START FROM HERE */}
                         {posts.map((post, key) => {
                             return (
@@ -98,7 +100,9 @@ export default function TimeLine() {
                                                         <i className="fa-solid fa-heart "></i>
                                                     </div>
                                                     <div className="rs-div">
-                                                        <button className="likesCounterBtn" data-bs-toggle="modal" data-bs-target="#likePost0000"
+                                                        <button
+                                                    
+                                                         className="likesCounterBtn" data-bs-toggle="modal" data-bs-target="#likePost0000"
                                                             onClick={async () => {
                                                                 await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/posts/getPostLikes/${post._id}`, {
                                                                     method: 'GET',
@@ -122,6 +126,7 @@ export default function TimeLine() {
                                                     <div className="rs-div">
                                                         <button
                                                             onClick={async () => {
+                                                                setPostIdComment(post._id); 
                                                                 await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/posts/getPostComments/${post._id}`, {
                                                                     method: 'GET',
                                                                     headers: {
@@ -133,7 +138,7 @@ export default function TimeLine() {
                                                                         setComments(json.comments);
                                                                     });
                                                             }}
-                                                            data-bs-target="#commentPost0000" className= "commentsCounter" data-bs-toggle="modal" >{post.comments}</button>
+                                                            data-bs-target="#commentPost0000" className="commentsCounter" data-bs-toggle="modal" >{post.comments}</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -311,8 +316,8 @@ export default function TimeLine() {
                                                                         .then(response => response.json())
                                                                         .then(json => {
                                                                             setComments(json.comments);
-                                                                            document.getElementsByClassName("commentsCounter")[key].innerHTML = json.comments.length; 
-                                                                            document.getElementsByClassName("commentInput")[key].value = ""; 
+                                                                            document.getElementsByClassName("commentsCounter")[key].innerHTML = json.comments.length;
+                                                                            document.getElementsByClassName("commentInput")[key].value = "";
                                                                         });
 
 
@@ -342,7 +347,7 @@ export default function TimeLine() {
                     </div>
                 </div>
 
-                <Fade>
+                {/* <Fade>
                     <div className="profile-info-timeline">
                         <div className="prof-info-tm-line">
                             <div className="time-line-cover">
@@ -372,7 +377,7 @@ export default function TimeLine() {
 
                         </div>
                     </div>
-                </Fade>
+                </Fade> */}
             </div>
 
             {/* LIKES LIST */}
@@ -437,6 +442,26 @@ export default function TimeLine() {
                                                     <h5><b>{comment.firstName + " " + comment.lastName}</b></h5>
                                                     <h6 className='text-muted'>{comment.studyField}</h6>
                                                 </div>
+                                                {comment._id == userID ? <div
+                                                    onClick={async () => {
+                                                      
+                                                        let data = {
+                                                            postId: postIdComment,
+                                                            commentId: comment.commentId
+                                                        }
+                                                        await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/posts/deleteComment`, {
+                                                            method: 'DELETE',
+                                                            body: JSON.stringify(data),
+                                                            headers: {
+                                                                "Content-type": "application/json; charset=UTF-8"
+                                                            }
+                                                        }).then(response => response.json())
+                                                            .then(json => {
+                                                                console.log("Comment Deleted")
+                                                            });
+                                                    }}
+                                                    className='cursor-pointer'><i class="fa-solid fa-trash-can text-danger"></i></div> : ""}
+
 
                                             </div>
                                             <div className="comment-text d-block">

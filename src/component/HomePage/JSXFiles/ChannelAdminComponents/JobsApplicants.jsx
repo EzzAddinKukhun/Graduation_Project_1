@@ -139,7 +139,7 @@ export default function JobsApplicants() {
                                             </div>
                                             <div className="job-type-time d-flex">
                                                 <i className="fa-solid fa-clock me-1"></i>
-                                                <h6>Posted: {job.postDate}</h6>
+                                                <h6>Posted: {  new Date(job.postDate).toLocaleDateString() }</h6>
                                             </div>
                                         </div>
                                     </div>
@@ -225,7 +225,7 @@ export default function JobsApplicants() {
                                                 <i className="fa-solid fa-clock"></i>                                        </div>
                                             <div className="field-form ">
                                                 <label for="Deadline" className="form-label">Deadline</label>
-                                                <h6 name="Deadline"><b>{job.deadline}</b></h6>
+                                                <h6 name="Deadline"><b>{  new Date(job.deadline).toLocaleDateString() }</b></h6>
                                             </div>
                                         </div>
 

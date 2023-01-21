@@ -8,6 +8,7 @@ export default function NewJob() {
     let [jobType, setJobType] = useState("");
     let [requiredSkills, setRequiredSkills] = useState([]);
     let [preferredExperience, setPreferredExperience] = useState([]);
+    let [jType, setJType]= useState(""); 
 
     return (
         <>
@@ -33,8 +34,11 @@ export default function NewJob() {
                                 </div>
                                 <div className='w-100'>
                                     <label className='mb-2' for="firstNameEdit">Industry</label>
-                                    <input type="text" class="form-control" id="jobIndustry" aria-describedby="emailHelp"
-                                        placeholder="Industry" />
+                                    <Combobox
+                                    onChange={(e)=>{
+                                        setJType(e); 
+                                    }}
+                                     defaultValue="IT" data={["IT", "Engineering", "Arts", "Sport", "Medicine", "Litreature"]} />
                                 </div>
 
                             </div>
@@ -201,7 +205,7 @@ export default function NewJob() {
                     <button
                         onClick={async () => {
                             let jobName = document.getElementById("jobName").value;
-                            let industry = document.getElementById("jobIndustry").value;
+                            let industry = jType; 
                             let jobLevel = document.getElementById("jobLevel").value;
                             let salary = document.getElementById("jobSalary").value;
                             let experience = document.getElementById("jobExperience").value;

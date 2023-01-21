@@ -25,6 +25,8 @@ export default function ChannelViewProfile() {
     let [channelID, setChannelID] = useState("");
     let [orgInfo, setOrgInfo] = useState({});
     let [searchParams, setSearchParams] = useSearchParams();
+    let [posts, setPosts] = useState([]); 
+ 
 
 
     const ProfilePicChangeHandler = async (e) => {
@@ -53,6 +55,23 @@ export default function ChannelViewProfile() {
             });
 
     };
+
+    async function getPosts(orginizationId) {
+        await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/post/getChannelsPosts/${orginizationId}`, {
+            method: 'GET',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+
+            .then(response => response.json())
+            .then(json => {
+                setPosts(json.postsResponse);
+
+
+            });
+
+    }
 
 
     async function getOrgInfo(channelID) {
@@ -109,7 +128,7 @@ export default function ChannelViewProfile() {
                                 <h2 className='mb-2 p-3'><b><span className='span-style '>Channel</span></b> Expert</h2>
                             </div>
                             <section className="unfollow-btn w-15  d-flex align-items-center justify-content-center">
-                                <button onClick={function () {
+                                {/* <button onClick={function () {
                                     Swal({
                                         title: "Are you sure that you will unfollow this channel?",
                                         icon: "warning",
@@ -125,7 +144,7 @@ export default function ChannelViewProfile() {
                                                 Swal.fire("Your imaginary file is safe!");
                                             }
                                         });
-                                }} className='bg-danger'><i class="fa-solid fa-user-xmark"></i>&nbsp; Unfollow</button>
+                                }} className='bg-danger'><i class="fa-solid fa-user-xmark"></i>&nbsp; Unfollow</button> */}
                             </section>
                         </div>
                         <div className='d-flex channel-expert-data-container'>
@@ -189,7 +208,7 @@ export default function ChannelViewProfile() {
                                     </section>
                                     <section className="statistics-icon  text-center">
                                         <i className="text-primary fa-solid fa-file-pen"></i>
-                                        <h6 id="count">{counterOn && <CountUp start={0} end={6353} duration={5} />}+</h6>
+                                        <h6 id="count">{counterOn && <CountUp start={0} end={posts?.length} duration={5} />}+</h6>
                                         <h6 className='statistics-name'>Posts</h6>
                                     </section>
                                     <section className="statistics-icon  text-center">

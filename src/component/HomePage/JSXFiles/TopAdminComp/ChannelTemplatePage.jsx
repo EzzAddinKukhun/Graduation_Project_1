@@ -27,70 +27,53 @@ export default function ChannelTemplatePage() {
     let [searchParams, setSearchParams] = useSearchParams();
 
 
-    // const [orgInfo, setOrgInfo] = useState({});
-    let orgInfo = {
-        "orginizationName": "Apple",
-        "channelName": "CV Writing Workshops and seminars",
-        "description": "this is the new description",
-        "expertName": "Ezz Kukhun",
-        "expertPhoneNumber": "059406464111",
-        "category": "Personal Development",
-        "followersNum": 0,
-        "postsNum": 0,
-        "eventsNum": 0,
-        "country": "USA",
-        "city": "New York",
-        "expertEmailAddress": "ezz@gmail.com",
-        "jobsNum": 0,
-        "expertImg": "1670962519107-670025973-images.jfif",
-        "coverImg": "1670962531010-33439908-wp2792980-tony-soprano-wallpaper.jpg"
-    }
-
-
-    // async function getOrgInfo(id) {
-    //     await fetch(`http://localhost:5000/api/orginization/getOrgInfo/${id}`, {
-    //         method: 'GET',
-    //         headers: {
-    //             "Content-type": "application/json; charset=UTF-8"
-    //         }
-    //     })
-
-    //         .then(response => response.json())
-    //         .then(json => {
-    //             //get the main info of org 
-    //             orgInfo = json.orgInfo;
-    //             setOrgInfo(orgInfo);
-
-
-    //             //get the expert image
-    //             let mediaFile = btoa(
-    //                 new Uint8Array(json.channelExpertImg.data)
-    //                     .reduce((data, byte) => data + String.fromCharCode(byte), '')
-    //             );
-    //             channelExpertImgFile = mediaFile;
-    //             setChannelExpertImgFile(channelExpertImgFile);
-
-
-    //             //get the cover image
-    //             mediaFile = btoa(
-    //                 new Uint8Array(json.channelCoverImg.data)
-    //                     .reduce((data, byte) => data + String.fromCharCode(byte), '')
-    //             );
-    //             channelCoverImgFile = mediaFile;
-    //             setChannelCoverImg(channelCoverImgFile);
-
-
-
-    //         });
-
-
-
+    const [orgInfo, setOrgInfo] = useState({});
+    // let orgInfo = {
+    //     "orginizationName": "Apple",
+    //     "channelName": "CV Writing Workshops and seminars",
+    //     "description": "this is the new description",
+    //     "expertName": "Ezz Kukhun",
+    //     "expertPhoneNumber": "059406464111",
+    //     "category": "Personal Development",
+    //     "followersNum": 0,
+    //     "postsNum": 0,
+    //     "eventsNum": 0,
+    //     "country": "USA",
+    //     "city": "New York",
+    //     "expertEmailAddress": "ezz@gmail.com",
+    //     "jobsNum": 0,
+    //     "expertImg": "1670962519107-670025973-images.jfif",
+    //     "coverImg": "1670962531010-33439908-wp2792980-tony-soprano-wallpaper.jpg"
     // }
+
+
+    async function getOrgInfo(id) {
+        await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/orginization/getOrgInfo/${id}`, {
+            method: 'GET',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+
+            .then(response => response.json())
+            .then(json => {
+                //get the main info of org 
+              
+                setOrgInfo(json.orgInfo);
+
+
+
+            });
+
+
+
+    }
 
     useEffect(() => {
         let id = searchParams.get('id');
+        setChannelID(id); 
         console.log(id)
-        // getOrgInfo(id); 
+        getOrgInfo(id); 
 
     }, [])
 
@@ -102,7 +85,7 @@ export default function ChannelTemplatePage() {
                 <div className="channel-header">
                     <div className='channel-header-main-info'>
                         <Fade delay={100}>
-                            <img className='channel-cover-image' src={`data:video/mp4;base64,${channelCoverImgFile}`} alt="" />
+                            <img className='channel-cover-image' src={`https://alumnibackend-fathifathallah.onrender.com/api/orginization/getOrginizationCoverPic/${channelID}`}  alt="" />
                         </Fade>
                         <div className='channel-title-category  text-center text-light' >
                             <Fade delay={600}>
@@ -127,7 +110,7 @@ export default function ChannelTemplatePage() {
                         <div className='d-flex channel-expert-data-container'>
                             <Fade delay={700}>
                                 <div className='channel-expert-thumbnail d-flex align-items-center '>
-                                    <img className='channel-expert-thumb' src={`data:video/mp4;base64,${channelExpertImgFile}`} alt="" />
+                                    <img className='channel-expert-thumb' src={`https://alumnibackend-fathifathallah.onrender.com/api/orginization/getOrginizationProfilePic/${channelID}`} alt="" />
                                     <div className='ps-3 d-flex align-items-center'>
                                         <div>
                                             <h3><b>{orgInfo.expertName}</b></h3>
@@ -185,7 +168,7 @@ export default function ChannelTemplatePage() {
                                     </section>
                                     <section className="statistics-icon  text-center">
                                         <i className="text-primary fa-solid fa-file-pen"></i>
-                                        <h6 id="count">{counterOn && <CountUp start={0} end={6353} duration={5} />}+</h6>
+                                        <h6 id="count">{counterOn && <CountUp start={0} end={0} duration={5} />}+</h6>
                                         <h6 className='statistics-name'>Posts</h6>
                                     </section>
                                     <section className="statistics-icon  text-center">

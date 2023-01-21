@@ -34,10 +34,10 @@ else {
       </BrowserRouter>
     );
   }
-  else if (account.type == "adminPage") {
+  else if (account.type == "channelAdminPage" || account.type == "memAdminPage" || account.type == "uniAdminPage" ) {
     root.render(
       <BrowserRouter>
-        <Channel id={account.id} />
+        <Channel id={account.id} type={account.type} />
       </BrowserRouter>
     );
   }

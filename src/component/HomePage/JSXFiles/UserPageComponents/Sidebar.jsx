@@ -7,6 +7,7 @@ import UserNavbar from './UserNavbar';
 
 
 export default function Sidebar() {
+    
     return (
         <>
 
@@ -17,6 +18,22 @@ export default function Sidebar() {
                     </div>
 
                     <div className="user-navigations d-flex flex-column">
+                        <div className="user-nav p-4">
+                            <div className="nav-icon me-4">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div className="nav-name">
+                                <Link to="alumniProf">Profile</Link>
+                            </div>
+                        </div>
+                        <div className="user-nav p-4">
+                            <div className="nav-icon me-4">
+                                <i class="fa-solid fa-gear"></i>
+                            </div>
+                            <div className="nav-name">
+                                <Link to="settings">Settings</Link>
+                            </div>
+                        </div>
                         <div className="user-nav p-4">
                             <div className="nav-icon me-4">
                                 <i class="fa-solid fa-timeline"></i>
@@ -65,13 +82,26 @@ export default function Sidebar() {
                                 <Link to="jobs">Jobs</Link>
                             </div>
                         </div>
+                        <div className="user-nav p-4">
+                            <div className="nav-icon me-4">
+                                <i class="fa-solid fa-power-off"></i>
+                            </div>
+                            <div
+                            onClick={()=>{
+                                localStorage.removeItem("ACCOUNT"); 
+                                window.location.reload(); 
+                            }}
+                             className="nav-name">
+                                <Link to="">Log Out</Link>
+                            </div>
+                        </div>
 
                     </div>
 
                 </div>
 
             </div>
-             
+
             <Outlet />
 
 

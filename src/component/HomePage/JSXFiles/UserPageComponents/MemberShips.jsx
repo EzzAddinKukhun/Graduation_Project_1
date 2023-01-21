@@ -19,6 +19,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 
 
@@ -81,7 +82,9 @@ export default function Channels() {
 
       .then(response => response.json())
       .then(json => {
-        setRecommendedMemberships(json.associations);
+        console.log(json)
+        console.log(json.recommendedMembership)
+        setRecommendedMemberships(json.recommendedMembership);
       });
   }
 
@@ -109,7 +112,7 @@ export default function Channels() {
 
         <div className='your-channel mb-4'>
           <div className='ps-4'>
-            <h2>Your <span className='span-style'><b>Channels</b></span></h2>
+            <h2>Your <span className='span-style'><b>Memberships</b></span></h2>
           </div>
           <div className="search-field-channels search-field ms-3 mb-3  w-50  me-5 ">
             <input placeholder='Search Inside Your Channels.. ' className='search-text-field h-100 me-2' type="text"></input>
@@ -189,7 +192,7 @@ export default function Channels() {
         <div className="recommended-channel">
           <div className='your-channel mb-4'>
             <div className='ps-4'>
-              <h2>Recommended <span className='span-style'><b>Channels</b></span></h2>
+              <h2>Recommended <span className='span-style'><b>Memberships</b></span></h2>
             </div>
 
             <div className='d-flex  justify-content-center align-items-center'>
@@ -202,7 +205,7 @@ export default function Channels() {
                     return <div className="card-container">
                       <div className='card-channels'>
                         <div className="card-cover-photo">
-                          <img src={`https://alumnibackend-fathifathallah.onrender.com/api/orginization/getOrginizationCoverPic/${memberships.associationId}`}  ></img>
+                          <img src={`https://alumnibackend-fathifathallah.onrender.com/api/association/getAssociationCoverPic/${memberships.associationId}`}  ></img>
                           <div className="overlayy"></div>
                           <div className="channel-desc-card">
                             <h5><b>{memberships.channelName}</b></h5>
@@ -222,14 +225,14 @@ export default function Channels() {
                                 async function () {
 
                                   let _id = userId;
-                                  let channelId = memberships.associationId;
+                                  let associationId = memberships.associationId;
 
                                   let data = {
                                     _id,
-                                    channelId
+                                    associationId
                                   }
 
-                                  await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/orginization/followChannel`, {
+                                  await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/association/becomeMember`, {
                                     method: 'PUT',
                                     body: JSON.stringify(data),
                                     headers: {
@@ -237,10 +240,15 @@ export default function Channels() {
                                     }
                                   }).then(response => response.json())
                                     .then(json => {
-                                      window.location.reload();
+                                      Swal.fire("Good Job!", "You become a member in this association!", "success");
+
+                                      setTimeout(() => {
+                                        window.location.reload();
+
+                                      }, 2000)
                                     });
 
-                                }} className='bg-primary'><i class="fa-solid fa-user-plus"></i>&nbsp; Follow</button>
+                                }} className='bg-primary'><i class="fa-solid fa-user-plus"></i>&nbsp; Member</button>
                             </section>
                           </div>
                         </div>

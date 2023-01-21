@@ -14,50 +14,25 @@ import Slide from 'react-reveal/Slide';
 import ScrollTrigger from 'react-scroll-trigger';
 import CountUp from 'react-countup';
 import Swal from 'sweetalert2';
+import { useSearchParams } from 'react-router-dom';
 
 
-export default function ChannelAdminProfile() {
+export default function MemTemplatePage() {
     const [counterOn, setCounterOn] = useState(false);
     const [expertImageBytes, setExpertImageBytes] = useState([]);
     const [coverImage, setCoverImageBytes] = useState([]);
     const [channelExpertImgFile, setChannelExpertImgFile] = useState([]);
     const [channelCoverImgFile, setChannelCoverImg] = useState([]);
-    let [channelID, setChannelID] = useState("");
-    let [orgInfo, setOrgInfo] = useState({});
-    let [posts, setPosts] = useState ([])
+    let [memID, setMemID] = useState("");
+    let [searchParams, setSearchParams] = useSearchParams();
 
 
-    const ProfilePicChangeHandler = async (e) => {
-        let cover = e.target.files[0];
-        e.preventDefault();
-        const data = new FormData();
-        data.append("_id", channelID);
-        data.append("ImgUpload", cover);
-
-        await fetch("https://alumnibackend-fathifathallah.onrender.com/api/orginization/updateChannelCover", {
-            method: "PUT",
-            body: data,
-        })
-            .then((result) => {
-                Swal.fire(
-                    'Good job!',
-                    'Cover Image Updated Successfully!',
-                    'success'
-                )
-                setTimeout(() => {
-                    window.location.reload();
-                }, 3000)
-            })
-            .catch((err) => {
-                console.log(err.message);
-            });
-
-    };
+    const [memInfo, setMemInfo] = useState({});
 
 
-    async function getOrgInfo(channelID) {
-        console.log(channelID)
-        await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/orginization/getOrgInfo/${channelID}`, {
+
+    async function getMemInfo(id) {
+        await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/association/getAllAssociations`, {
             method: 'GET',
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -66,33 +41,26 @@ export default function ChannelAdminProfile() {
 
             .then(response => response.json())
             .then(json => {
-                setOrgInfo(json.orgInfo);
-            });
-    }
+                //get the main info of org 
+                json.association.map((mem)=>{
+                    if (mem._id == id){
+                        setMemInfo(mem); 
+                    }
 
-    async function getPosts(orginizationId) {
-        await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/post/getChannelsPosts/${orginizationId}`, {
-            method: 'GET',
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
-        })
-
-            .then(response => response.json())
-            .then(json => {
-                setPosts(json.postsResponse);
+                })
 
 
             });
+
+
 
     }
 
     useEffect(() => {
-        let channelInfo = localStorage.getItem("ACCOUNT");
-        let channelJSON = JSON.parse(channelInfo);
-        setChannelID(channelJSON.id)
-        getOrgInfo(channelJSON.id);
-        getPosts(channelJSON.id)
+        let id = searchParams.get('id');
+        setMemID(id); 
+        console.log(id)
+        getMemInfo(id); 
 
     }, [])
 
@@ -100,33 +68,21 @@ export default function ChannelAdminProfile() {
 
     return (
         <>
-            {console.log(orgInfo)}
             <div className='outlet ms-auto'>
                 <div className="channel-header">
                     <div className='channel-header-main-info'>
                         <Fade delay={100}>
-                            <img className='channel-cover-image' src={`https://alumnibackend-fathifathallah.onrender.com/api/orginization/getOrginizationCoverPic/${channelID}`} alt="" />
+                            <img className='channel-cover-image' src={`https://alumnibackend-fathifathallah.onrender.com/api/association/getAssociationCoverPic/${memID}`}  alt="" />
                         </Fade>
                         <div className='channel-title-category  text-center text-light' >
                             <Fade delay={600}>
-                                <h2><b>{orgInfo.channelName}</b></h2>
-                                <h6><b>{orgInfo.orginizationName}</b></h6>
+                                <h2><b>{memInfo.associationName}</b></h2>
+                                <h6><b>{memInfo.orginizationName}</b></h6>
                             </Fade>
                         </div>
                     </div>
                     <div className="overlayChannel"></div>
-                    <Fade delay={500}>
-                        <button className='editCoverPage'>
-                            <input onClick={() => {
-                                console.log("FFFF")
-                            }} onChange={ProfilePicChangeHandler}
-                                className='position-absolute' type="file" />
-                            <i className="fa-solid fa-pen">
-                            </i>
-                        </button>
 
-
-                    </Fade>
 
                 </div>
 
@@ -134,20 +90,18 @@ export default function ChannelAdminProfile() {
                     <div className=" channel-expert p-3">
                         <div className='d-flex justify-content-between align-items-center'>
                             <div>
-                                <h2 className='mb-2 p-3'><b><span className='span-style '>Channel</span></b> Expert</h2>
+                                <h2 className='mb-2 p-3'><b><span className='span-style '>Association</span></b> Expert</h2>
                             </div>
-                            <button className="channel-settings-btn">
-                                <Link to="../settings">Settings</Link>
-                            </button>
+
                         </div>
                         <div className='d-flex channel-expert-data-container'>
                             <Fade delay={700}>
                                 <div className='channel-expert-thumbnail d-flex align-items-center '>
-                                    <img className='channel-expert-thumb' src={`https://alumnibackend-fathifathallah.onrender.com/api/orginization/getOrginizationProfilePic/${channelID}`} alt="" />
+                                    <img className='channel-expert-thumb' src={`https://alumnibackend-fathifathallah.onrender.com/api/association/getAssociationProfilePic/${memID}`} alt="" />
                                     <div className='ps-3 d-flex align-items-center'>
                                         <div>
-                                            <h3><b>{orgInfo.expertName}</b></h3>
-                                            <h6>Channel Executer Manager</h6>
+                                            <h3><b>{memInfo.expertName}</b></h3>
+                                            <h6>Association Executer Manager</h6>
                                         </div>
                                     </div>
                                 </div>
@@ -161,7 +115,7 @@ export default function ChannelAdminProfile() {
                                         </div>
                                         <div className="field-form ">
                                             <label for="lastNameTextField" className="form-label">Phone Number</label>
-                                            <h6 name="phone"><b>{orgInfo.expertPhoneNumber}</b></h6>
+                                            <h6 name="phone"><b>{memInfo.expertPhoneNumber}</b></h6>
 
                                         </div>
                                     </div>
@@ -171,7 +125,7 @@ export default function ChannelAdminProfile() {
                                         </div>
                                         <div className="field-form ">
                                             <label for="BirthdateTextField" className="form-label">Email Address</label>
-                                            <h6 name="email"><b>{orgInfo.expertEmailAddress}</b></h6>
+                                            <h6 name="email"><b>{memInfo.expertEmailAddress}</b></h6>
                                         </div>
                                     </div>
 
@@ -187,27 +141,27 @@ export default function ChannelAdminProfile() {
                     <Fade>
                         <div className='container overflow-hidden mb-3 '>
                             <div className=" channel-expert-2 p-3">
-                                <h2 className='mb-2 p-3'><b><span className='span-style '>Channel</span></b> Activites</h2>
+                                <h2 className='mb-2 p-3'><b><span className='span-style '>Association</span></b> Activites</h2>
                                 <div className='d-flex '>
-                                    <section className="statistics-icon  text-center">
+                                    {/* <section className="statistics-icon  text-center">
                                         <i className="text-danger fa-solid fa-briefcase"></i>
-                                        <h6 id="count">{counterOn && <CountUp start={0} end={orgInfo.jobsNum} duration={5} />}+</h6>
+                                        <h6 id="count">{counterOn && <CountUp start={0} end={memInfo.jobsNum} duration={5} />}+</h6>
                                         <h6 className='statistics-name'>Jobs</h6>
-                                    </section>
+                                    </section> */}
                                     <section className="statistics-icon  text-center">
                                         <i className=" text-warning fa-solid fa-calendar-days"></i>
-                                        <h6 id="count">{counterOn && <CountUp start={0} end={orgInfo.eventsNum} duration={5} />}+</h6>
+                                        <h6 id="count">{counterOn && <CountUp start={0} end={memInfo.eventsNum} duration={5} />}+</h6>
                                         <h6 className='statistics-name'>Events</h6>
                                     </section>
                                     <section className="statistics-icon  text-center">
                                         <i className="text-primary fa-solid fa-file-pen"></i>
-                                        <h6 id="count">{counterOn && <CountUp start={0} end={posts?.length} duration={5} />}+</h6>
+                                        <h6 id="count">{counterOn && <CountUp start={0} end={0} duration={5} />}+</h6>
                                         <h6 className='statistics-name'>Posts</h6>
                                     </section>
                                     <section className="statistics-icon  text-center">
                                         <i className=" text-success fa-solid fa-file-pen"></i>
-                                        <h6 id="count">{counterOn && <CountUp start={0} end={orgInfo.followersNum} duration={5} />}+</h6>
-                                        <h6 className='statistics-name'><button data-bs-toggle="modal" data-bs-target="#exampleModal">Followers</button></h6>
+                                        <h6 id="count">{counterOn && <CountUp start={0} end={memInfo.members?.length} duration={5} />}+</h6>
+                                        <h6 className='statistics-name'><button data-bs-toggle="modal" data-bs-target="#exampleModal">Members</button></h6>
                                     </section>
 
                                 </div>
@@ -223,7 +177,7 @@ export default function ChannelAdminProfile() {
                         <h2 className='mb-2 p-3'><b><span className='span-style '>About</span></b></h2>
                         <p id="aboutPara">
                             <Fade cascade>
-                                {orgInfo.description}
+                                {memInfo.description}
                             </Fade>
                         </p>
                     </div>
@@ -239,8 +193,8 @@ export default function ChannelAdminProfile() {
                                         <i class="fa-solid fa-sitemap"></i>
                                     </div>
                                     <div className="field-form ">
-                                        <label for="BirthdateTextField" className="form-label">Organization Name</label>
-                                        <h6 name="email"><b>{orgInfo.orginizationName}</b></h6>
+                                        <label for="BirthdateTextField" className="form-label">Association Name</label>
+                                        <h6 name="email"><b>{memInfo.associationName}</b></h6>
                                     </div>
                                 </div>
                                 <div className="channel-exp-info w-50 sign-up-field mb-4 d-flex">
@@ -249,7 +203,7 @@ export default function ChannelAdminProfile() {
                                     </div>
                                     <div className="field-form ">
                                         <label for="BirthdateTextField" className="form-label">Category</label>
-                                        <h6 name="email"><b>{orgInfo.category}</b></h6>
+                                        <h6 name="email"><b>{memInfo.category}</b></h6>
                                     </div>
                                 </div>
 
@@ -259,7 +213,7 @@ export default function ChannelAdminProfile() {
                                     </div>
                                     <div className="field-form ">
                                         <label for="BirthdateTextField" className="form-label">Country</label>
-                                        <h6 name="email"><b>{orgInfo.country}</b></h6>
+                                        <h6 name="email"><b>{memInfo.country}</b></h6>
                                     </div>
                                 </div>
                                 <div className="channel-exp-info w-50 sign-up-field mb-4 d-flex">
@@ -268,7 +222,7 @@ export default function ChannelAdminProfile() {
                                     </div>
                                     <div className="field-form ">
                                         <label for="BirthdateTextField" className="form-label">City</label>
-                                        <h6 name="email"><b>{orgInfo.city}</b></h6>
+                                        <h6 name="email"><b>{memInfo.city}</b></h6>
                                     </div>
                                 </div>
 

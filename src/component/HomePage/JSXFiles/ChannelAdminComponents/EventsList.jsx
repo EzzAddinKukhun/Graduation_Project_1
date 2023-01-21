@@ -229,7 +229,8 @@ export default function EventsList() {
                                 className='btn btn-primary'>
                                 Update
                             </button>
-                            <button onClick={async()=> {
+                            <button
+                             onClick={async()=> {
                                 let data = {
                                     _id : eventIDToUpdate
                                 }
@@ -249,7 +250,9 @@ export default function EventsList() {
                                                         },2000)
                                                     }
                                                 });
-                            }} type="button" className="btn btn-danger">Delete Event</button>
+                            }} 
+                            
+                            type="button" className="btn btn-danger">Delete Event</button>
                         </div>
                     </div>
                 </div>

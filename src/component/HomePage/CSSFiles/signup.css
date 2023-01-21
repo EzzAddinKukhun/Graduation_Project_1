@@ -5,6 +5,27 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
+.signup-header-org{
+    width: 100%;
+    height: 40vh;
+    background-image: url(../../../imgs/signup.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.signup-header-mem{
+    width: 100%;
+    height: 40vh;
+    background-image: url(../../../imgs/ass.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.signup-header-uni{
+    width: 100%;
+    height: 40vh;
+    background-image: url(../../../imgs/uniii.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 
 
 .icon-form{
@@ -32,3 +53,4 @@
 .signUpBtn, .clearSignUpForm{
     width: 10%;
 }
+

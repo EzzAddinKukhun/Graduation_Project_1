@@ -107,7 +107,7 @@
 }
 
 .event-info h5{
-    font-size: 18px;
+    font-size: 15px;
 }
 
 .view-event-details{
@@ -216,4 +216,8 @@ font-size: 60px;
 .filter h3{
     font-size: 20px;
 
+}
+
+.event-container h3 {
+    font-size: 22px;
 }

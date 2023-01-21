@@ -59,7 +59,7 @@ export default function AlumniProfile() {
                                     <section className='account-details   w-100 d-flex align-items-center justify-content-center'>
                                         <div className="name-and-career pt-3">
                                             <h2 className='account-name'><b>{userInformation.firstName}</b> {userInformation.lastName}</h2>
-                                            <h6 className='career-name text-muted'>{userInformation.specialization}</h6>
+                                            <h6 className='career-name text-muted'>{  userInformation.studyField + " " + userInformation.specialization}</h6>
                                             {/* <h6 className='career-name text-muted'>
                                                 An-Najah National University
                                             </h6> */}

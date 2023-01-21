@@ -31,6 +31,8 @@ export default function TimeLine() {
 
     }
 
+
+
     // here when the array brackets are blanks, it represents the componentDidMount
     // we can use useEffect for three functions (Mount,DidMount,Unmount)
     useEffect(() => {
@@ -50,7 +52,7 @@ export default function TimeLine() {
                 <div className="timeline">
                     <div className="inner-timeline">
                         {/* GENERATE ALL POSTS START FROM HERE */}
-                        {posts.map((post) => {
+                        {posts?.map((post) => {
                             return (
                                 <Fade>
                                     <div className="post mb-3">
@@ -213,10 +215,10 @@ export default function TimeLine() {
                                                                     }
 
                                                                 }}
-                                                               
+
                                                                 placeholder='Write a comment..' type="text"></input>
 
-                                                        
+
 
                                                             <div className="emoji d-flex justify-content-center align-items-center">
                                                                 <div>
@@ -241,7 +243,7 @@ export default function TimeLine() {
                 </div>
 
                 <Fade>
-                    <div className="profile-info-timeline">
+                    {/* <div className="profile-info-timeline">
                         <div className="prof-info-tm-line">
                             <div className="time-line-cover">
                                 <img src={cover}></img>
@@ -267,13 +269,14 @@ export default function TimeLine() {
                                 </div>
 
                             </div>
-                            <button type="button" className="addNewPostByChannel btn btn-primary" data-bs-toggle="modal" data-bs-target=".bd-example-modal-lg">
-                                Add New Post
-                            </button>
+
 
 
                         </div>
-                    </div>
+                    </div> */}
+                    <button type="button" className="addNewPostByChannel  btn-primary" data-bs-toggle="modal" data-bs-target=".bd-example-modal-lg">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
                 </Fade>
 
             </div>

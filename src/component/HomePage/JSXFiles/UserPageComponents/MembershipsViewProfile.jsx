@@ -25,12 +25,40 @@ export default function MembershipsViewProfile() {
     let [channelID, setChannelID] = useState("");
     let [orgInfo, setOrgInfo] = useState({});
     let [searchParams, setSearchParams] = useSearchParams();
+    let [posts, setPosts] = useState([])
 
 
 
-    async function getOrgInfo(channelID) {
-        console.log(channelID)
-        await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/orginization/getOrgInfo/${channelID}`, {
+    async function getMemInfo(id) {
+        await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/association/getAllAssociations`, {
+            method: 'GET',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+
+
+
+            .then(response => response.json())
+            .then(json => {
+                //get the main info of org 
+                json.association.map((mem) => {
+                    if (mem._id == id) {
+                        setOrgInfo(mem);
+                    }
+
+                })
+
+
+            });
+
+
+
+
+    }
+
+    async function getPosts(orginizationId) {
+        await fetch(`https://alumnibackend-fathifathallah.onrender.com/api/post/getChannelsPosts/6390c162d9c4e5d6bff034a2`, {
             method: 'GET',
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -39,16 +67,20 @@ export default function MembershipsViewProfile() {
 
             .then(response => response.json())
             .then(json => {
-                setOrgInfo(json.orgInfo);
+                setPosts(json.postsResponse);
+
+
             });
+
     }
 
     useEffect(() => {
 
-        let id = searchParams.get('id')
+        let id = searchParams.get('id');
+        getPosts(id)
 
         setChannelID(id)
-        getOrgInfo(id);
+        getMemInfo(id);
 
     }, [])
 
@@ -61,17 +93,17 @@ export default function MembershipsViewProfile() {
                 <div className="channel-header">
                     <div className='channel-header-main-info'>
                         <Fade delay={100}>
-                            <img className='channel-cover-image' src={`https://alumnibackend-fathifathallah.onrender.com/api/orginization/getOrginizationCoverPic/${channelID}`} alt="" />
+                            <img className='channel-cover-image' src={`https://alumnibackend-fathifathallah.onrender.com/api/association/getAssociationProfilePic/${channelID}`} alt="" />
                         </Fade>
                         <div className='channel-title-category  text-center text-light' >
                             <Fade delay={600}>
-                                <h2><b>{orgInfo.channelName}</b></h2>
-                                <h6><b>{orgInfo.orginizationName}</b></h6>
+                                <h2><b>{orgInfo.associationName}</b></h2>
+                                {/* <h6><b>{orgInfo.orginizationName}</b></h6> */}
                             </Fade>
                         </div>
                     </div>
                     <div className="overlayChannel"></div>
-                 
+
 
                 </div>
 
@@ -79,36 +111,20 @@ export default function MembershipsViewProfile() {
                     <div className=" channel-expert p-3">
                         <div className='d-flex justify-content-between align-items-center'>
                             <div>
-                                <h2 className='mb-2 p-3'><b><span className='span-style '>Channel</span></b> Expert</h2>
+                                <h2 className='mb-2 p-3'><b><span className='span-style '>Association</span></b> Expert</h2>
                             </div>
                             <section className="unfollow-btn w-15  d-flex align-items-center justify-content-center">
-                                <button onClick={function () {
-                                    Swal({
-                                        title: "Are you sure that you will unfollow this channel?",
-                                        icon: "warning",
-                                        buttons: true,
-                                        dangerMode: true,
-                                    })
-                                        .then((willDelete) => {
-                                            if (willDelete) {
-                                                Swal.fire("Poof! Your imaginary file has been deleted!", {
-                                                    icon: "success",
-                                                });
-                                            } else {
-                                                Swal.fire("Your imaginary file is safe!");
-                                            }
-                                        });
-                                }} className='bg-danger'><i class="fa-solid fa-user-xmark"></i>&nbsp; Unfollow</button>
+
                             </section>
                         </div>
                         <div className='d-flex channel-expert-data-container'>
                             <Fade delay={700}>
                                 <div className='channel-expert-thumbnail d-flex align-items-center '>
-                                    <img className='channel-expert-thumb' src={`https://alumnibackend-fathifathallah.onrender.com/api/orginization/getOrginizationProfilePic/${channelID}`} alt="" />
+                                    <img className='channel-expert-thumb' src={`https://alumnibackend-fathifathallah.onrender.com/api/association/getAssociationProfilePic/${channelID}`} alt="" />
                                     <div className='ps-3 d-flex align-items-center'>
                                         <div>
                                             <h3><b>{orgInfo.expertName}</b></h3>
-                                            <h6>Channel Executer Manager</h6>
+                                            <h6>Association Executer Manager</h6>
                                         </div>
                                     </div>
                                 </div>
@@ -148,7 +164,7 @@ export default function MembershipsViewProfile() {
                     <Fade>
                         <div className='container overflow-hidden mb-3 '>
                             <div className=" channel-expert-2 p-3">
-                                <h2 className='mb-2 p-3'><b><span className='span-style '>Channel</span></b> Activites</h2>
+                                <h2 className='mb-2 p-3'><b><span className='span-style '>Association</span></b> Activites</h2>
                                 <div className='d-flex '>
                                     <section className="statistics-icon  text-center">
                                         <i className="text-danger fa-solid fa-briefcase"></i>
@@ -162,7 +178,7 @@ export default function MembershipsViewProfile() {
                                     </section>
                                     <section className="statistics-icon  text-center">
                                         <i className="text-primary fa-solid fa-file-pen"></i>
-                                        <h6 id="count">{counterOn && <CountUp start={0} end={6353} duration={5} />}+</h6>
+                                        <h6 id="count">{counterOn && <CountUp start={0} end={posts?.length} duration={5} />}+</h6>
                                         <h6 className='statistics-name'>Posts</h6>
                                     </section>
                                     <section className="statistics-icon  text-center">
@@ -193,15 +209,15 @@ export default function MembershipsViewProfile() {
                     {/* PERSONAL INFO  */}
                     <Fade >
                         <div className="container personal-info">
-                            <h2 className='mb-4'><b><span className='span-style '>Channel</span></b> Information</h2>
+                            <h2 className='mb-4'><b><span className='span-style '>Association</span></b> Information</h2>
                             <div className="row">
                                 <div className="channel-exp-info w-50 sign-up-field mb-4 d-flex">
                                     <div className="icon-form text-center">
                                         <i class="fa-solid fa-sitemap"></i>
                                     </div>
                                     <div className="field-form ">
-                                        <label for="BirthdateTextField" className="form-label">Organization Name</label>
-                                        <h6 name="email"><b>{orgInfo.orginizationName}</b></h6>
+                                        <label for="BirthdateTextField" className="form-label">Association Name</label>
+                                        <h6 name="email"><b>{orgInfo.associationName}</b></h6>
                                     </div>
                                 </div>
                                 <div className="channel-exp-info w-50 sign-up-field mb-4 d-flex">

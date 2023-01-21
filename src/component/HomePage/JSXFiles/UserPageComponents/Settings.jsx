@@ -8,6 +8,7 @@ import swal from 'sweetalert';
 import Profile from '../../../../imgs/profile.jpg';
 import Axios from 'axios';
 import Swal from 'sweetalert2';
+import FileDownload from 'js-file-download'; 
 
 export default function Settings() {
   let [stateItem, setStateItem] = useState([]);
@@ -186,9 +187,6 @@ export default function Settings() {
     getPersonalInfos(id);
     getAccountInfos(id);
     getSkills(id);
-
-
-
 
   }, []);
 
@@ -1037,6 +1035,7 @@ export default function Settings() {
               <input onChange={fileChangeHandler4} type="file" class="form-control" id="uploadFile" aria-describedby="" />
             </div>
 
+           
 
 
             <div className="divv d-flex justify-content-end">
@@ -1067,9 +1066,9 @@ export default function Settings() {
                         'Your Files Uploaded Successfully!',
                         'success'
                       )
-                      setTimeout(() => {
-                        window.location.reload();
-                      }, 2000)
+                      // setTimeout(() => {
+                      //   window.location.reload();
+                      // }, 2000)
 
                     })
                     .catch((err) => {
